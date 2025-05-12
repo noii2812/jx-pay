@@ -18,7 +18,7 @@
             align-items: center;
         }
         .forgot-container {
-            background: white;
+            /* background: white; */
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(108, 92, 231, 0.1);
@@ -123,7 +123,22 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="{{ asset('images/music/song.mp3') }}" type="audio/mp3" style="width:30px; height:30px;">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Add music control button -->
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; width:50px; height:50px; display:flex; align-items:center; justify-content:center; background: rgba(255, 211, 42, 0.9); padding: 10px; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1);"
+        onclick="toggleMusic()">
+        <i class="bi bi-volume-up-fill" id="musicIcon" style="font-size: 24px; color: #333;"></i>
+    </div>
+
+   <div style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
+    <img src="/images/sky.jpg" alt="Kunlun"
+            style="width: 100vw; height: 100vh; object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1;">
+    <div class="container" style="width:1000px;">
         <div class="row forgot-container">
             <!-- Game Wallpaper Side -->
             <div class="col-md-6 game-wallpaper d-none d-md-block">
@@ -168,10 +183,69 @@
             </div>
         </div>
     </div>
+   </div>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Add this at the beginning of your script section
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgMusic = document.getElementById('bgMusic');
+            
+            // Try to play immediately
+            tryPlayMusic();
+
+            // Also try to play on first user interaction
+            document.addEventListener('click', function() {
+                tryPlayMusic();
+            }, { once: true });
+
+            // Also try to play on first scroll
+            document.addEventListener('scroll', function() {
+                tryPlayMusic();
+            }, { once: true });
+        });
+
+        function tryPlayMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            const musicIcon = document.getElementById('musicIcon');
+            
+            if (bgMusic.paused) {
+                const playPromise = bgMusic.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Playback started successfully
+                        musicIcon.classList.remove('bi-volume-up-fill');
+                        musicIcon.classList.add('bi-volume-mute-fill');
+                    })
+                    .catch(error => {
+                        // Auto-play was prevented
+                        console.log("Autoplay prevented:", error);
+                    });
+                }
+            }
+        }
+
+        function toggleMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            const musicIcon = document.getElementById('musicIcon');
+
+            if (bgMusic.paused) {
+                const playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        musicIcon.classList.remove('bi-volume-up-fill');
+                        musicIcon.classList.add('bi-volume-mute-fill');
+                    });
+                }
+            } else {
+                bgMusic.pause();
+                musicIcon.classList.remove('bi-volume-mute-fill');
+                musicIcon.classList.add('bi-volume-up-fill');
+            }
+        }
+
         function toggleOldPassword() {
             const passwordInput = document.getElementById('old-password');
             const toggleIcon = document.getElementById('oldToggleIcon');

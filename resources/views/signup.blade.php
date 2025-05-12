@@ -231,99 +231,115 @@
     </style>
 </head>
 <body>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="{{ asset('images/music/song.mp3') }}" type="audio/mp3" style="width:30px; height:30px;">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Add music control button -->
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; width:50px; height:50px; display:flex; align-items:center; justify-content:center; background: rgba(255, 211, 42, 0.9); padding: 10px; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1);"
+        onclick="toggleMusic()">
+        <i class="bi bi-volume-up-fill" id="musicIcon" style="font-size: 24px; color: #333;"></i>
+    </div>
+
+    <div style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
+        <img src="/images/sky.jpg" alt="Kunlun"
+            style="width: 100vw; height: 100vh; object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1;">
     <div class="container">
         <div class="signup-container">
-            <!-- Game Wallpaper Side -->
-            <div class="col-md-6 game-wallpaper d-none d-md-block">
-                <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px 0 0 15px;">
-                    <source src="/images/login.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            
-            <!-- Sign Up Form Side -->
-            <div class="col-md-6 signup-form">
-                <div class="signup-icon">
-                    <img src="/images/banks/game-logo.jpg" alt="Game Logo" style="width: 100px; height: 100px; border-radius: 50%;">
+                <!-- Game Wallpaper Side -->
+                <div class="col-md-6 game-wallpaper d-none d-md-block">
+                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px 0 0 15px;">
+                        <source src="/images/login.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
-                <h1 class="signup-title">Create Account</h1>
-                <p class="signup-subtitle">Join our gaming community today!</p>
-                <div class="divider"></div>
-                <form>
-                    <div class="form-section">
-                        <div class="form-section-title">
-                            <i class="bi bi-person-circle"></i> Account Information
-                        </div>
-                        <div class="input-group" style="justify-content: space-between">
-                            <label for="username" class="form-label">Username <span class="required-star">*</span></label>
-                            <div class="position-relative">
-                                <i class="bi bi-person input-icon"></i>
-                                <input type="text" class="form-control input-with-icon" id="username" placeholder="Choose a username">
-                            </div>
-                        </div>
-
-                        <div class="input-group" style="justify-content: space-between">
-                            <label for="email" class="form-label">Email Address <span class="required-star">*</span></label>
-                            <div class="position-relative">
-                                <i class="bi bi-envelope input-icon"></i>
-                                <input type="email" class="form-control input-with-icon" id="email" placeholder="Enter your email">
-                            </div>
-                        </div>
-
-                        <div class="input-group" style="justify-content: space-between">
-                            <label for="phone" class="form-label">Phone Number <span class="required-star">*</span></label>
-                            <div class="position-relative">
-                                <i class="bi bi-phone input-icon"></i>
-                                <input type="tel" class="form-control input-with-icon" id="phone" placeholder="Enter your phone number">
-                            </div>
-                        </div>
+                
+                <!-- Sign Up Form Side -->
+                <div class="col-md-6 signup-form">
+                    <div class="signup-icon">
+                        <img src="/images/banks/game-logo.jpg" alt="Game Logo" style="width: 100px; height: 100px; border-radius: 50%;">
                     </div>
-
-                    <div class="form-section">
-                        <div class="form-section-title">
-                            <i class="bi bi-shield-lock"></i> Security
-                        </div>
-                        <div class="input-group position-relative" style="justify-content: space-between;">
-                            <label for="password" class="form-label">Password <span class="required-star">*</span></label>
-                            <div class="position-relative">
-                                <i class="bi bi-key input-icon"></i>
-                                <input type="password" class="form-control input-with-icon" id="password" placeholder="Create a password">
-                                <span class="password-toggle" onclick="togglePassword('password', 'passwordToggle')">
-                                    <i class="bi bi-eye" id="passwordToggle"></i>
-                                </span>
+                    <h1 class="signup-title">Create Account</h1>
+                    <p class="signup-subtitle">Join our gaming community today!</p>
+                    <div class="divider"></div>
+                    <form>
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="bi bi-person-circle"></i> Account Information
+                            </div>
+                            <div class="input-group" style="justify-content: space-between">
+                                <label for="username" class="form-label">Username <span class="required-star">*</span></label>
+                                <div class="position-relative">
+                                    <i class="bi bi-person input-icon"></i>
+                                    <input type="text" class="form-control input-with-icon" id="username" placeholder="Choose a username">
+                                </div>
+                            </div>
+    
+                            <div class="input-group" style="justify-content: space-between">
+                                <label for="email" class="form-label">Email Address <span class="required-star">*</span></label>
+                                <div class="position-relative">
+                                    <i class="bi bi-envelope input-icon"></i>
+                                    <input type="email" class="form-control input-with-icon" id="email" placeholder="Enter your email">
+                                </div>
+                            </div>
+    
+                            <div class="input-group" style="justify-content: space-between">
+                                <label for="phone" class="form-label">Phone Number <span class="required-star">*</span></label>
+                                <div class="position-relative">
+                                    <i class="bi bi-phone input-icon"></i>
+                                    <input type="tel" class="form-control input-with-icon" id="phone" placeholder="Enter your phone number">
+                                </div>
                             </div>
                         </div>
-                        <div class="password-requirements">
-                            <div>
-                                <ul>
-                                    <li><i class="bi bi-check-circle text-success"></i> At least 8 characters</li>
-                                    <li><i class="bi bi-check-circle text-success"></i> Include numbers and letters</li>
-                                    <li><i class="bi bi-check-circle text-success"></i> Include special characters</li>
-                                </ul>
+    
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="bi bi-shield-lock"></i> Security
+                            </div>
+                            <div class="input-group position-relative" style="justify-content: space-between;">
+                                <label for="password" class="form-label">Password <span class="required-star">*</span></label>
+                                <div class="position-relative">
+                                    <i class="bi bi-key input-icon"></i>
+                                    <input type="password" class="form-control input-with-icon" id="password" placeholder="Create a password">
+                                    <span class="password-toggle" onclick="togglePassword('password', 'passwordToggle')">
+                                        <i class="bi bi-eye" id="passwordToggle"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="password-requirements">
+                                <div>
+                                    <ul>
+                                        <li><i class="bi bi-check-circle text-success"></i> At least 8 characters</li>
+                                        <li><i class="bi bi-check-circle text-success"></i> Include numbers and letters</li>
+                                        <li><i class="bi bi-check-circle text-success"></i> Include special characters</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="input-group position-relative" style="justify-content: space-between;">
+                                <label for="confirm-password" class="form-label">Confirm Password <span class="required-star">*</span></label>
+                                <div class="position-relative">
+                                    <i class="bi bi-key input-icon"></i>
+                                    <input type="password" class="form-control input-with-icon" id="confirm-password" placeholder="Confirm password" style="width: 100%;">
+                                    <span class="password-toggle" onclick="togglePassword('confirm-password', 'confirmToggle')">
+                                        <i class="bi bi-eye" id="confirmToggle"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="input-group position-relative" style="justify-content: space-between;">
-                            <label for="confirm-password" class="form-label">Confirm Password <span class="required-star">*</span></label>
-                            <div class="position-relative">
-                                <i class="bi bi-key input-icon"></i>
-                                <input type="password" class="form-control input-with-icon" id="confirm-password" placeholder="Confirm password" style="width: 100%;">
-                                <span class="password-toggle" onclick="togglePassword('confirm-password', 'confirmToggle')">
-                                    <i class="bi bi-eye" id="confirmToggle"></i>
-                                </span>
-                            </div>
+    
+                        <div class="mb-4">
+                            <button type="submit" class="btn btn-signup w-100">Create Account</button>
+                            <p class="terms-text">
+                                By creating an account, you agree to our
+                                <a href="#">Terms of Service</a> and
+                                <a href="#">Privacy Policy</a>
+                            </p>
                         </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <button type="submit" class="btn btn-signup w-100">Create Account</button>
-                        <p class="terms-text">
-                            By creating an account, you agree to our
-                            <a href="#">Terms of Service</a> and
-                            <a href="#">Privacy Policy</a>
-                        </p>
-                    </div>
-                </form>
-                <a href="/login" class="back-to-signin">Already have an account? Sign In</a>
+                    </form>
+                    <a href="/login" class="back-to-signin">Already have an account? Sign In</a>
+                </div>
             </div>
         </div>
     </div>
@@ -331,6 +347,64 @@
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Add this at the beginning of your script section
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgMusic = document.getElementById('bgMusic');
+            
+            // Try to play immediately
+            tryPlayMusic();
+
+            // Also try to play on first user interaction
+            document.addEventListener('click', function() {
+                tryPlayMusic();
+            }, { once: true });
+
+            // Also try to play on first scroll
+            document.addEventListener('scroll', function() {
+                tryPlayMusic();
+            }, { once: true });
+        });
+
+        function tryPlayMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            const musicIcon = document.getElementById('musicIcon');
+            
+            if (bgMusic.paused) {
+                const playPromise = bgMusic.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Playback started successfully
+                        musicIcon.classList.remove('bi-volume-up-fill');
+                        musicIcon.classList.add('bi-volume-mute-fill');
+                    })
+                    .catch(error => {
+                        // Auto-play was prevented
+                        console.log("Autoplay prevented:", error);
+                    });
+                }
+            }
+        }
+
+        function toggleMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            const musicIcon = document.getElementById('musicIcon');
+
+            if (bgMusic.paused) {
+                const playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        musicIcon.classList.remove('bi-volume-up-fill');
+                        musicIcon.classList.add('bi-volume-mute-fill');
+                    });
+                }
+            } else {
+                bgMusic.pause();
+                musicIcon.classList.remove('bi-volume-mute-fill');
+                musicIcon.classList.add('bi-volume-up-fill');
+            }
+        }
+
         function togglePassword(inputId, toggleId) {
             const passwordInput = document.getElementById(inputId);
             const toggleIcon = document.getElementById(toggleId);
