@@ -266,7 +266,7 @@
             document.addEventListener('click', function () {
                 tryPlayMusic();
             }, { once: true });
-
+            //
             // Also try to play on first scroll
             document.addEventListener('scroll', function () {
                 tryPlayMusic();
