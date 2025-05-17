@@ -57,34 +57,8 @@
                     </div>
                 </div>
             </div>
-            <div class="dashboard-card shadow-sm" style="border-top: 4px solid #f43f5e;">
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <div class="bg-danger bg-opacity-10 rounded-circle p-2">
-                            <i class="bi bi-person-plus text-danger fs-4"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-muted">NEW CLIENTS</div>
-                        <div class="h4 mb-0">+3,462</div>
-                        <small class="text-danger">-2% since last quarter</small>
-                    </div>
-                </div>
-            </div>
-            <div class="dashboard-card shadow-sm" style="border-top: 4px solid #f59e42;">
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <div class="bg-warning bg-opacity-10 rounded-circle p-2">
-                            <i class="bi bi-cart text-warning fs-4"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-muted">SALES</div>
-                        <div class="h4 mb-0">$103,430</div>
-                        <small class="text-success">+5% than last month</small>
-                    </div>
-                </div>
-            </div>
+            
+            
         </div>
     </div>
     
@@ -104,7 +78,7 @@
         </div>
     </div>
     <!-- More widgets/cards below -->
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-6 mb-4">
             <div class="card p-4">
                 <h6>Team Members</h6>
@@ -140,8 +114,8 @@
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="row">
+    </div> --}}
+    {{-- <div class="row">
         <div class="col-md-6 mb-4">
             <div class="card p-4">
                 <h6>Progress Track</h6>
@@ -157,7 +131,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Example chart
