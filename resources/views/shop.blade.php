@@ -341,18 +341,18 @@
 
     /* Payment Modal Styles */
     .modal {
-        z-index: 2000;
+        z-index: 9999;
     }
 
     .modal-backdrop {
-        z-index: 1999;
+        z-index: 9998;
     }
 
     .modal-dialog {
         margin: 1.75rem auto;
         max-width: 500px;
         position: relative;
-        z-index: 2001;
+        z-index: 10000;
     }
 
     .modal-content {
@@ -360,7 +360,7 @@
         border-radius: 1rem;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         position: relative;
-        z-index: 2001;
+        z-index: 10000;
         background: #fff;
     }
 
@@ -384,14 +384,14 @@
     .modal-header,
     .modal-footer {
         position: relative;
-        z-index: 2002;
+        z-index: 10001;
     }
 
     /* Make close button more visible */
     .btn-close {
         opacity: 1;
         padding: 1rem;
-        z-index: 2003;
+        z-index: 10002;
         position: relative;
     }
 

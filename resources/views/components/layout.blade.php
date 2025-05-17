@@ -326,7 +326,10 @@
                     <a class="nav-link" href="/game" data-path="/game"><i class="bi bi-controller"></i>Game</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/coin" data-path="/coin"><i class="bi bi-coin"></i>Trade Coin</a>
+                    <a class="nav-link" href="/transferCoinHistory" data-path="/transfercoin"><i class="bi bi-clipboard2-check"></i>Transfer Coin History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/topUpHistory" data-path="/topup"><i class="bi bi-coin"></i>Top Up History</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/shop" data-path="/shop"><i class="bi bi-tags"></i>Shop</a>

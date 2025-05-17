@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TopUpHistoryController;
 
 Route::get('/', function () {
     return view('dashboard');
 });
-Route::get('/coin', function () {
-    return view('tradecoin');
+Route::get('/transferCoinHistory', function () {
+    return view('transferCoinHistory');
 });
 Route::get('/shop', function () {
     return view('shop');
@@ -26,3 +27,4 @@ Route::get('/signup', function () {
 Route::get('/login/forgot', function () {
     return view('forgotpassword');
 });
+Route::get('/topUpHistory', [TopUpHistoryController::class, 'index']);
