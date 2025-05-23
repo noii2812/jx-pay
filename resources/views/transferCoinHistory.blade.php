@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="container-fluid py-5 px-4">
+    
         <!-- Header Section -->
         <div class="d-flex align-items-center justify-content-between mb-5">
             <div class="d-flex align-items-center gap-4">
@@ -88,7 +88,7 @@
         <div class="card border-0 mb-5" style="border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
             <div class="card-body p-4">
                 <div class="row g-4">
-                    <div class="col-lg-5">
+                    <div class="col-lg-4">
                         <div class="input-group">
                             <span class="input-group-text border-0 bg-light px-4">
                                 <i class="bi bi-search fs-5"></i>
@@ -112,7 +112,7 @@
                             <option value="month">This Month</option>
                         </select>
                     </div>
-                    <div class="col-lg-1">
+                    <div class="col-lg-2">
                         <button class="btn btn-warning w-100 py-3 d-flex align-items-center justify-content-center gap-2" style="border-radius: 12px;">
                             <i class="bi bi-funnel"></i>
                             Filter
@@ -240,7 +240,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 
     <style>
         .btn-warning {

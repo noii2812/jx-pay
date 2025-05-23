@@ -286,11 +286,11 @@
     </style>
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light"
+{{-- <nav class="navbar navbar-expand-lg navbar-light bg-light"
     style="position: fixed; top: 0; right: 16px; z-index: 1030; width: 98.4%; height: 6vh;">
     <div class="container-fluid">
-        <button class="btn btn-warning" onclick="toggleSidebar()">
-            <i class="bi bi-list" id="sidebarToggle"></i>
+        <button class="btn btn-warning" onclick="toggleSidebar()" id="sidebarToggle">
+            <i class="bi bi-list"></i>
         </button>
         <div class="d-flex align-items-center justify-content-end">
             <span class="me-3">20,145 <i class="bi bi-coin text-warning"></i></span>
@@ -299,7 +299,7 @@
             </div>
         </div>
     </div>
-</nav>
+</nav> --}}
 
 <body>
     <div class="app-container">
@@ -311,14 +311,18 @@
                         style="border-radius: 10px; width: 100%; height: 100%;">
                 </div>
             </div>
-            <div class="sidebar-title">Dashboards</div>
+            <div class="sidebar-title">Admin</div>
             <ul class="nav flex-column mb-2">
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="/" data-path="/"><i class="bi bi-grid"></i> Dashboards</a>
+                    <a class="nav-link" href="/admin" data-path="/admin"><i class="bi bi-grid"></i> Admin</a>
                 </li>
             </ul>
             <div class="sidebar-title">Pages</div>
             <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="/" data-path="/"><i class="bi bi-grid"></i> Dashboards</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/profile" data-path="/profile"><i class="bi bi-person"></i>Profile</a>
                 </li>
