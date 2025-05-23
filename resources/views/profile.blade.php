@@ -34,223 +34,92 @@
         </div>
     </div>
 
-    
-        <div class="card card-privilege shadow-lg border-0" style="border-radius: 20px; margin-top: 20px;">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="bg-primary bg-gradient  rounded-circle me-3" style="width: 50px; height: 50px;display: flex; align-items: center; justify-content: center;">
-                        <i class="bi bi-person-circle" style="color: white;"></i>
-                    </div>
-                    <h4 class="fw-bold m-0" style="color: #2d3436;">Profile Details</h4>
+
+    <div class="card card-privilege shadow-lg border-0" style="border-radius: 20px; margin-top: 20px;">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center mb-4">
+                <div class="bg-primary bg-gradient  rounded-circle me-3"
+                    style="width: 50px; height: 50px;display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-person-circle" style="color: white;"></i>
                 </div>
-
-                <div class="row g-4">
-                    <!-- Account ID -->
-                    <div class="col-12">
-                        <div class="p-3 rounded-4 bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-sm-4">
-                                    <p class="text-muted mb-0"><i class="bi bi-fingerprint me-2"></i>Account ID</p>
-                                </div>
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-white border-0" value="123456"
-                                            id="accountId" readonly style="border-radius: 10px 0 0 10px;">
-                                        <button class="btn btn-yellow" type="button" onclick="copyAccountId()"
-                                            title="Copy" style="border-radius: 0 10px 10px 0;">
-                                            <i class="bi bi-copy"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Username -->
-                    <div class="col-md-6">
-                        <div class="p-3 rounded-4 bg-light">
-                            <p class="text-muted mb-1"><i class="bi bi-user me-2"></i>Username</p>
-                            <h6 class="mb-0">john_doe</h6>
-                        </div>
-                    </div>
-
-                    <!-- Full Name -->
-                    <div class="col-md-6">
-                        <div class="p-3 rounded-4 bg-light">
-                            <p class="text-muted mb-1"><i class="bi bi-id-card me-2"></i>Full Name</p>
-                            <h6 class="mb-0">John Doe</h6>
-                        </div>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="col-md-6">
-                        <div class="p-3 rounded-4 bg-light">
-                            <p class="text-muted mb-1"><i class="bi bi-envelope me-2"></i>Email</p>
-                            <h6 class="mb-0">john@example.com</h6>
-                        </div>
-                    </div>
-
-                    <!-- Phone -->
-                    <div class="col-md-6">
-                        <div class="p-3 rounded-4 bg-light">
-                            <p class="text-muted mb-1"><i class="bi bi-phone me-2"></i>Phone</p>
-                            <h6 class="mb-0">+1 234 567 8900</h6>
-                        </div>
-                    </div>
-
-                    <!-- Gender -->
-                    <div class="col-md-6">
-                        <div class="p-3 rounded-4 bg-light">
-                            <p class="text-muted mb-1"><i class="bi bi-venus-mars me-2"></i>Gender</p>
-                            <h6 class="mb-0">
-                                <span class="badge bg-primary bg-gradient px-3 py-2"
-                                    style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
-                                    <i class="bi bi-mars me-1"></i>Male
-                                </span>
-                            </h6>
-                        </div>
-                    </div>
-                </div>
+                <h4 class="fw-bold m-0" style="color: #2d3436;">Profile Details</h4>
             </div>
-        </div>
-    
 
-
-    <!-- Edit Profile Modal -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
-                <div class="modal-header border-0 bg-primary bg-gradient p-4"
-                    style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
-                    <h5 class="modal-title fw-bold text-white" id="editProfileModalLabel">
-                        <i class="bi bi-user-edit me-2"></i>Edit Profile
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form>
-                        <div class="mb-4">
-                            <label for="avatar" class="form-label d-block text-center mb-3">Profile Picture</label>
-                            <div class="d-flex justify-content-center mb-3">
-                                <div class="position-relative">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                                        class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                                    <div class="position-absolute bottom-0 end-0">
-                                        <label for="avatar" class="btn btn-sm btn-yellow rounded-circle"
-                                            style="width: 32px; height: 32px;">
-                                            <i class="bi bi-camera"></i>
-                                        </label>
-                                        <input type="file" id="avatar" class="d-none">
-                                    </div>
+            <div class="row g-4">
+                <!-- Account ID -->
+                <div class="col-12">
+                    <div class="p-3 rounded-4 bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-sm-4">
+                                <p class="text-muted mb-0"><i class="bi bi-fingerprint me-2"></i>Account ID</p>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-white border-0" value="123456"
+                                        id="accountId" readonly style="border-radius: 10px 0 0 10px;">
+                                    <button class="btn btn-yellow" type="button" onclick="copyAccountId()" title="Copy"
+                                        style="border-radius: 0 10px 10px 0;">
+                                        <i class="bi bi-copy"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="full_name" class="form-label">
-                                <i class="bi bi-user me-2"></i>Full Name
-                            </label>
-                            <input type="text" class="form-control form-control-lg bg-light border-0" id="full_name"
-                                value="John Doe">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">
-                                <i class="bi bi-envelope me-2"></i>Email
-                            </label>
-                            <input type="email" class="form-control form-control-lg bg-light border-0" id="email"
-                                value="john@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">
-                                <i class="bi bi-phone me-2"></i>Phone Number
-                            </label>
-                            <input type="tel" class="form-control form-control-lg bg-light border-0" id="phone"
-                                value="+1 234 567 8900">
-                        </div>
-                        <div class="mb-3">
-                            <label for="gender" class="form-label">
-                                <i class="bi bi-venus-mars me-2"></i>Gender
-                            </label>
-                            <select class="form-select form-select-lg bg-light border-0" id="gender">
-                                <option value="male" selected>Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer border-0 p-4">
-                    <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-yellow btn-lg px-4">Save Changes</button>
+
+                <!-- Username -->
+                <div class="col-md-6">
+                    <div class="p-3 rounded-4 bg-light">
+                        <p class="text-muted mb-1"><i class="bi bi-user me-2"></i>Username</p>
+                        <h6 class="mb-0">john_doe</h6>
+                    </div>
+                </div>
+
+                <!-- Full Name -->
+                <div class="col-md-6">
+                    <div class="p-3 rounded-4 bg-light">
+                        <p class="text-muted mb-1"><i class="bi bi-id-card me-2"></i>Full Name</p>
+                        <h6 class="mb-0">John Doe</h6>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                    <div class="p-3 rounded-4 bg-light">
+                        <p class="text-muted mb-1"><i class="bi bi-envelope me-2"></i>Email</p>
+                        <h6 class="mb-0">john@example.com</h6>
+                    </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-6">
+                    <div class="p-3 rounded-4 bg-light">
+                        <p class="text-muted mb-1"><i class="bi bi-phone me-2"></i>Phone</p>
+                        <h6 class="mb-0">+1 234 567 8900</h6>
+                    </div>
+                </div>
+
+                <!-- Gender -->
+                <div class="col-md-6">
+                    <div class="p-3 rounded-4 bg-light">
+                        <p class="text-muted mb-1"><i class="bi bi-venus-mars me-2"></i>Gender</p>
+                        <h6 class="mb-0">
+                            <span class="badge bg-primary bg-gradient px-3 py-2"
+                                style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
+                                <i class="bi bi-mars me-1"></i>Male
+                            </span>
+                        </h6>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Change Password Modal -->
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
-                <div class="modal-header border-0 bg-primary bg-gradient p-4"
-                    style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
-                    <h5 class="modal-title fw-bold text-white" id="changePasswordModalLabel">
-                        <i class="bi bi-key me-2"></i>Change Password
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form>
-                        <div class="mb-4">
-                            <label for="current_password" class="form-label">
-                                <i class="bi bi-lock me-2"></i>Current Password
-                            </label>
-                            <div class="input-group input-group-lg">
-                                <input type="password" class="form-control bg-light border-0" id="current_password"
-                                    required>
-                                <button class="btn btn-light border-0" type="button"
-                                    onclick="togglePassword('current_password')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label for="new_password" class="form-label">
-                                <i class="bi bi-key me-2"></i>New Password
-                            </label>
-                            <div class="input-group input-group-lg">
-                                <input type="password" class="form-control bg-light border-0" id="new_password"
-                                    required>
-                                <button class="btn btn-light border-0" type="button"
-                                    onclick="togglePassword('new_password')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label for="new_password_confirmation" class="form-label">
-                                <i class="bi bi-check-double me-2"></i>Confirm New Password
-                            </label>
-                            <div class="input-group input-group-lg">
-                                <input type="password" class="form-control bg-light border-0"
-                                    id="new_password_confirmation" required>
-                                <button class="btn btn-light border-0" type="button"
-                                    onclick="togglePassword('new_password_confirmation')">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer border-0 p-4">
-                    <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-yellow btn-lg px-4">Update Password</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+
+
+
 
 
     <style>
@@ -298,7 +167,8 @@
             transform: scale(1);
         }
     </style>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function copyAccountId() {
             const accountId = document.getElementById('accountId');
@@ -328,3 +198,135 @@
         }
     </script>
 </x-layout>
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-header border-0 bg-primary bg-gradient p-4"
+                style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
+                <h5 class="modal-title fw-bold text-white" id="changePasswordModalLabel">
+                    <i class="bi bi-key me-2"></i>Change Password
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form>
+                    <div class="mb-4">
+                        <label for="current_password" class="form-label">
+                            <i class="bi bi-lock me-2"></i>Current Password
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <input type="password" class="form-control bg-light border-0" id="current_password"
+                                required>
+                            <button class="btn btn-light border-0" type="button"
+                                onclick="togglePassword('current_password')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="new_password" class="form-label">
+                            <i class="bi bi-key me-2"></i>New Password
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <input type="password" class="form-control bg-light border-0" id="new_password" required>
+                            <button class="btn btn-light border-0" type="button"
+                                onclick="togglePassword('new_password')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="new_password_confirmation" class="form-label">
+                            <i class="bi bi-check-double me-2"></i>Confirm New Password
+                        </label>
+                        <div class="input-group input-group-lg">
+                            <input type="password" class="form-control bg-light border-0" id="new_password_confirmation"
+                                required>
+                            <button class="btn btn-light border-0" type="button"
+                                onclick="togglePassword('new_password_confirmation')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 p-4">
+                <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-yellow btn-lg px-4">Update Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-header border-0 bg-primary bg-gradient p-4"
+                style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
+                <h5 class="modal-title fw-bold text-white" id="editProfileModalLabel">
+                    <i class="bi bi-user-edit me-2"></i>Edit Profile
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form>
+                    <div class="mb-4">
+                        <label for="avatar" class="form-label d-block text-center mb-3">Profile Picture</label>
+                        <div class="d-flex justify-content-center mb-3">
+                            <div class="position-relative">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                                    class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                                <div class="position-absolute bottom-0 end-0">
+                                    <label for="avatar" class="btn btn-sm btn-yellow rounded-circle"
+                                        style="width: 32px; height: 32px;">
+                                        <i class="bi bi-camera"></i>
+                                    </label>
+                                    <input type="file" id="avatar" class="d-none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">
+                            <i class="bi bi-user me-2"></i>Full Name
+                        </label>
+                        <input type="text" class="form-control form-control-lg bg-light border-0" id="full_name"
+                            value="John Doe">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="bi bi-envelope me-2"></i>Email
+                        </label>
+                        <input type="email" class="form-control form-control-lg bg-light border-0" id="email"
+                            value="john@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">
+                            <i class="bi bi-phone me-2"></i>Phone Number
+                        </label>
+                        <input type="tel" class="form-control form-control-lg bg-light border-0" id="phone"
+                            value="+1 234 567 8900">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">
+                            <i class="bi bi-venus-mars me-2"></i>Gender
+                        </label>
+                        <select class="form-select form-select-lg bg-light border-0" id="gender">
+                            <option value="male" selected>Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 p-4">
+                <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-yellow btn-lg px-4">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>

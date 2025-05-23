@@ -1,5 +1,6 @@
+
 <x-layout>
-    <div class="container-fluid py-5 px-4">
+    
         <!-- Header Section -->
         <div class="d-flex align-items-center justify-content-between mb-5">
             <div class="d-flex align-items-center gap-4">
@@ -232,7 +233,7 @@
                 </div>
             @endif
         </div>
-    </div>
+    
 
     <style>
         .btn-warning {

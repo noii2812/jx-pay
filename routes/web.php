@@ -27,4 +27,7 @@ Route::get('/signup', function () {
 Route::get('/login/forgot', function () {
     return view('forgotpassword');
 });
+Route::get('/admin', function () {
+    return view('admin');
+});
 Route::get('/topUpHistory', [TopUpHistoryController::class, 'index']);

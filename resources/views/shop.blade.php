@@ -10,9 +10,7 @@
                 Server online
                 <span class="text-muted ms-2">125</span>
             </div>
-
         </div>
-
         <!-- Promo Banner -->
         <div class="banner p-3 p-md-4 mb-4">
             <div class="row align-items-center">
@@ -111,102 +109,102 @@
             @endforeach
         </div>
 
-        <!-- Payment Modal -->
-        <div class="modal fade" id="paymentModal"
-            >
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-0 pb-0">
-                        <h5 class="modal-title" id="paymentModalLabel">
-                            Order: <span class="text-danger points-amount">0</span> Points
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="payment-methods mb-4">
-                                    <h6 class="text-navy mb-3">Payment Methods</h6>
-                                    <div class="payment-option selected">
-                                        <input type="radio" name="payment_method" id="khqr" checked class="d-none">
-                                        <label for="khqr" class="d-flex align-items-center p-3 rounded-3 border">
-                                            <img src="{{ asset('images/banks/khqr-logo.png') }}" alt="KHQR" height="30">
-                                            <span class="ms-2">KHQR Payment</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="order-info">
-                                    <h6 class="text-navy mb-3">Order Information</h6>
-                                    <div class="mb-3">
-                                        <label class="form-label d-flex align-items-center">
-                                            Reference #
-                                            <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip"
-                                                title="Please save this reference number for tracking your payment"></i>
-                                        </label>
-                                        <input type="text" class="form-control" id="referenceId">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="qr-section text-center mt-3">
-                            <div class="qr-header bg-dark text-warning p-2 mb-3">
-                                THIS IS KHQR CODE, CAN SCAN WITH ANY BANK!
-                            </div>
-                            <div class="game-logo mb-3">
-                                <img src="{{ asset('images/banks/game-logo.jpg') }}" style="border-radius: 10px;"
-                                    alt="Game Logo" height="60">
-                            </div>
-                            <div class="qr-code mb-3">
-                                <img src="" id="qrCodeImage" alt="QR Code" class="img-fluid" style="max-width: 200px;">
-                            </div>
-                            <div class="price-info">
-                                <h3 class="payment-amount mb-2">$<span id="paymentAmount">0.00</span></h3>
-                                <h4 class="game-title text-uppercase">JX2</h4>
-                            </div>
-                        </div>
 
-                        <div class="payment-banks mt-4">
-                            <div class="secure-text text-danger mb-2">Secure Payments By:</div>
-                            <div class="bank-logos p-3 border rounded-3">
-                                <div class="row align-items-center g-3">
-                                    <div class="col"><img src="{{ asset('images/banks/aba.jpg') }}" alt="ABA"
-                                            class="img-fluid"></div>
-                                    <div class="col"><img src="{{ asset('images/banks/wing.jpg') }}" alt="Wing"
-                                            class="img-fluid"></div>
-                                    <div class="col"><img src="{{ asset('images/banks/pipay.jpg') }}" alt="PiPay"
-                                            class="img-fluid"></div>
-                                    <div class="col"><img src="{{ asset('images/banks/true-money.jpg') }}"
-                                            alt="True Money" class="img-fluid"></div>
-                                </div>
+
+    </div>
+</x-layout>
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" id="paymentModalLabel">
+                    Order: <span class="text-danger points-amount">0</span> Points
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="payment-methods mb-4">
+                            <h6 class="text-navy mb-3">Payment Methods</h6>
+                            <div class="payment-option selected">
+                                <input type="radio" name="payment_method" id="khqr" checked class="d-none">
+                                <label for="khqr" class="d-flex align-items-center p-3 rounded-3 border">
+                                    <img src="{{ asset('images/banks/khqr-logo.png') }}" alt="KHQR" height="30">
+                                    <span class="ms-2">KHQR Payment</span>
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-primary w-100" id="sendOrderBtn">Send Order</button>
+                    <div class="col-md-6">
+                        <div class="order-info">
+                            <h6 class="text-navy mb-3">Order Information</h6>
+                            <div class="mb-3">
+                                <label class="form-label d-flex align-items-center">
+                                    Reference #
+                                    <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip"
+                                        title="Please save this reference number for tracking your payment"></i>
+                                </label>
+                                <input type="text" class="form-control" id="referenceId">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qr-section text-center mt-3">
+                    <div class="qr-header bg-dark text-warning p-2 mb-3">
+                        THIS IS KHQR CODE, CAN SCAN WITH ANY BANK!
+                    </div>
+                    <div class="game-logo mb-3">
+                        <img src="{{ asset('images/banks/game-logo.jpg') }}" style="border-radius: 10px;"
+                            alt="Game Logo" height="60">
+                    </div>
+                    <div class="qr-code mb-3">
+                        <img src="" id="qrCodeImage" alt="QR Code" class="img-fluid" style="max-width: 200px;">
+                    </div>
+                    <div class="price-info">
+                        <h3 class="payment-amount mb-2">$<span id="paymentAmount">0.00</span></h3>
+                        <h4 class="game-title text-uppercase">JX2</h4>
+                    </div>
+                </div>
+
+                <div class="payment-banks mt-4">
+                    <div class="secure-text text-danger mb-2">Secure Payments By:</div>
+                    <div class="bank-logos p-3 border rounded-3">
+                        <div class="row align-items-center g-3">
+                            <div class="col"><img src="{{ asset('images/banks/aba.jpg') }}" alt="ABA" class="img-fluid">
+                            </div>
+                            <div class="col"><img src="{{ asset('images/banks/wing.jpg') }}" alt="Wing"
+                                    class="img-fluid"></div>
+                            <div class="col"><img src="{{ asset('images/banks/pipay.jpg') }}" alt="PiPay"
+                                    class="img-fluid"></div>
+                            <div class="col"><img src="{{ asset('images/banks/true-money.jpg') }}" alt="True Money"
+                                    class="img-fluid"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Success Modal -->
-        <div class="modal fade" id="successModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body text-center p-4">
-                        <i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i>
-                        <h4 class="mt-3">Payment Successful!</h4>
-                        <p class="text-muted">Your order has been processed successfully.</p>
-                        <button type="button" class="btn btn-success mt-3" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-primary w-100" id="sendOrderBtn">Send Order</button>
             </div>
         </div>
     </div>
-</x-layout>
-
+</div>
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4">
+                <i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i>
+                <h4 class="mt-3">Payment Successful!</h4>
+                <p class="text-muted">Your order has been processed successfully.</p>
+                <button type="button" class="btn btn-success mt-3" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -344,9 +342,9 @@
         z-index: 9999;
     }
 
-    .modal-backdrop {
+    /* .modal-backdrop {
         z-index: 9998;
-    }
+    } */
 
     .modal-dialog {
         margin: 1.75rem auto;
