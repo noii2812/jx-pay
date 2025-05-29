@@ -25,9 +25,17 @@ Route::get('/signup', function () {
     return view('signup');
 });
 Route::get('/login/forgot', function () {
-    return view('forgotpassword');
+    return view('forgotPassword');
 });
 Route::get('/admin', function () {
     return view('admin');
 });
 Route::get('/topUpHistory', [TopUpHistoryController::class, 'index']);
+
+Route::get('/users', function () {
+    return view('users');
+});
+
+Route::get('/orderCoin', function () {
+    return view('orderCoin');
+});

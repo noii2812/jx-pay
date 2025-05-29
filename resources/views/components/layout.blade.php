@@ -315,8 +315,15 @@
             <ul class="nav flex-column mb-2">
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin" data-path="/admin"><i class="bi bi-grid"></i> Admin</a>
+                    <a class="nav-link" href="/admin" data-path="/admin"><i class="bi bi-grid"></i> Admin Board</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/orderCoin" data-path="/orderCoin"><i class="bi bi-tag"></i> Order Coin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users" data-path="/users"><i class="bi bi-people"></i> Users</a>
+                </li>
+               
             </ul>
             <div class="sidebar-title">Pages</div>
             <ul class="nav flex-column mb-2">
@@ -336,7 +343,7 @@
                     <a class="nav-link" href="/topUpHistory" data-path="/topup"><i class="bi bi-coin"></i>Top Up History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/shop" data-path="/shop"><i class="bi bi-tags"></i>Shop</a>
+                    <a class="nav-link" href="/shop" data-path="/shop"><i class="bi bi-cart"></i>Shop</a>
                 </li>
             </ul>
 
