@@ -35,6 +35,9 @@ Route::get('/topUpHistory', [TopUpHistoryController::class, 'index']);
 Route::get('/users', function () {
     return view('users');
 });
+Route::get('/gameAccount', function () {
+    return view('gameAccount');
+});
 
 Route::get('/orderCoin', function () {
     return view('orderCoin');
