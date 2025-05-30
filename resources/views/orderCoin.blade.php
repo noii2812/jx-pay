@@ -196,6 +196,9 @@
     @endphp
 
     <div class="container-fluid">
+        {{-- Add SweetAlert2 CDN --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         {{-- Header Section --}}
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
@@ -383,10 +386,7 @@
                                         <button class="btn btn-sm btn-outline-primary" title="View">
                                             <i class="bi bi-eye"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-secondary" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" title="Delete">
+                                        <button class="btn btn-sm btn-outline-danger delete-order-btn" title="Delete">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
@@ -589,6 +589,66 @@
                     notification.remove();
                 }, 5000);
             }
+
+            // Delete Order confirmation
+            const deleteButtons = document.querySelectorAll('.delete-order-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const orderId = row.querySelector('td:nth-child(2)').textContent.trim();
+                    const userName = row.querySelector('td:nth-child(3) div div').textContent.trim();
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: `Do you really want to decline order ${orderId} from ${userName}?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Yes, decline it!',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Here you would typically make an API call to delete the order
+                            // For now, we'll just show a success message and remove the row
+                            
+                            // Update statistics
+                            const statusBadge = row.querySelector('td:nth-child(7) span');
+                            const isCompleted = statusBadge.classList.contains('bg-success');
+                            const isPending = statusBadge.classList.contains('bg-warning');
+                            const amount = parseFloat(row.querySelector('td:nth-child(5)').textContent.replace('$', ''));
+
+                            // Update statistics display
+                            if (isCompleted) {
+                                const completedOrders = document.querySelector('.col-xl-3:nth-child(2) h3');
+                                if (completedOrders) completedOrders.textContent = (parseInt(completedOrders.textContent) - 1).toString();
+                            } else if (isPending) {
+                                const pendingOrders = document.querySelector('.col-xl-3:nth-child(3) h3');
+                                if (pendingOrders) pendingOrders.textContent = (parseInt(pendingOrders.textContent) - 1).toString();
+                            }
+
+                            // Update total revenue if it was a completed order
+                            if (isCompleted) {
+                                const totalRevenue = document.querySelector('.col-xl-3:nth-child(1) h3');
+                                if (totalRevenue) {
+                                    const currentRevenue = parseFloat(totalRevenue.textContent.replace('$', '').replace(',', ''));
+                                    totalRevenue.textContent = `$${(currentRevenue - amount).toFixed(2)}`;
+                                }
+                            }
+
+                            Swal.fire(
+                                'Declined!',
+                                `Order ${orderId} has been declined.`,
+                                'success'
+                            ).then(() => {
+                                // Remove the row from the table
+                                row.remove();
+                            });
+                        }
+                    });
+                });
+            });
         });
     </script>
 </x-layout>
