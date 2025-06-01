@@ -228,15 +228,25 @@
                     <h6></h6>
                     <p class="login-subtitle">ឱកាសក្លាយជាអ្នកក្លាហានក្នុងដៃអ្នក</p>
 
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="divider"></div>
-                    <form>
+                    <form action="/login" method="POST">
+                        @csrf
                         <div class="mb-4">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                            <label for="username"  class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
                             <span class="password-toggle" onclick="togglePassword()"
                                 style="padding-top: 30px; padding-right: 10px;">
                                 <i class="bi bi-eye" id="toggleIcon"></i>

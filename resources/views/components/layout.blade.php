@@ -286,7 +286,7 @@
     </style>
 </head>
 
-{{-- <nav class="navbar navbar-expand-lg navbar-light bg-light"
+<nav class="navbar navbar-expand-lg navbar-light bg-light"
     style="position: fixed; top: 0; right: 16px; z-index: 1030; width: 98.4%; height: 6vh;">
     <div class="container-fluid">
         <button class="btn btn-warning" onclick="toggleSidebar()" id="sidebarToggle">
@@ -298,8 +298,17 @@
                 <span>Username</span>
             </div>
         </div>
+
+    
     </div>
-</nav> --}}
+<form method="POST" action="{{ route('logout') }}" class="d-inline">
+        @csrf
+        <button type="submit" class="btn btn-danger ms-3" style="height: 32px; padding: 0 12px;">
+          Logout
+
+        </button>
+    </form>
+</nav>
 
 <body>
     <div class="app-container">
