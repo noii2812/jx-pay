@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layout>
     <!-- Main Content -->
     <div class="col-12 shop-content">
         <!-- Header -->
@@ -297,7 +295,8 @@
             opacity: 0.5;
         }
     </style>
-@endsection
+
+</x-layout>
 
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal">

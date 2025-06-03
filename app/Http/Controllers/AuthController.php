@@ -55,7 +55,7 @@ class AuthController extends Controller
             'username' => 'required|min:3|max:20|unique:users,username',
             'password' => 'required|min:8|confirmed',
             'email' => 'nullable|email|unique:users,email',
-            'phone' => 'nullable|string|max:20',
+            'phoneNumber' => 'nullable|string|max:20',
         ]);
 
         // Prepare user data
@@ -74,7 +74,7 @@ class AuthController extends Controller
         
         // Only add phone if it's not empty
         if ($request->filled('phone')) {
-            $userData['phone'] = $request->phone;
+            $userData['phoneNumber'] = $request->phone;
         }
 
         $user = User::create($userData);

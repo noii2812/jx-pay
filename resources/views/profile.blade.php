@@ -1,7 +1,4 @@
 <x-layout>
-
-
-
     <div class="card shadow-lg border-0 position-relative overflow-hidden" style="border-radius: 20px;">
         <!-- Background Pattern -->
         <div class="position-absolute w-100 h-100" style="background: linear-gradient(45deg, #6c5ce7, #3498db);
@@ -12,15 +9,15 @@
         <div class="card-body text-center p-5 position-relative" style="z-index: 2;">
             <div class="avatar-wrapper mb-4">
                 <div class="position-relative d-inline-block">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                    <img src="{{ auth()->user()->avatar ?? 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp' }}" alt="avatar"
                         class="rounded-circle img-fluid border border-white shadow-lg"
                         style="width: 150px; height: 150px; object-fit: cover;">
                     <span class="position-absolute bottom-0 end-0 p-2 bg-success rounded-circle border border-white"
                         style="width: 20px; height: 20px;"></span>
                 </div>
             </div>
-            <h3 class="fw-bold mb-2 text-white">john_doe</h3>
-            <p class="text-white-50 mb-4">Premium Member</p>
+            <h3 class="fw-bold mb-2 text-white">{{ auth()->user()->username }}</h3>
+            <p class="text-white-50 mb-4">{{ auth()->user()->role ?? 'Member' }}</p>
             <div class="d-grid gap-2">
                 <button type="button" class="btn btn-yellow btn-lg shadow-sm" data-bs-toggle="modal"
                     data-bs-target="#editProfileModal">
@@ -34,11 +31,10 @@
         </div>
     </div>
 
-
     <div class="card card-privilege shadow-lg border-0" style="border-radius: 20px; margin-top: 20px;">
         <div class="card-body p-4">
             <div class="d-flex align-items-center mb-4">
-                <div class="bg-primary bg-gradient  rounded-circle me-3"
+                <div class="bg-primary bg-gradient rounded-circle me-3"
                     style="width: 50px; height: 50px;display: flex; align-items: center; justify-content: center;">
                     <i class="bi bi-person-circle" style="color: white;"></i>
                 </div>
@@ -55,7 +51,7 @@
                             </div>
                             <div class="col-sm-8">
                                 <div class="input-group">
-                                    <input type="text" class="form-control bg-white border-0" value="123456"
+                                    <input type="text" class="form-control bg-white border-0" value="{{ auth()->id() }}"
                                         id="accountId" readonly style="border-radius: 10px 0 0 10px;">
                                     <button class="btn btn-yellow" type="button" onclick="copyAccountId()" title="Copy"
                                         style="border-radius: 0 10px 10px 0;">
@@ -71,7 +67,7 @@
                 <div class="col-md-6">
                     <div class="p-3 rounded-4 bg-light">
                         <p class="text-muted mb-1"><i class="bi bi-user me-2"></i>Username</p>
-                        <h6 class="mb-0">john_doe</h6>
+                        <h6 class="mb-0">{{ auth()->user()->username }}</h6>
                     </div>
                 </div>
 
@@ -79,7 +75,7 @@
                 <div class="col-md-6">
                     <div class="p-3 rounded-4 bg-light">
                         <p class="text-muted mb-1"><i class="bi bi-id-card me-2"></i>Full Name</p>
-                        <h6 class="mb-0">John Doe</h6>
+                        <h6 class="mb-0">{{ auth()->user()->name }}</h6>
                     </div>
                 </div>
 
@@ -87,7 +83,8 @@
                 <div class="col-md-6">
                     <div class="p-3 rounded-4 bg-light">
                         <p class="text-muted mb-1"><i class="bi bi-envelope me-2"></i>Email</p>
-                        <h6 class="mb-0">john@example.com</h6>
+                        <h6 class="mb-0">{{ auth()->user()->email}}</h6>
+                        
                     </div>
                 </div>
 

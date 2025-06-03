@@ -303,50 +303,190 @@
             }
         }
     </style>
+     <style>
+        body {
+            background-color: #e8f4ff;
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        body.sidebar-open {
+            overflow: hidden;
+        }
+
+        .bg-dashboard-green {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #e8f4ff;
+            z-index: 0;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar {
+            width: 270px;
+            background: #fff;
+            min-height: 80vh;
+            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15), 0 1.5px 8px rgba(0, 0, 0, 0.04);
+            padding: 2rem 1rem 1rem 1rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            height: calc(100vh - 2rem);
+            border-radius: 1.5rem;
+            margin: 3.5rem 0rem 0rem 0.5rem;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1030;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar .sidebar-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding-left: 0.5rem;
+        }
+
+        .sidebar .nav-link {
+            color: #64748b;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            margin-bottom: 0.375rem;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+            transform: translateX(4px);
+        }
+
+        .sidebar .nav-link.active {
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex: 1;
+            background: #e8f4ff;
+            padding: 0.5rem;
+            min-height: 100vh;
+            height: auto;
+            border-radius: 2rem 0 0 2rem;
+            margin: 0.5rem 1rem 1rem 0;
+            position: relative;
+            z-index: 2;
+            margin-left: 290px;
+            transition: margin-left 0.3s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .card-privilege {
+            border: none;
+            border-radius: 15px;
+            transition: transform 0.2s;
+        }
+        .card-privilege:hover {
+            transform: translateY(-5px);
+        }
+        .banner {
+            background: linear-gradient(45deg, #6c5ce7, #3498db);
+            border-radius: 15px;
+            color: white;
+        }
+        .btn-yellow {
+            background-color: #ffd32a;
+            border: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .server-status {
+            font-size: 0.9rem;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1029;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        @media (max-width: 991px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                margin: 0;
+                height: 100vh;
+                position: fixed;
+                border-radius: 0;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin: 0;
+                padding: 1rem;
+                border-radius: 0;
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .sidebar-backdrop.show {
+                opacity: 1;
+                display: block;
+            }
+
+            body.sidebar-open .main-content {
+                position: fixed;
+                overflow: hidden;
+            }
+        }
+    </style>
 </head>
 
-<nav class="navbar navbar-expand-lg sticky-top"
-    style=" top: 0; right: 16px; z-index: 1030; height: 6vh; background-color: #ffffff;">
-    <div class="container-fluid ">
-        <button class="btn btn-warning" onclick="toggleSidebar()" id="sidebarToggle">
-            <i class="bi bi-list"></i>
-        </button>
-        <div class="d-flex align-items-center justify-content-end">
-            <span class="me-3">20,145 <i class="bi bi-coin text-warning"></i></span>
-            <div class="dropdown">
-                <div class="d-flex align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2" 
-                         style="width: 35px; height: 35px;">
-                        {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 1)) }}
-                    </div>
-                    <span>{{ auth()->user()->username ?? 'Username' }}</span>
-                    <i class="bi bi-chevron-down ms-2"></i>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a class="dropdown-item" href="/profile">
-                            <i class="bi bi-person me-2"></i>Profile
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bi bi-gear me-2"></i>Settings
-                        </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item">
-                                <i class="bi bi-box-arrow-right me-2"></i>Logout
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+
 
 <body>
     <div class="app-container">
@@ -401,9 +541,12 @@
             </div>
         </aside>
 
+        <div>
+        @include('components.nav')
         <main class="main-content page-transition" id="mainContent">
             {{ $slot }}
         </main>
+        </div>
     </div>
 
     <script>

@@ -45,9 +45,9 @@
     ];
 @endphp
 
-@extends('layouts.app')
 
-@section('content')
+<x-layout>
+
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
@@ -364,6 +364,7 @@
         </div>
     </div>
 
+</x-layout>
     <script>
         function togglePassword(button) {
             const input = button.parentElement.querySelector('input');
@@ -380,4 +381,3 @@
             }
         }
     </script>
-@endsection
