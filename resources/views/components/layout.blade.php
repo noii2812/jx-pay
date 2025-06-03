@@ -55,6 +55,8 @@
             top: 0;
             z-index: 1030;
             transition: transform 0.3s ease-in-out;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         .sidebar .sidebar-header {
@@ -167,16 +169,28 @@
         .main-content {
             flex: 1;
             background: #f8fafc;
-            padding: 2rem;
+            padding: 0.5rem;
             min-height: 100vh;
             height: auto;
             border-radius: 2rem 0 0 2rem;
-            margin: 3.5rem 1rem 1rem 0;
+            margin: 0.5rem 1rem 1rem 0;
             position: relative;
             z-index: 2;
             margin-left: 290px;
-            transition: margin-left 0.3s ease-in-out;
-            overflow-y: auto;
+            transition: all 0.3s ease;
+            opacity: 1;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: opacity, transform;
+        }
+
+        .page-transition {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-transition.show {
+            opacity: 1;
         }
 
         .dashboard-header {
@@ -242,6 +256,11 @@
             overflow-y: hidden;
         }
 
+        /* Used to prevent flashing during page loads */
+        .no-transition {
+            transition: none !important;
+        }
+
         @media (max-width: 991px) {
             .app-container {
                 flex-direction: column;
@@ -286,28 +305,47 @@
     </style>
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light"
-    style="position: fixed; top: 0; right: 16px; z-index: 1030; width: 98.4%; height: 6vh;">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg sticky-top"
+    style=" top: 0; right: 16px; z-index: 1030; height: 6vh; background-color: #ffffff;">
+    <div class="container-fluid ">
         <button class="btn btn-warning" onclick="toggleSidebar()" id="sidebarToggle">
             <i class="bi bi-list"></i>
         </button>
         <div class="d-flex align-items-center justify-content-end">
             <span class="me-3">20,145 <i class="bi bi-coin text-warning"></i></span>
-            <div class="d-flex align-items-center">
-                <span>Username</span>
+            <div class="dropdown">
+                <div class="d-flex align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2" 
+                         style="width: 35px; height: 35px;">
+                        {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 1)) }}
+                    </div>
+                    <span>{{ auth()->user()->username ?? 'Username' }}</span>
+                    <i class="bi bi-chevron-down ms-2"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="/profile">
+                            <i class="bi bi-person me-2"></i>Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <i class="bi bi-gear me-2"></i>Settings
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item">
+                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
-
-    
     </div>
-<form method="POST" action="{{ route('logout') }}" class="d-inline">
-        @csrf
-        <button type="submit" class="btn btn-danger ms-3" style="height: 32px; padding: 0 12px;">
-          Logout
-
-        </button>
-    </form>
 </nav>
 
 <body>
@@ -320,9 +358,10 @@
                         style="border-radius: 10px; width: 100%; height: 100%;">
                 </div>
             </div>
+            
+            @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'gm']))
             <div class="sidebar-title">Admin</div>
             <ul class="nav flex-column mb-2">
-                
                 <li class="nav-item">
                     <a class="nav-link" href="/admin" data-path="/admin"><i class="bi bi-grid"></i> Admin Board</a>
                 </li>
@@ -332,8 +371,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/users" data-path="/users"><i class="bi bi-people"></i> Users</a>
                 </li>
-               
             </ul>
+            @endif
+            
             <div class="sidebar-title">Pages</div>
             <ul class="nav flex-column mb-2">
                 <li class="nav-item">
@@ -346,10 +386,10 @@
                     <a class="nav-link" href="/game" data-path="/game"><i class="bi bi-controller"></i>Game</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/transferCoinHistory" data-path="/transfercoin"><i class="bi bi-clipboard2-check"></i>Transfer Coin History</a>
+                    <a class="nav-link" href="/transferCoinHistory" data-path="/transferCoinHistory"><i class="bi bi-clipboard2-check"></i>Transfer Coin History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/topUpHistory" data-path="/topup"><i class="bi bi-coin"></i>Top Up History</a>
+                    <a class="nav-link" href="/topUpHistory" data-path="/topUpHistory"><i class="bi bi-coin"></i>Top Up History</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/shop" data-path="/shop"><i class="bi bi-cart"></i>Shop</a>
@@ -361,7 +401,7 @@
             </div>
         </aside>
 
-        <main class="main-content">
+        <main class="main-content page-transition" id="mainContent">
             {{ $slot }}
         </main>
     </div>
@@ -370,9 +410,21 @@
         document.addEventListener('DOMContentLoaded', function () {
             const body = document.body;
             const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
             const sidebarToggle = document.getElementById('sidebarToggle');
             const sidebarBackdrop = document.getElementById('sidebarBackdrop');
             const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            // Set no-transition class initially to prevent flash during page load
+            sidebar.classList.add('no-transition');
+            mainContent.classList.add('no-transition');
+            
+            // Remove the no-transition class after a short delay
+            setTimeout(() => {
+                sidebar.classList.remove('no-transition');
+                mainContent.classList.remove('no-transition');
+                mainContent.classList.add('show');
+            }, 50);
 
             function toggleSidebar() {
                 sidebar.classList.toggle('show');
@@ -382,6 +434,29 @@
 
             sidebarToggle.addEventListener('click', toggleSidebar);
             sidebarBackdrop.addEventListener('click', toggleSidebar);
+
+            // Handle page transitions
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't do this for active links
+                    if (this.classList.contains('active')) return;
+                    
+                    // Store the current scroll position
+                    const scrollPos = window.scrollY;
+                    localStorage.setItem('scrollPosition', scrollPos);
+                    
+                    // Store sidebar state
+                    localStorage.setItem('sidebarOpen', sidebar.classList.contains('show'));
+                    
+                    // Add animation for page transition
+                    mainContent.classList.remove('show');
+                    
+                    // Small delay for the animation to be visible
+                    setTimeout(() => {
+                        // Continue with the navigation
+                    }, 150);
+                });
+            });
 
             // Close sidebar when clicking on a link (for mobile)
             navLinks.forEach(link => {
@@ -424,8 +499,25 @@
 
             // Set initial active state
             setActiveLink();
+            
+            // Restore scroll position if exists
+            const savedScrollPosition = localStorage.getItem('scrollPosition');
+            if (savedScrollPosition) {
+                window.scrollTo(0, parseInt(savedScrollPosition));
+                localStorage.removeItem('scrollPosition');
+            }
+            
+            // Restore sidebar state if exists
+            const savedSidebarOpen = localStorage.getItem('sidebarOpen');
+            if (savedSidebarOpen === 'true' && window.innerWidth <= 991) {
+                sidebar.classList.add('show');
+                sidebarBackdrop.classList.add('show');
+                body.classList.add('sidebar-open');
+                localStorage.removeItem('sidebarOpen');
+            }
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

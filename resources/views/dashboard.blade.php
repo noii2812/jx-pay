@@ -1,19 +1,14 @@
 <x-layout>
-    <!-- Top Header Bar -->
-    <div style="background: url('/bg.jpg');height:30%;width:100%; border-radius: 1.5rem; ; padding: 0.7rem 1rem 1rem 1rem; align-items: center;">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <h4 class="text-white mb-0">Default</h4>
-                <small class="text-white-50">Dashboards / Default</small>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                {{-- <input type="text" class="form-control" placeholder="Type here..." style="width: 200px;"> --}}
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="profile-pic" alt="Admin">
-                <span class="text-white">Admin</span>
-                <i class="bi bi-gear text-white ms-3"></i>
-            </div>
+    <!-- Add success message for registration -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
+    @endif
+
+    <!-- Top Header Bar -->
+   
     <div style="width:100%; border-radius: 1.5rem; margin: -2rem -2rem 2rem -2rem; padding: 1.5rem 2rem 3.5rem 2rem;">
         {{-- <div class="d-flex justify-content-between align-items-center">
             <div>

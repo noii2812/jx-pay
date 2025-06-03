@@ -13,7 +13,7 @@
             <div class="avatar-wrapper mb-4">
                 <div class="position-relative d-inline-block">
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                        class="rounded-circle img-fluid border border-4 border-white shadow-lg"
+                        class="rounded-circle img-fluid border border-white shadow-lg"
                         style="width: 150px; height: 150px; object-fit: cover;">
                     <span class="position-absolute bottom-0 end-0 p-2 bg-success rounded-circle border border-white"
                         style="width: 20px; height: 20px;"></span>
@@ -167,8 +167,6 @@
             transform: scale(1);
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function copyAccountId() {
             const accountId = document.getElementById('accountId');

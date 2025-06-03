@@ -26,8 +26,8 @@
                 <div class="card border-0 h-100" style="border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                                <i class="bi bi-coin text-white fs-4"></i>
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-coin text-white"></i>
                             </div>
                             <div>
                                 <p class="text-muted mb-1" style="font-size: 0.95rem;">Total Coins Transferred</p>
@@ -41,8 +41,8 @@
                 <div class="card border-0 h-100" style="border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                                <i class="bi bi-server text-white fs-4"></i>
+                            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-server text-white"></i>
                             </div>
                             <div>
                                 <p class="text-muted mb-1" style="font-size: 0.95rem;">Active Servers</p>
@@ -56,8 +56,8 @@
                 <div class="card border-0 h-100" style="border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                                <i class="bi bi-people text-white fs-4"></i>
+                            <div class="bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-people text-white"></i>
                             </div>
                             <div>
                                 <p class="text-muted mb-1" style="font-size: 0.95rem;">Active Users</p>
@@ -71,8 +71,8 @@
                 <div class="card border-0 h-100" style="border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center gap-3">
-                            <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
-                                <i class="bi bi-clock-history text-white fs-4"></i>
+                            <div class="bg-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-clock-history text-white"></i>
                             </div>
                             <div>
                                 <p class="text-muted mb-1" style="font-size: 0.95rem;">Today's Transfers</p>
@@ -241,8 +241,14 @@
             </div>
         </div>
     
-
+    
     <style>
+        body {
+            background-color: #e8f4ff;
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
         .btn-warning {
             background: #f1c40f;
             border: none;

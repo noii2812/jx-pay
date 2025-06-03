@@ -24,7 +24,7 @@ class User extends Authenticatable
         'phone',
         'address',
         'avatar',
-        'coin_balance',
+        'coin',
         'status',
         'full_name',
         'role',

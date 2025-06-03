@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-<x-layout>
+@section('content')
     <!-- Main Content -->
     <div class="col-12 shop-content">
         <!-- Header -->
@@ -86,7 +86,7 @@
             @foreach($coinCards as $card)
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="card card-privilege mx-auto"
-                        style="max-width: 280px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        style="max-width: 280px;">
                         <div class="card-body">
                             <img src="{{ URL('images/coin.png') }}" alt="Coin Icon" class="img-fluid"
                                 style="width: 100px; height: auto; margin: auto; display: block;">
@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                             <button type="button" class="buy-coins-btn btn btn-yellow w-100 mt-3"
-                                style="border-radius: 20px; font-weight: bold;" data-points="{{ $card['points'] }}"
+                                data-points="{{ $card['points'] }}"
                                 data-price="{{ $card['price'] }}">
                                 Buy now
                             </button>
@@ -108,12 +108,197 @@
                 </div>
             @endforeach
         </div>
-
-
-
-
     </div>
-</x-layout>
+
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize the modals
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            // Function to generate reference number
+            function generateReference() {
+                const timestamp = Date.now().toString();
+                const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+                return `REF${timestamp}${random}`;
+            }
+
+            // Function to handle coin purchase
+            function handleCoinPurchase(points, price) {
+                // Update modal content
+                document.querySelector('.points-amount').textContent = points;
+                document.getElementById('paymentAmount').textContent = price.toFixed(2);
+                document.getElementById('referenceId').value = generateReference();
+
+                // Generate QR code
+                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KHQR_PAYMENT_${price}_${points}`;
+                document.getElementById('qrCodeImage').src = qrCodeUrl;
+
+                // Show the modal
+                paymentModal.show();
+            }
+
+            // Add click event listeners to all buy buttons
+            document.querySelectorAll('.buy-coins-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    const points = this.getAttribute('data-points');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    handleCoinPurchase(points, price);
+                });
+            });
+
+            // Handle send order button
+            document.getElementById('sendOrderBtn').addEventListener('click', function () {
+                paymentModal.hide();
+                setTimeout(() => {
+                    successModal.show();
+                }, 300);
+            });
+
+            // Handle modal close buttons
+            document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(button => {
+                button.addEventListener('click', function () {
+                    paymentModal.hide();
+                    successModal.hide();
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .text-navy {
+            color: #1e3a8a;
+        }
+
+        .payment-option label {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option label:hover {
+            background-color: #f8fafc;
+        }
+
+        .payment-option.selected label {
+            border-color: #0d6efd;
+            background-color: #f0f9ff;
+        }
+
+        .qr-section {
+            background-color: #fff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .qr-header {
+            border-radius: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .bank-logos img {
+            max-height: 40px;
+            object-fit: contain;
+        }
+
+        .payment-amount {
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .game-title {
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        #sendOrderBtn {
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Success Modal Styles */
+        #successModal .modal-content {
+            border-radius: 1rem;
+        }
+
+        #successModal .bi-check-circle {
+            color: #10b981;
+        }
+
+        /* Modal Styles */
+        .modal {
+            z-index: 9999;
+        }
+
+        .modal-dialog {
+            margin: 1.75rem auto;
+            max-width: 500px;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10000;
+            background: #fff;
+        }
+
+        .modal.show {
+            overflow-y: auto !important;
+            display: block !important;
+            pointer-events: auto !important;
+        }
+
+        .modal-open {
+            overflow: hidden;
+            padding-right: 0 !important;
+        }
+
+        .modal input,
+        .modal button,
+        .modal .payment-option,
+        .modal-body,
+        .modal-header,
+        .modal-footer {
+            position: relative;
+            z-index: 10001;
+        }
+
+        .btn-close {
+            opacity: 1;
+            padding: 1rem;
+            z-index: 10002;
+            position: relative;
+        }
+
+        .modal-dialog {
+            transform: none !important;
+            pointer-events: auto !important;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+        }
+    </style>
+@endsection
+
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal">
     <div class="modal-dialog modal-dialog-centered">
@@ -192,6 +377,7 @@
         </div>
     </div>
 </div>
+
 <!-- Success Modal -->
 <div class="modal fade" id="successModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -205,264 +391,3 @@
         </div>
     </div>
 </div>
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize the modals
-        const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'), {
-            backdrop: 'static',
-            keyboard: false
-        });
-
-        const successModal = new bootstrap.Modal(document.getElementById('successModal'), {
-            backdrop: 'static',
-            keyboard: false
-        });
-
-        // Function to generate reference number
-        function generateReference() {
-            const timestamp = Date.now().toString();
-            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            return `REF${timestamp}${random}`;
-        }
-
-        // Function to handle coin purchase
-        function handleCoinPurchase(points, price) {
-            // Update modal content
-            document.querySelector('.points-amount').textContent = points;
-            document.getElementById('paymentAmount').textContent = price.toFixed(2);
-            document.getElementById('referenceId').value = generateReference();
-
-            // Generate QR code
-            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KHQR_PAYMENT_${price}_${points}`;
-            document.getElementById('qrCodeImage').src = qrCodeUrl;
-
-            // Show the modal
-            paymentModal.show();
-        }
-
-        // Add click event listeners to all buy buttons
-        document.querySelectorAll('.buy-coins-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
-                const points = this.getAttribute('data-points');
-                const price = parseFloat(this.getAttribute('data-price'));
-                handleCoinPurchase(points, price);
-            });
-        });
-
-        // Handle send order button
-        document.getElementById('sendOrderBtn').addEventListener('click', function () {
-            paymentModal.hide();
-            setTimeout(() => {
-                successModal.show();
-            }, 300);
-        });
-
-        // Handle modal close buttons
-        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(button => {
-            button.addEventListener('click', function () {
-                paymentModal.hide();
-                successModal.hide();
-            });
-        });
-    });
-</script>
-
-<style>
-    @media (max-width: 991px) {
-        .shop-content {
-            padding-bottom: 2rem;
-            min-height: 100%;
-            height: auto;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .banner {
-            text-align: center;
-        }
-
-        .h2-md {
-            font-size: 1.5rem;
-        }
-
-        .card-privilege {
-            margin-bottom: 1rem;
-        }
-
-        .shop-content {
-            padding-bottom: 4rem;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .server-status {
-            font-size: 0.9rem;
-        }
-
-        .banner h3 {
-            font-size: 1.5rem;
-        }
-
-        .card-privilege {
-            max-width: 100%;
-        }
-
-        .shop-content {
-            padding-bottom: 3rem;
-        }
-    }
-
-    .card-privilege {
-        transition: transform 0.2s;
-    }
-
-    .card-privilege:hover {
-        transform: translateY(-5px);
-    }
-
-    .btn-yellow {
-        background-color: #ffd32a;
-        border: none;
-        color: #333;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-
-    .btn-yellow:hover {
-        background-color: #ffc107;
-        transform: scale(1.05);
-    }
-
-    /* Payment Modal Styles */
-    .modal {
-        z-index: 9999;
-    }
-
-    /* .modal-backdrop {
-        z-index: 9998;
-    } */
-
-    .modal-dialog {
-        margin: 1.75rem auto;
-        max-width: 500px;
-        position: relative;
-        z-index: 10000;
-    }
-
-    .modal-content {
-        border: none;
-        border-radius: 1rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        position: relative;
-        z-index: 10000;
-        background: #fff;
-    }
-
-    /* Fix modal scrolling */
-    .modal.show {
-        overflow-y: auto !important;
-        display: block !important;
-        pointer-events: auto !important;
-    }
-
-    .modal-open {
-        overflow: hidden;
-        padding-right: 0 !important;
-    }
-
-    /* Ensure form elements are clickable */
-    .modal input,
-    .modal button,
-    .modal .payment-option,
-    .modal-body,
-    .modal-header,
-    .modal-footer {
-        position: relative;
-        z-index: 10001;
-    }
-
-    /* Make close button more visible */
-    .btn-close {
-        opacity: 1;
-        padding: 1rem;
-        z-index: 10002;
-        position: relative;
-    }
-
-    /* Additional fixes for modal interaction */
-    .modal-dialog {
-        transform: none !important;
-        pointer-events: auto !important;
-    }
-
-    .modal-backdrop.show {
-        opacity: 0.5;
-    }
-
-    .text-navy {
-        color: #1e3a8a;
-    }
-
-    .payment-option label {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .payment-option label:hover {
-        background-color: #f8fafc;
-    }
-
-    .payment-option.selected label {
-        border-color: #0d6efd;
-        background-color: #f0f9ff;
-    }
-
-    .qr-section {
-        background-color: #fff;
-        border-radius: 1rem;
-        padding: 1.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .qr-header {
-        border-radius: 0.5rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
-
-    .bank-logos img {
-        max-height: 40px;
-        object-fit: contain;
-    }
-
-    .payment-amount {
-        color: #1a1a1a;
-        font-weight: 700;
-    }
-
-    .game-title {
-        color: #4a5568;
-        font-weight: 600;
-    }
-
-    #sendOrderBtn {
-        border-radius: 0.5rem;
-        padding: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* Success Modal Styles */
-    #successModal .modal-content {
-        border-radius: 1rem;
-    }
-
-    #successModal .bi-check-circle {
-        color: #10b981;
-    }
-</style>

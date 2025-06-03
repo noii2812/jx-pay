@@ -256,8 +256,9 @@
                         <div class="mb-4">
                             <button type="submit" class="btn btn-login w-100">Login</button>
                         </div>
-                        <a href="/signup" class="signup-link">Don't have an account? Sign Up</a>
+                       
                     </form>
+                    <a href="/signup" class="signup-link">Don't have an account? Sign Up</a>
                 </div>
             </div>
         </div>

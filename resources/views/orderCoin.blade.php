@@ -1,5 +1,3 @@
-@extends('layouts.app')
-
 <x-layout>
     {{-- Add static data array --}}
     @php
