@@ -40,12 +40,14 @@ class TransactionController extends Controller
             'coin' => 'required|integer|min:1',
             'payment_method' => 'required|string',
             'description' => 'nullable|string',
-            'payment_methods' => 'nullable|array'
+            'payment_methods' => 'nullable|string',
+            'reference_id' => 'required|string|unique:transactions,reference_id'
         ]);
 
         $transaction = Transaction::create([
             'user_id' => Auth::id(),
-            'reference_id' => 'TRX-' . Str::random(10),
+            'order_id' => date('Ymd') . '-' . str_pad(Transaction::whereDate('created_at', today())->count() + 1, 3, '0', STR_PAD_LEFT),
+            'reference_id' => $validated['reference_id'],
             'price' => $validated['price'],
             'coin' => $validated['coin'],
             'payment_method' => $validated['payment_method'],
@@ -54,17 +56,28 @@ class TransactionController extends Controller
             'status' => 'pending',
             'approved_by' => Auth::id()
         ]);
-
-        return redirect()->route('transactions.show', $transaction)
-            ->with('success', 'Transaction created successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Transaction created successfully.',
+            'data' => $transaction
+        ]);
     }
-
     /**
      * Display the specified transaction.
      */
-    public function show(Transaction $transaction)
+    public function show()
     {
-        return view('transactions.show', compact('transaction'));
+        $transactions = Transaction::with('user')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->paginate(10);
+
+        $totalCoins = $transactions->sum('coin');
+        $approvedCount = $transactions->where('status', 'approved')->count();
+        $pendingCount = $transactions->where('status', 'pending')->count();
+        $totalValue = $transactions->sum('price');
+
+        return view('topUpHistory', compact('transactions', 'totalCoins', 'approvedCount', 'pendingCount', 'totalValue'));
     }
 
     /**

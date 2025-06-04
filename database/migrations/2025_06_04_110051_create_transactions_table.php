@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('order_id')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('reference_id')->unique();
             $table->decimal('price', 10, 2);
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->string('payment_method');
             $table->string('status')->default('pending');
             $table->text('description')->nullable();
-            $table->json('payment_methods')->nullable();
+            $table->string('payment_methods')->nullable();
             $table->timestamp('paid_at')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('declined_at')->nullable();

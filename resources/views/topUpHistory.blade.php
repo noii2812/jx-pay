@@ -16,7 +16,7 @@
                 </button>
                 <div class="btn btn-primary px-4 py-2 d-flex align-items-center gap-2" style="border-radius: 12px; font-size: 1rem;">
                     <i class="bi bi-credit-card"></i>
-                    Total Top Ups: {{ $topUpHistory->total() }}
+                    {{-- Total Top Ups: {{ $topUpHistory->total() }} --}}
                 </div>
             </div>
         </div>
@@ -139,18 +139,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($topUpHistory ?? [] as $index => $history)
+                            @forelse($transactions ?? [] as $index => $history)
                                 <tr>
                                     <td class="py-4 px-4">{{ $index + 1 }}</td>
                                     <td class="py-4 px-4">
                                         <span class="fw-medium">{{ $history->order_id ?? '-' }}</span>
                                     </td>
                                     <td class="py-4 px-4">
-                                        <span class="fw-medium">{{ $history->reference_number ?? '-' }}</span>
+                                        <span class="fw-medium">{{ $history->reference_id?? '-' }}</span>
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="d-flex align-items-center gap-2">
-                                            <span class="fw-medium">{{ number_format($history->coin_amount ?? 0) }}</span>
+                                            <span class="fw-medium">{{ number_format($history->coin ?? 0) }}</span>
                                             <i class="bi bi-coin text-warning"></i>
                                         </div>
                                     </td>

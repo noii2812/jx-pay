@@ -129,18 +129,18 @@
             });
 
             // Function to generate reference number
-            function generateReference() {
-                const timestamp = Date.now().toString();
-                const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-                return `TRX-${timestamp}${random}`;
-            }
+            // function generateReference() {
+            //     const timestamp = Date.now().toString();
+            //     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            //     return `TRX-${timestamp}${random}`;
+            // }
 
             // Function to handle coin purchase
             function handleCoinPurchase(points, price) {
                 // Update modal content
                 document.querySelector('.points-amount').textContent = points;
                 document.getElementById('paymentAmount').textContent = price.toFixed(2);
-                document.getElementById('referenceId').value = generateReference();
+                document.getElementById('referenceId').value = "";
 
                 // Generate QR code
                 const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KHQR_PAYMENT_${price}_${points}`;
@@ -172,9 +172,7 @@
                     coin: points,
                     payment_method: paymentMethod,
                     reference_id: referenceId,
-                    payment_methods: {
-                        khqr: true
-                    }
+                    payment_methods: "khqr"
                 };
 
                 // Send AJAX request to create transaction
@@ -189,6 +187,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data)
                     if (data.success) {
                         paymentModal.hide();
                         setTimeout(() => {
@@ -371,7 +370,7 @@
                                     <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip"
                                         title="Please save this reference number for tracking your payment"></i>
                                 </label>
-                                <input type="text" class="form-control" id="referenceId">
+                                <input type="text" class="form-control" id="referenceId" required="true">
                             </div>
                         </div>
                     </div>

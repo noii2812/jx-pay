@@ -29,7 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/game', function () {
         return view('game');
     });
-    Route::get('/topUpHistory', [TopUpHistoryController::class, 'index']);
+
+    Route::get('/topUpHistory', [TransactionController::class, 'show']);
+
     Route::get('/shop', function () {
         return view('shop');
     });
@@ -51,4 +53,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/transactions/{transaction}/approve', [TransactionController::class, 'approve'])->name('transactions.approve');
     Route::post('/transactions/{transaction}/decline', [TransactionController::class, 'decline'])->name('transactions.decline');
     Route::post('/transactions/{transaction}/mark-as-paid', [TransactionController::class, 'markAsPaid'])->name('transactions.mark-as-paid');
+
 });
