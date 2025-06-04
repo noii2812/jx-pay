@@ -298,7 +298,10 @@
         </div>
     </div>
 
-    <!-- Create Server Modal -->
+  
+
+</x-layout>
+  <!-- Create Server Modal -->
     <div class="modal fade" id="createServerModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
@@ -363,8 +366,6 @@
             </div>
         </div>
     </div>
-
-</x-layout>
     <script>
         function togglePassword(button) {
             const input = button.parentElement.querySelector('input');

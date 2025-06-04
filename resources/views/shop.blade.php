@@ -2,14 +2,16 @@
     <!-- Main Content -->
     <div class="col-12 shop-content">
         <!-- Header -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <!-- <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
             <div class="server-status mb-3 mb-md-0">
                 <span class="badge bg-success"></span>
                 Server online
                 <span class="text-muted ms-2">125</span>
             </div>
-        </div>
+        </div> -->
         <!-- Promo Banner -->
+
+        <!--
         <div class="banner p-3 p-md-4 mb-4">
             <div class="row align-items-center">
                 <div class="col-12 col-md-8 text-center text-md-start">
@@ -22,10 +24,11 @@
                     <button class="btn btn-yellow mt-3">Buy now</button>
                 </div>
                 <div class="col-12 col-md-4 mt-3 mt-md-0 text-center">
-                    <!-- Add character illustrations here -->
+                    Add character illustrations here
                 </div>
             </div>
-        </div>
+        </div> 
+-->
 
         <!-- Privilege Cards -->
         <h5 class="mb-4">Privilege</h5>
@@ -84,7 +87,7 @@
             @foreach($coinCards as $card)
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="card card-privilege mx-auto"
-                        style="max-width: 280px;">
+                        style="">
                         <div class="card-body">
                             <img src="{{ URL('images/coin.png') }}" alt="Coin Icon" class="img-fluid"
                                 style="width: 100px; height: auto; margin: auto; display: block;">
@@ -129,7 +132,7 @@
             function generateReference() {
                 const timestamp = Date.now().toString();
                 const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-                return `REF${timestamp}${random}`;
+                return `TRX-${timestamp}${random}`;
             }
 
             // Function to handle coin purchase
@@ -158,10 +161,47 @@
 
             // Handle send order button
             document.getElementById('sendOrderBtn').addEventListener('click', function () {
-                paymentModal.hide();
-                setTimeout(() => {
-                    successModal.show();
-                }, 300);
+                const points = document.querySelector('.points-amount').textContent;
+                const price = parseFloat(document.getElementById('paymentAmount').textContent);
+                const referenceId = document.getElementById('referenceId').value;
+                const paymentMethod = document.querySelector('input[name="payment_method"]:checked').id;
+
+                // Create transaction data
+                const transactionData = {
+                    price: price,
+                    coin: points,
+                    payment_method: paymentMethod,
+                    reference_id: referenceId,
+                    payment_methods: {
+                        khqr: true
+                    }
+                };
+
+                // Send AJAX request to create transaction
+                fetch('/transactions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(transactionData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        paymentModal.hide();
+                        setTimeout(() => {
+                            successModal.show();
+                        }, 300);
+                    } else {
+                        alert('Error creating transaction: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your request.');
+                });
             });
 
             // Handle modal close buttons

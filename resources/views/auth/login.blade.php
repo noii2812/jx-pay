@@ -271,16 +271,16 @@
             const bgMusic = document.getElementById('bgMusic');
 
             // Try to play immediately
-            tryPlayMusic();
+            // tryPlayMusic();
 
             // Also try to play on first user interaction
             document.addEventListener('click', function () {
-                tryPlayMusic();
+                // tryPlayMusic();
             }, { once: true });
             //
             // Also try to play on first scroll
             document.addEventListener('scroll', function () {
-                tryPlayMusic();
+                // tryPlayMusic();
             }, { once: true });
         });
 
