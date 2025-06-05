@@ -1,48 +1,50 @@
 @php
-    $servers = [
-        [
-            'name' => 'Server Alpha',
-            'status' => 'Online',
-            'status_class' => 'success',
-            'username' => 'john_doe_alpha',
-            'coins' => '50,000'
-        ],
-        [
-            'name' => 'Server Beta',
-            'status' => 'Online',
-            'status_class' => 'success',
-            'username' => 'john_doe_beta',
-            'coins' => '75,000'
-        ],
-        [
-            'name' => 'Server Gamma',
-            'status' => 'Offline',
-            'status_class' => 'danger',
-            'username' => 'john_doe_gamma',
-            'coins' => '25,000'
-        ],
-        [
-            'name' => 'Server Delta',
-            'status' => 'Online',
-            'status_class' => 'success',
-            'username' => 'john_doe_delta',
-            'coins' => '100,000'
-        ],
-        [
-            'name' => 'Server Epsilon',
-            'status' => 'Maintenance',
-            'status_class' => 'warning',
-            'username' => 'john_doe_epsilon',
-            'coins' => '60,000'
-        ],
-        [
-            'name' => 'Server Zeta',
-            'status' => 'Online',
-            'status_class' => 'success',
-            'username' => 'john_doe_zeta',
-            'coins' => '85,000'
-        ]
-    ];
+    // $servers = [
+    //     [
+    //         'name' => 'Server Alpha',
+    //         'status' => 'Online',
+    //         'status_class' => 'success',
+    //         'username' => 'john_doe_alpha',
+    //         'coins' => '50,000'
+    //     ],
+    //     [
+    //         'name' => 'Server Beta',
+    //         'status' => 'Online',
+    //         'status_class' => 'success',
+    //         'username' => 'john_doe_beta',
+    //         'coins' => '75,000'
+    //     ],
+    //     [
+    //         'name' => 'Server Gamma',
+    //         'status' => 'Offline',
+    //         'status_class' => 'danger',
+    //         'username' => 'john_doe_gamma',
+    //         'coins' => '25,000'
+    //     ],
+    //     [
+    //         'name' => 'Server Delta',
+    //         'status' => 'Online',
+    //         'status_class' => 'success',
+    //         'username' => 'john_doe_delta',
+    //         'coins' => '100,000'
+    //     ],
+    //     [
+    //         'name' => 'Server Epsilon',
+    //         'status' => 'Maintenance',
+    //         'status_class' => 'warning',
+    //         'username' => 'john_doe_epsilon',
+    //         'coins' => '60,000'
+    //     ],
+    //     [
+    //         'name' => 'Server Zeta',
+    //         'status' => 'Online',
+    //         'status_class' => 'success',
+    //         'username' => 'john_doe_zeta',
+    //         'coins' => '85,000'
+    //     ]
+    // ];
+
+    $servers  = $accounts
 @endphp
 
 

@@ -105,7 +105,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <i class="bi bi-coin text-warning me-1"></i>
-                                            {{ number_format($user->coin_balance, 0) }}
+                                            {{ number_format($user->coin, 0) }}
                                         </div>
                                     </td>
                                     <td>

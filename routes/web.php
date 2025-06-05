@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopUpHistoryController;
 use App\Http\Controllers\AuthController;
@@ -27,9 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transferCoinHistory', function () {
         return view('transferCoinHistory');
     });
-    Route::get('/game', function () {
-        return view('game');
-    });
+    Route::get('/game', [AccountController::class,'index'])->name('game');
 
     Route::get('/topUpHistory', [TransactionController::class, 'show']);
 
@@ -46,6 +45,8 @@ Route::middleware('auth')->group(function () {
         
         // Add other admin-only routes here
         Route::get('/orderCoin', [AdminOrderCoin::class, 'show']);
+        Route::post('/orderCoin/{id}/approve', [AdminOrderCoin::class, 'approve'])->name('orderCoin.approve');
+        Route::post('/orderCoin/{id}/reject', [AdminOrderCoin::class, 'reject'])->name('orderCoin.reject');
     });
 
     Route::resource('transactions', TransactionController::class);
