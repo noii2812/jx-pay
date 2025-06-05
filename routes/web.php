@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopUpHistoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AdminOrderCoin;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckUserRole;
 
@@ -44,9 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users.search');
         
         // Add other admin-only routes here
-        Route::get('/orderCoin', function () {
-            return view('orderCoin');
-        });
+        Route::get('/orderCoin', [AdminOrderCoin::class, 'show']);
     });
 
     Route::resource('transactions', TransactionController::class);

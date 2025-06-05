@@ -1,6 +1,6 @@
 <x-layout>
     <!-- Main Content -->
-    <div class="col-12 shop-content">
+    <div class="col-12 shop-content" >
         <!-- Header -->
         <!-- <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
             <div class="server-status mb-3 mb-md-0">
@@ -31,8 +31,8 @@
 -->
 
         <!-- Privilege Cards -->
-        <h5 class="mb-4">Privilege</h5>
-        <div class="row g-4">
+        {{-- <h5 class="mb-4">Privilege</h5> --}}
+        {{-- <div class="row g-4">
             <!-- Emperor Card -->
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card card-privilege bg-primary text-white h-100">
@@ -67,10 +67,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Coin Cards -->
-        <div class="row g-4 mt-2">
+        <h4 class="mb-0 ">Shop</h4>
+        <div class="row g-4 mt-0">
             @php
                 $coinCards = [
                     ['points' => 4000, 'price' => 100.00],
@@ -210,6 +211,17 @@
                     successModal.hide();
                 });
             });
+
+            // show info modal 
+            document.getElementById('info-icon').addEventListener('click', () => {
+                const infoModal =  new bootstrap.Modal(document.getElementById('infoModal'))
+                infoModal.show()
+            })
+
+            // close info modal
+            document.getElementById('button-close-info').addEventListener('click', () => {
+                bootstrap.Modal.getInstance(document.getElementById('infoModal')).hide();
+            })
         });
     </script>
 
@@ -339,7 +351,7 @@
 
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-lg" style="max-width: 800px">
         <div class="modal-content">
             <div class="modal-header border-0 pb-0">
                 <h5 class="modal-title" id="paymentModalLabel">
@@ -348,11 +360,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="d-flex">
+                <div>
+                    <div class="col-md-12">
                         <div class="payment-methods mb-4">
                             <h6 class="text-navy mb-3">Payment Methods</h6>
-                            <div class="payment-option selected">
+                            <div class="payment-option selected mt-3">
                                 <input type="radio" name="payment_method" id="khqr" checked class="d-none">
                                 <label for="khqr" class="d-flex align-items-center p-3 rounded-3 border">
                                     <img src="{{ asset('images/banks/khqr-logo.png') }}" alt="KHQR" height="30">
@@ -361,21 +374,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="order-info">
-                            <h6 class="text-navy mb-3">Order Information</h6>
-                            <div class="mb-3">
-                                <label class="form-label d-flex align-items-center">
-                                    Reference #
-                                    <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip"
-                                        title="Please save this reference number for tracking your payment"></i>
-                                </label>
-                                <input type="text" class="form-control" id="referenceId" required="true">
-                            </div>
+                </div>
+                <div class="px-3">
+                <div style="display: flex;flex-direction:column;align-items:center">
+                    <div class="order-info mx-3 w-100" >
+                        <h6 class="text-navy mb-3">Order Information</h6>
+                        <div class="mb-3">
+                            <label class="form-label d-flex align-items-center">
+                                Reference #
+                                <i id="info-icon" class="bi bi-info-circle ms-1" style="cursor: pointer;"></i>
+                            </label>
+                            <input type="text" class="form-control w-100" id="referenceId" required="true">
                         </div>
                     </div>
                 </div>
-
                 <div class="qr-section text-center mt-3">
                     <div class="qr-header bg-dark text-warning p-2 mb-3">
                         THIS IS KHQR CODE, CAN SCAN WITH ANY BANK!
@@ -392,11 +404,13 @@
                         <h4 class="game-title text-uppercase">JX2</h4>
                     </div>
                 </div>
+                </div>
+            </div>
 
-                <div class="payment-banks mt-4">
+                {{-- <div class="payment-banks mt-4">
                     <div class="secure-text text-danger mb-2">Secure Payments By:</div>
                     <div class="bank-logos p-3 border rounded-3">
-                        <div class="row align-items-center g-3">
+                        <div class="row align-items-center justify-content-center g-3">
                             <div class="col"><img src="{{ asset('images/banks/aba.jpg') }}" alt="ABA" class="img-fluid">
                             </div>
                             <div class="col"><img src="{{ asset('images/banks/wing.jpg') }}" alt="Wing"
@@ -407,11 +421,33 @@
                                     class="img-fluid"></div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-primary w-100" id="sendOrderBtn">Send Order</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Modal -->
+<div class="modal fade " id="infoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" style="z-index: 1056;max-width:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">About Reference Number</h5>
+                <button id="button-close-info" type="button" class="btn-close" ></button>
+            </div>
+            <div class="modal-body">
+                <p>The reference number is a unique identifier for your transaction. Please save this number as it will help you:</p>
+                <ul>
+                    <li>Track your payment status</li>
+                    <li>Reference your transaction in case of any issues</li>
+                    <li>Verify your payment with customer support</li>
+                </ul>
+                <p class="mb-0">Make sure to keep this number until your payment is confirmed.</p>
+            </div>
+            
         </div>
     </div>
 </div>

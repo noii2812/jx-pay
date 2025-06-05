@@ -1,195 +1,12 @@
 <x-layout>
     {{-- Add static data array --}}
     @php
-        $orders = [
-            [
-                'id' => 'TRX-2024001',
-                'user' => ['name' => 'John Doe', 'username' => '@johndoe'],
-                'coins' => 1000,
-                'amount' => 99.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-15 14:30'
-            ],
-            [
-                'id' => 'TRX-2024002',
-                'user' => ['name' => 'Jane Smith', 'username' => '@janesmith'],
-                'coins' => 500,
-                'amount' => 49.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-15 12:15'
-            ],
-            [
-                'id' => 'TRX-2024003',
-                'user' => ['name' => 'Mike Johnson', 'username' => '@mikejohnson'],
-                'coins' => 2000,
-                'amount' => 189.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Declined', 'class' => 'danger'],
-                'date' => '2024-03-14 18:45'
-            ],
-            [
-                'id' => 'TRX-2024004',
-                'user' => ['name' => 'Sarah Wilson', 'username' => '@sarahwilson'],
-                'coins' => 750,
-                'amount' => 74.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-14 15:20'
-            ],
-            [
-                'id' => 'TRX-2024005',
-                'user' => ['name' => 'Alex Brown', 'username' => '@alexbrown'],
-                'coins' => 1500,
-                'amount' => 149.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-14 10:45'
-            ],
-            [
-                'id' => 'TRX-2024006',
-                'user' => ['name' => 'Emma Davis', 'username' => '@emmadavis'],
-                'coins' => 3000,
-                'amount' => 289.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-14 09:30'
-            ],
-            [
-                'id' => 'TRX-2024007',
-                'user' => ['name' => 'Tom Wilson', 'username' => '@tomwilson'],
-                'coins' => 200,
-                'amount' => 19.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-14 08:15'
-            ],
-            [
-                'id' => 'TRX-2024008',
-                'user' => ['name' => 'Linda Chen', 'username' => '@lindachen'],
-                'coins' => 5000,
-                'amount' => 479.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-13 22:45'
-            ],
-            [
-                'id' => 'TRX-2024009',
-                'user' => ['name' => 'Robert Kim', 'username' => '@robertkim'],
-                'coins' => 1200,
-                'amount' => 119.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-13 20:30'
-            ],
-            [
-                'id' => 'TRX-2024010',
-                'user' => ['name' => 'Maria Garcia', 'username' => '@mariagarcia'],
-                'coins' => 800,
-                'amount' => 79.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-13 18:20'
-            ],
-            [
-                'id' => 'TRX-2024011',
-                'user' => ['name' => 'David Lee', 'username' => '@davidlee'],
-                'coins' => 2500,
-                'amount' => 239.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-13 16:45'
-            ],
-            [
-                'id' => 'TRX-2024012',
-                'user' => ['name' => 'Sophie Turner', 'username' => '@sophieturner'],
-                'coins' => 350,
-                'amount' => 34.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-13 15:10'
-            ],
-            [
-                'id' => 'TRX-2024013',
-                'user' => ['name' => 'Chris Martin', 'username' => '@chrismartin'],
-                'coins' => 1800,
-                'amount' => 179.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-13 14:25'
-            ],
-            [
-                'id' => 'TRX-2024014',
-                'user' => ['name' => 'Amanda White', 'username' => '@amandawhite'],
-                'coins' => 600,
-                'amount' => 59.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-13 12:40'
-            ],
-            [
-                'id' => 'TRX-2024015',
-                'user' => ['name' => 'Kevin Brown', 'username' => '@kevinbrown'],
-                'coins' => 4000,
-                'amount' => 389.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-13 11:15'
-            ],
-            [
-                'id' => 'TRX-2024016',
-                'user' => ['name' => 'Rachel Green', 'username' => '@rachelgreen'],
-                'coins' => 900,
-                'amount' => 89.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-13 10:30'
-            ],
-            [
-                'id' => 'TRX-2024017',
-                'user' => ['name' => 'Daniel Park', 'username' => '@danielpark'],
-                'coins' => 1600,
-                'amount' => 159.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-13 09:45'
-            ],
-            [
-                'id' => 'TRX-2024018',
-                'user' => ['name' => 'Lisa Anderson', 'username' => '@lisaanderson'],
-                'coins' => 300,
-                'amount' => 29.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Pending', 'class' => 'warning'],
-                'date' => '2024-03-13 08:20'
-            ],
-            [
-                'id' => 'TRX-2024019',
-                'user' => ['name' => 'James Wilson', 'username' => '@jameswilson'],
-                'coins' => 2200,
-                'amount' => 219.99,
-                'payment_method' => ['type' => 'Credit Card', 'icon' => 'bi-credit-card'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-13 07:15'
-            ],
-            [
-                'id' => 'TRX-2024020',
-                'user' => ['name' => 'Emily Taylor', 'username' => '@emilytaylor'],
-                'coins' => 700,
-                'amount' => 69.99,
-                'payment_method' => ['type' => 'PayPal', 'icon' => 'bi-paypal'],
-                'status' => ['name' => 'Completed', 'class' => 'success'],
-                'date' => '2024-03-13 06:30'
-            ]
-        ];
-
         // Update statistics based on new data
-        $statistics = [
-            'total_revenue' => array_sum(array_column($orders, 'amount')),
-            'completed_orders' => count(array_filter($orders, fn($order) => $order['status']['name'] === 'Completed')),
-            'pending_orders' => count(array_filter($orders, fn($order) => $order['status']['name'] === 'Pending')),
-            'declined_orders' => count(array_filter($orders, fn($order) => $order['status']['name'] === 'Declined'))
+        $stats = [
+            'total_revenue' => 0,
+            'completed_orders' => $statistics['completed_orders'],
+            'pending_orders' => $statistics['pending_orders'],
+            'declined_orders' => $statistics['declined_orders']
         ];
     @endphp
 
@@ -205,10 +22,10 @@
                     </ol>
                 </nav>
             </div>
-            <button class="btn btn-primary">
+            {{-- <button class="btn btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>
                 New Order
-            </button>
+            </button> --}}
         </div>
 
         {{-- Search and Filter Section --}}
@@ -259,7 +76,7 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <p class="text-muted mb-1">Total Revenue</p>
-                                <h3 class="mb-0">${{ number_format($statistics['total_revenue'], 2) }}</h3>
+                                <h3 class="mb-0">${{ number_format($stats['total_revenue'], 2) }}</h3>
                             </div>
                         </div>
                     </div>
@@ -276,7 +93,7 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <p class="text-muted mb-1">Completed Orders</p>
-                                <h3 class="mb-0">{{ $statistics['completed_orders'] }}</h3>
+                                <h3 class="mb-0">{{ $stats['completed_orders'] }}</h3>
                             </div>
                         </div>
                     </div>
@@ -293,7 +110,7 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <p class="text-muted mb-1">Pending Orders</p>
-                                <h3 class="mb-0">{{ $statistics['pending_orders'] }}</h3>
+                                <h3 class="mb-0">{{ $stats['pending_orders'] }}</h3>
                             </div>
                         </div>
                     </div>
@@ -310,7 +127,7 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <p class="text-muted mb-1">Declined Orders</p>
-                                <h3 class="mb-0">{{ $statistics['declined_orders'] }}</h3>
+                                <h3 class="mb-0">{{ $stats['declined_orders'] }}</h3>
                             </div>
                         </div>
                     </div>
@@ -331,6 +148,7 @@
                                     </div>
                                 </th>
                                 <th scope="col">Transaction ID</th>
+                                <th scope="col">Ref.</th>
                                 <th scope="col">User</th>
                                 <th scope="col">Coins</th>
                                 <th scope="col">Amount</th>
@@ -341,14 +159,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($orders as $order)
+                            @foreach($transactions as $order)
                             <tr>
                                 <td>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox">
                                     </div>
                                 </td>
-                                <td><span class="text-primary">#{{ $order['id'] }}</span></td>
+                                <td><span class="">{{ $order->order_id }}</span></td>
+                                <td><span class="text-primary">{{ $order->reference_id}}</span></td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" 
@@ -356,26 +175,31 @@
                                             <i class="bi bi-person text-secondary"></i>
                                         </div>
                                         <div class="ms-2">
-                                            <div>{{ $order['user']['name'] }}</div>
-                                            <small class="text-muted">{{ $order['user']['username'] }}</small>
+                                            <small class="text-muted">{{ $order->user->username }}</small>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <i class="bi bi-coin text-warning me-1"></i>
-                                        {{ number_format($order['coins']) }}
+                                        {{ number_format($order->coin) }}
                                     </div>
                                 </td>
-                                <td>${{ number_format($order['amount'], 2) }}</td>
+                                <td>${{ number_format($order->price, 2) }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <i class="bi {{ $order['payment_method']['icon'] }} me-1"></i>
-                                        {{ $order['payment_method']['type'] }}
+                                        @if($order->payment_method == 'khqr')
+                                            <i class="bi bi-qr-code me-1"></i>
+                                        @elseif($order->payment_method == 'cash')
+                                            <i class="bi bi-cash me-1"></i>
+                                        @endif
+                                        {{$order->payment_method}}
                                     </div>
                                 </td>
-                                <td><span class="badge bg-{{ $order['status']['class'] }}">{{ $order['status']['name'] }}</span></td>
-                                <td>{{ $order['date'] }}</td>
+                                <td>
+                                    <span class="badge text-black bg-{{ $order->status === 'approved' ? 'success' : ($order->status === 'pending' ? 'warning' : 'danger') }}">{{ $order->status }}</span>
+                                </td>
+                                <td>{{ $order->created_at }}</td>
                                 <td>
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-outline-primary" title="View">
@@ -396,23 +220,8 @@
                 </div>
 
                 {{-- Pagination --}}
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <div class="text-muted">
-                        Showing <strong>1-{{ count($orders) }}</strong> of <strong>50</strong> orders
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $transactions->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>
@@ -455,54 +264,35 @@
             // Order Detail Modal Functionality
             const orderDetailModal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
             const viewButtons = document.querySelectorAll('.btn-outline-primary');
-            const pendingActions = document.getElementById('pendingActions');
-            const downloadReceiptBtn = document.getElementById('downloadReceiptBtn');
-            const approveButton = document.getElementById('approveButton');
-            const declineButton = document.getElementById('declineButton');
 
             viewButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const row = this.closest('tr');
                     const order = {
                         id: row.querySelector('td:nth-child(2)').textContent.trim(),
-                        user: {
-                            name: row.querySelector('td:nth-child(3) div:first-child').textContent.trim(),
-                            username: row.querySelector('td:nth-child(3) small').textContent.trim()
-                        },
-                        coins: row.querySelector('td:nth-child(4)').textContent.trim(),
-                        amount: row.querySelector('td:nth-child(5)').textContent.trim(),
-                        payment_method: {
-                            type: row.querySelector('td:nth-child(6)').textContent.trim(),
-                            icon: row.querySelector('td:nth-child(6) i').classList.contains('bi-credit-card') ? 'bi-credit-card' : 'bi-paypal'
-                        },
-                        status: {
-                            name: row.querySelector('td:nth-child(7) span').textContent.trim(),
-                            class: row.querySelector('td:nth-child(7) span').classList.contains('bg-success') ? 'success' : 
-                                   row.querySelector('td:nth-child(7) span').classList.contains('bg-warning') ? 'warning' : 'danger'
-                        },
-                        date: row.querySelector('td:nth-child(8)').textContent.trim()
+                        ref: row.querySelector('td:nth-child(3)').textContent.trim(),
+                        username: row.querySelector('td:nth-child(4) small').textContent.trim(),
+                        coins: row.querySelector('td:nth-child(5)').textContent.trim(),
+                        amount: row.querySelector('td:nth-child(6)').textContent.trim(),
+                        payment_method: row.querySelector('td:nth-child(7)').textContent.trim(),
+                        status: row.querySelector('td:nth-child(8) span').textContent.trim(),
+                        date: row.querySelector('td:nth-child(9)').textContent.trim()
                     };
 
                     // Update modal content
                     document.getElementById('modalTransactionId').textContent = order.id;
                     document.getElementById('modalDateTime').textContent = order.date;
-                    document.getElementById('modalUserName').textContent = order.user.name;
-                    document.getElementById('modalUsername').textContent = order.user.username;
-                    document.getElementById('modalPaymentMethod').textContent = order.payment_method.type;
-                    document.getElementById('modalPaymentIcon').className = `bi ${order.payment_method.icon} fs-4 text-primary`;
+                    document.getElementById('modalUsername').textContent = order.username;
+                    document.getElementById('modalPaymentMethod').textContent = order.payment_method;
                     document.getElementById('modalCoins').textContent = order.coins;
                     document.getElementById('modalAmount').textContent = order.amount;
-                    document.getElementById('modalOrderStatus').className = `badge bg-${order.status.class}`;
-                    document.getElementById('modalOrderStatus').textContent = order.status.name;
+                    document.getElementById('modalOrderStatus').textContent = order.status;
 
-                    // Calculate and display rate
-                    const coins = parseInt(order.coins.replace(/,/g, ''));
-                    const amount = parseFloat(order.amount.replace(/[$,]/g, ''));
-                    const rate = (amount / coins).toFixed(3);
-                    document.getElementById('modalRate').textContent = `$${rate} per coin`;
-
-                    // Show/hide pending actions and download receipt button based on status
-                    if (order.status.name === 'Pending') {
+                    // Show/hide pending actions based on status
+                    const pendingActions = document.getElementById('pendingActions');
+                    const downloadReceiptBtn = document.getElementById('downloadReceiptBtn');
+                    
+                    if (order.status.toLowerCase() === 'pending') {
                         pendingActions.classList.remove('d-none');
                         downloadReceiptBtn.classList.add('d-none');
                     } else {
@@ -664,9 +454,9 @@
                     <div class="col-12">
                         <div class="card border-0">
                             <div class="card-body">
-                                <h6 class="card-title mb-3">Order Summary</h6>
-                                <div class="row g-3">
+                                <div class="row g-3 justify-content-end">
                                     <div class="col-12 col-md-6">
+                                <h6 class="card-title mb-3">Order Summary</h6>
                                         <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                                             <span class="text-muted">Coins Purchased</span>
                                             <div class="d-flex align-items-center">
@@ -679,7 +469,7 @@
                                             <span class="fw-bold" id="modalAmount"></span>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-6">
+                                    {{-- <div class="col-12 col-md-6">
                                         <div class="bg-light rounded p-3">
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span class="text-muted">Rate</span>
@@ -690,7 +480,7 @@
                                                 <span class="fw-bold">$0.00</span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
