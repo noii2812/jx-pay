@@ -25,7 +25,7 @@ return new class extends Migration
             $table->timestamp('paid_at')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('declined_at')->nullable();
-            $table->foreignId('approved_by')->constrained()->onDelete('cascade');
+            $table->foreignId('approved_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

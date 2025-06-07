@@ -8,6 +8,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdminOrderCoin;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckUserRole;
+use App\Http\Controllers\TransfersController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -29,8 +30,12 @@ Route::middleware('auth')->group(function () {
         return view('transferCoinHistory');
     });
     Route::get('/game', [AccountController::class,'index'])->name('game');
+    Route::post('/createAccount', [AccountController::class,'create'])->name('createAccount');
 
     Route::get('/topUpHistory', [TransactionController::class, 'show']);
+    Route::get('/transferCoinHistory', [TransfersController::class, 'index'])->name('transfer.history');
+    Route::post('/transfer', [TransfersController::class, 'store'])->name('transfer.store');
+    Route::post('/transfer/{transfer}/cancel', [TransfersController::class, 'cancel'])->name('transfer.cancel');
 
     Route::get('/shop', function () {
         return view('shop');
