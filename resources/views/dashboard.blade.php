@@ -9,7 +9,7 @@
 
     <!-- Top Header Bar -->
    
-    <div style="width:100%; border-radius: 1.5rem; margin: -2rem -2rem 2rem -2rem; padding: 1.5rem 2rem 3.5rem 2rem;">
+    <div style="width:100%; border-radius: 1.5rem; margin: -2rem -2rem 2rem -2rem; padding: 1.5rem 2rem;">
         {{-- <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h4 class="text-white mb-0">Default</h4>
@@ -33,7 +33,7 @@
                     </div>
                     <div>
                         <div class="text-muted">Total Coin</div>
-                        <div class="h4 mb-0">$53,000</div>
+                        <div class="h4 mb-0">{{$coin}}</div>
                         <small class="text-success">+55% since yesterday</small>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                     </div>
                     <div>
                         <div class="text-muted">Accounts Game</div>
-                        <div class="h4 mb-0">1</div>
+                        <div class="h4 mb-0">{{$accounts}}</div>
                         <small class="text-success">+3% since last week</small>
                     </div>
                 </div>

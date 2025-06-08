@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopUpHistoryController;
 use App\Http\Controllers\AuthController;
@@ -20,9 +21,8 @@ Route::post('/signup', [AuthController::class, 'register'])->name('register');
 // Routes accessible to authenticated users (any role)
 Route::middleware('auth')->group(function () {
     // Routes that both regular users and admins/gm can access
-    Route::get('/', function () {
-        return view('dashboard');
-    });
+    Route::get('/', [DashboardController::class,'index'])->name('dashboard.index');
+
     Route::get('/profile', function () {
         return view('profile');
     });

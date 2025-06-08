@@ -1,5 +1,4 @@
 @php
-
     $servers = $accounts;
 @endphp
 
@@ -99,7 +98,8 @@
                     <div class="card-header border-0 p-3" style="background: linear-gradient(45deg, #6c5ce7, #3498db);">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <div class="bg-white p-2 rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 45px;">
+                                <div class="bg-white p-2 rounded-circle me-2"
+                                    style="width: 50px; height: 45px; display: flex; align-items: center; justify-content: center;">
                                     <i class="bi bi-server text-primary"></i>
                                 </div>
                                 <h6 class="card-title fw-bold text-white mb-0">{{ $server['name'] }}</h6>
@@ -122,17 +122,17 @@
                                 <i class="bi bi-coin text-warning me-2"></i>
                                 <p class="text-muted mb-0 small">Coins Available</p>
                             </div>
-                            <h5 class="fw-bold text-primary">
-                                {{ $server['coin'] }} 
-                                <small class="text-muted fw-normal">coins</small>
-                            </h5>
+                            <h5 class="fw-bold text-primary">{{ $server['coin'] }} <small
+                                    class="text-muted fw-normal">coins</small></h5>
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button class="btn btn-yellow btn-sm" data-bs-toggle="modal" data-bs-target="#transferModal">
+                            <button class="btn btn-yellow btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#transferModal">
                                 <i class="bi bi-arrow-left-right me-1"></i>Transfer
                             </button>
-                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <button class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#changePasswordModal">
                                 <i class="bi bi-key me-1"></i>Password
                             </button>
                         </div>
