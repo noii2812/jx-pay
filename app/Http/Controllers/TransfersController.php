@@ -30,7 +30,7 @@ class TransfersController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'to_account' => 'required|string',
+            'to_account' => 'required|integer|exists:accounts,id',
             'coin' => 'required|integer|min:1',
             'password' => 'required|string',
         ]);
@@ -49,7 +49,7 @@ class TransfersController extends Controller
                 }
 
                 // Check if destination account exists
-                $destinationAccount = Account::where('username', $validated['to_account'])->first();
+                $destinationAccount = Account::find($validated['to_account']);
                 if (!$destinationAccount) {
                     throw new \Exception('Destination account not found');
                 }
@@ -60,7 +60,7 @@ class TransfersController extends Controller
                     'to_account' => $validated['to_account'],
                     'coin' => $validated['coin'],
                     'status' => 'completed',
-                    'description' => "Transfer to account: {$validated['to_account']}",
+                    'description' => "Transfer to account ID: {$validated['to_account']}",
                     'completed_at' => now()
                 ]);
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransferCoinHistoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopUpHistoryController;
 use App\Http\Controllers\AuthController;
@@ -18,6 +19,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/signup', [AuthController::class, 'showSignupForm'])->name('signup');
 Route::post('/signup', [AuthController::class, 'register'])->name('register');
 
+Route::get('/reset-password', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
 // Routes accessible to authenticated users (any role)
 Route::middleware('auth')->group(function () {
     // Routes that both regular users and admins/gm can access
@@ -26,14 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', function () {
         return view('profile');
     });
-    Route::get('/transferCoinHistory', function () {
-        return view('transferCoinHistory');
-    });
+    Route::post('/profile/security-password', [UserController::class, 'setSecurityPassword'])->name('security-password.set');
+    Route::post('/profile/security-password/change', [UserController::class, 'changeSecurityPassword'])->name('security-password.change');
+    
+    Route::get('/transferCoinHistory', [TransferCoinHistoryController::class,'index' ])->name('transferCoinHistory.index');
     Route::get('/game', [AccountController::class,'index'])->name('game');
     Route::post('/createAccount', [AccountController::class,'create'])->name('createAccount');
+    Route::post('/changeAccountPassword', [AccountController::class,'changePassword'])->name('changeAccountPassword');
 
     Route::get('/topUpHistory', [TransactionController::class, 'show']);
-    Route::get('/transferCoinHistory', [TransfersController::class, 'index'])->name('transfer.history');
+    // Route::get('/transferCoinHistory', [TransfersController::class, 'index'])->name('transfer.history');
     Route::post('/transfer', [TransfersController::class, 'store'])->name('transfer.store');
     Route::post('/transfer/{transfer}/cancel', [TransfersController::class, 'cancel'])->name('transfer.cancel');
 

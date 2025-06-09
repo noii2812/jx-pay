@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -58,5 +60,96 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'User not found'], 404);
         }
+    }
+
+    /**
+     * Set security password for the first time
+     */
+    public function setSecurityPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'new_security_password' => 'required|min:6|confirmed',
+            'new_security_password_confirmation' => 'required'
+        ], [
+            'new_security_password.required' => 'Please enter a security password',
+            'new_security_password.min' => 'Security password must be at least 6 characters',
+            'new_security_password.confirmed' => 'Security password confirmation does not match',
+            'new_security_password_confirmation.required' => 'Please confirm your security password'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = auth()->user();
+        
+        if ($user->security_password) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Security password is already set'
+            ], 400);
+        }
+
+        $user->security_password = Hash::make($request->new_security_password);
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Security password has been set successfully'
+        ]);
+    }
+
+    /**
+     * Change existing security password
+     */
+    public function changeSecurityPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_security_password' => 'required',
+            'new_security_password' => 'required|min:6|confirmed',
+            'new_security_password_confirmation' => 'required'
+        ], [
+            'current_security_password.required' => 'Please enter your current security password',
+            'new_security_password.required' => 'Please enter a new security password',
+            'new_security_password.min' => 'New security password must be at least 6 characters',
+            'new_security_password.confirmed' => 'New security password confirmation does not match',
+            'new_security_password_confirmation.required' => 'Please confirm your new security password'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = auth()->user();
+        
+        if (!$user->security_password) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Security password is not set'
+            ], 400);
+        }
+
+        if (!Hash::check($request->current_security_password, $user->security_password)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Current security password is incorrect'
+            ], 400);
+        }
+
+        $user->security_password = Hash::make($request->new_security_password);
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Security password has been changed successfully'
+        ]);
     }
 } 

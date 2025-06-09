@@ -27,9 +27,9 @@ class AccountController extends Controller
 
                 $account = new Account();
                 $account->username = $request->username;
-                $account->password = $request->password;
-                $account->secpassword = $request->password;
-                $account->rowpass = $request->password;
+                $account->password = md5($request->password);
+                $account->secpassword = md5($request->password);
+                $account->rowpass = md5($request->password);
                 $account->email = "";
                 $account->cmnd = 0;
                 // $account->dob = $request->dob;
@@ -67,11 +67,51 @@ class AccountController extends Controller
                 return redirect()->back()->with('success', 'Account created successfully');
 
             } catch (\Exception $e) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Failed to create account: ' . $e->getMessage()
-                ], 500);
+                $errorMessage = 'Failed to create account. ';
+                
+                // Check for common database errors
+                if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                    $errorMessage .= 'This username is already taken.';
+                } elseif (str_contains($e->getMessage(), 'Data too long')) {
+                    $errorMessage .= 'Input data is too long.';
+                } else {
+                    $errorMessage .= 'Please try again later.';
+                }
+                
+                return redirect()->back()->with('error', $errorMessage);
             }
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+        try {
+            $request->validate([
+                'account_id' => 'required|exists:accounts,id',
+                'current_password' => 'required|string',
+                'new_password' => 'required|string|min:6|max:64',
+                'confirm_password' => 'required|same:new_password'
+            ]);
+
+            $account = Account::where('id', $request->account_id)
+                            ->where('ref', auth()->user()->id)
+                            ->firstOrFail();
+
+            // Verify current password
+            if (md5($request->current_password) !== $account->password) {
+                return redirect()->back()->with('error', 'Current password is incorrect');
+            }
+
+            // Update password
+            $account->password = md5($request->new_password);
+            $account->secpassword = md5($request->new_password);
+            $account->rowpass = md5($request->new_password);
+            $account->save();
+
+            return redirect()->back()->with('success', 'Password updated successfully');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return redirect()->back()->with('error', 'Failed to update password. Please try again.');
         }
     }
 }

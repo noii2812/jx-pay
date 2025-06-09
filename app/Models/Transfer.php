@@ -39,4 +39,9 @@ class Transfer extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function toAccount()
+    {
+        return $this->belongsTo(Account::class, 'to_account');
+    }
 } 

@@ -84,4 +84,31 @@ class AuthController extends Controller
 
         return redirect('/')->with('success', 'Registration successful! Welcome to the game!');
     }
+
+    public function showResetPasswordForm()
+    {
+        return view('auth.reset_password');
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|exists:users,username',
+            'security_password' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::where('username', $request->username)->first();
+
+        if (!$user || !password_verify($request->security_password, $user->security_password)) {
+            return back()->withErrors([
+                'security_password' => 'Invalid username or security password.',
+            ]);
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->route('login')->with('success', 'Your password has been reset successfully!');
+    }
 }

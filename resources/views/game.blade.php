@@ -8,14 +8,14 @@
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -24,17 +24,17 @@
 
             <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center">
-                    <div class="bg-primary bg-gradient rounded-circle me-3"
+                    {{-- <div class="bg-primary bg-gradient rounded-circle me-3"
                         style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
                         <i class="bi bi-joystick text-white"></i>
-                    </div>
-                    <h2 class="fw-bold m-0">Game Servers</h2>
+                    </div> --}}
+                    <h2 class="fw-bold m-0">Game Accounts</h2>
                 </div>
                 <div class="d-flex align-items-center">
                     <button class="btn btn-yellow me-3" data-bs-toggle="modal" data-bs-target="#createServerModal">
                         <i class="bi bi-plus-circle me-1"></i>Create Server
                     </button>
-                    <span class="badge bg-success me-2">
+                    {{-- <span class="badge bg-success me-2">
                         <i class="bi bi-circle-fill me-1"></i>4 Online
                     </span>
                     <span class="badge bg-danger me-2">
@@ -42,7 +42,7 @@
                     </span>
                     <span class="badge bg-warning">
                         <i class="bi bi-circle-fill me-1"></i>1 Maintenance
-                    </span>
+                    </span> --}}
                 </div>
             </div>
         </div>
@@ -51,19 +51,22 @@
     <!-- Search Section -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card shadow-sm border-0" style="border-radius: 15px;">
-                <div class="card-body p-3">
-                    <div class="row g-3">
+            <div class="shadow-none border-0" style="border-radius: 15px;">
+                <div class="card-body p-2 px-0 pb-0">
+                    <div class="row g-3 justify-content-between align-items-center">
+                        <div class="col-md-4 " style="font-size: 22px" >
+                            <p>Total: {{ count($accounts) }}</p>
+                        </div>
                         <div class="col-md-4">
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-0">
                                     <i class="bi bi-search"></i>
                                 </span>
                                 <input type="text" class="form-control bg-light border-0"
-                                    placeholder="Search servers...">
+                                    placeholder="Search servers..." id="searchInput">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <select class="form-select bg-light border-0">
                                 <option value="">All Statuses</option>
                                 <option value="online">Online</option>
@@ -84,57 +87,70 @@
                                 <i class="bi bi-funnel me-1"></i>Filter
                             </button>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Server Cards Grid -->
-    <div class="row g-3">
+    <div class="row g-3 mt-0">
         @foreach ($servers as $server)
             <div class="col-md-4 col-lg-3">
-                <div class="card shadow-lg border-0 h-100 card-privilege">
-                    <div class="card-header border-0 p-3" style="background: linear-gradient(45deg, #6c5ce7, #3498db);">
+                <div class="card shadow-sm border-0 h-100 card-privilege">
+                    <div class="card-header rounded-lg border-0 p-2" style="background: linear-gradient(45deg, #6c5ce7, #3498db);">
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-white p-2 rounded-circle me-2"
+                            <div class="d-flex align-items-center p-2">
+                                {{-- <div class="bg-white p-2 rounded-circle me-2"
                                     style="width: 50px; height: 45px; display: flex; align-items: center; justify-content: center;">
                                     <i class="bi bi-server text-primary"></i>
-                                </div>
-                                <h6 class="card-title fw-bold text-white mb-0">{{ $server['name'] }}</h6>
+                                </div> --}}
+                                {{-- <h6 class="card-title fw-bold text-white mb-0">{{ $server['name'] }}</h6> --}}
                             </div>
-                            <span class="badge bg-{{ $server['status_class'] }}">{{ $server['status'] }}</span>
+                            {{-- <span class="badge bg-{{ $server['status_class'] }}">{{ $server['status'] }}</span> --}}
                         </div>
                     </div>
 
                     <div class="card-body p-3">
                         <div class="mb-3">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="bi bi-person-circle text-primary me-2"></i>
-                                <p class="text-muted mb-0 small">Username</p>
+                            <div class="d-flex align-items-start justify-content-between mb-2">
+                                <div class="d-flex">
+                                    <i class="bi bi-person-circle text-primary me-2 mb-1"></i>
+                                    {{-- <p class="text-muted mb-0 small">Username</p> --}}
+                                    <h6 class="fw-bold">{{ strtoupper($server['username']) }}</h6>
+                                </div>
+                                <div class="mb-3">
+                                    {{-- <div class="d-flex align-items-start mb-2 justify-content-end">
+                                    </div> --}}
+                                    <h5 class="fw-bold text-primary text-end">
+                                        
+                                        <i class="bi bi-coin text-warning me-2"></i>
+                                        {{ $server['coin'] }} 
+                                        <small class="text-muted fw-normal">
+                                            Coins
+                                        </small></h5>
+                                </div>
+
                             </div>
-                            <h6 class="fw-bold">{{ $server['username'] }}</h6>
                         </div>
 
-                        <div class="mb-3">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="bi bi-coin text-warning me-2"></i>
-                                <p class="text-muted mb-0 small">Coins Available</p>
-                            </div>
-                            <h5 class="fw-bold text-primary">{{ $server['coin'] }} <small
-                                    class="text-muted fw-normal">coins</small></h5>
-                        </div>
+                        <div>
 
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-yellow btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#transferModal">
-                                <i class="bi bi-arrow-left-right me-1"></i>Transfer
-                            </button>
-                            <button class="btn btn-light btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#changePasswordModal">
-                                <i class="bi bi-key me-1"></i>Password
-                            </button>
+                            <div class="d-flex gap-2">
+                                
+                                <button class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#changePasswordModal"
+                                    data-account-id="{{ $server['id'] }}"
+                                    data-username="{{ $server['username'] }}">
+                                    <i class="bi bi-key me-1"></i>Change Password
+                                </button>
+                                <button class="col-md-6 btn btn-yellow btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#transferModal"
+                                    data-account-id="{{ $server['id'] }}"
+                                    data-username="{{ $server['username'] }}">
+                                    <i class="bi bi-arrow-left-right me-1"></i>Transfer
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,19 +243,21 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form>
+                <form action="{{ route('changeAccountPassword') }}" method="POST" id="changePasswordForm" class="needs-validation" novalidate>
+                    @csrf
+                    <input type="hidden" name="account_id" id="modalAccountId">
                     <div class="mb-4 d-flex justify-content-between">
                         <div>
                             <label class="form-label">
                                 <i class="bi bi-person-circle me-2" style="color: #2e7eff"></i>Account
                             </label>
-                            <h3>John Doe</h3>
+                            <h3 id="modalUsername"></h3>
                         </div>
                         <div>
                             <label class="form-label">
                                 <i class="bi bi-server me-2" style="color: #2e7eff"></i>Server
                             </label>
-                            <h5>Server Beta</h5>
+                            <h5 id="modalServerId"></h5>
                         </div>
                     </div>
                     <div class="mb-4">
@@ -247,10 +265,10 @@
                             <i class="bi bi-lock me-2" style="color: #2e7eff"></i>Current Game Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" required>
-                            <button class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
+                            <input type="password" name="current_password" class="form-control bg-light border-0" required>
+                            <span class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
                                 <i class="bi bi-eye" style="color: #2e7eff"></i>
-                            </button>
+                            </span>
                         </div>
                     </div>
                     <div class="mb-4">
@@ -258,28 +276,43 @@
                             <i class="bi bi-key me-2" style="color: #2e7eff"></i>New Game Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" required>
-                            <button class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
+                            <input type="password" name="new_password" id="newPassword" class="form-control bg-light border-0" required 
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+                            <span class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
                                 <i class="bi bi-eye" style="color: #2e7eff"></i>
-                            </button>
+                            </span>
                         </div>
+                        
                     </div>
                     <div class="mb-4">
                         <label class="form-label">
                             <i class="bi bi-check-double me-2" style="color: #2e7eff"></i>Confirm New Game Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" required>
-                            <button class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
+                            <input type="password" name="confirm_password" id="confirmPassword" class="form-control bg-light border-0" required>
+                            <span class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
                                 <i class="bi bi-eye" style="color: #2e7eff"></i>
-                            </button>
+                            </span>
+                        </div>
+                        <div id="passwordMatch" class="invalid-feedback">
+                            Passwords do not match
                         </div>
                     </div>
+                    <div class="password-requirements mt-2">
+                            <small class="text-muted">New password must contain:</small>
+                            <ul class="list-unstyled mb-0">
+                                <li id="length" class="text-danger"><i class="bi bi-x-circle"></i> At least 8 characters</li>
+                                <li id="uppercase" class="text-danger"><i class="bi bi-x-circle"></i> One uppercase letter</li>
+                                <li id="lowercase" class="text-danger"><i class="bi bi-x-circle"></i> One lowercase letter</li>
+                                <li id="number" class="text-danger"><i class="bi bi-x-circle"></i> One number</li>
+                                <li id="special" class="text-danger"><i class="bi bi-x-circle"></i> One special character</li>
+                            </ul>
+                        </div>
+                    <div class="modal-footer border-0 p-4">
+                        <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-yellow btn-lg px-4" id="submitPassword">Update Password</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer border-0 p-4">
-                <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-yellow btn-lg px-4">Update Password</button>
             </div>
         </div>
     </div>
@@ -289,71 +322,137 @@
 <div class="modal fade" id="transferModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
-            <div class="modal-header border-0 bg-primary bg-gradient p-4"
-                style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
-                <h5 class="modal-title fw-bold text-white">
+            <div class="modal-header border-0 p-4" style="background: linear-gradient(45deg, #6c5ce7, #3498db);">
+                <h5 class="modal-title fw-bold text-white d-flex align-items-center">
                     <i class="bi bi-arrow-left-right me-2"></i>Transfer Coins
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
-                <form action="{{ route('transfer.store') }}" method="POST">
+                <form action="{{ route('transfer.store') }}" method="POST" class="needs-validation" novalidate>
                     @csrf
-                    <div class="mb-4 d-flex justify-content-between">
-                        <div>
-                            <label class="form-label">
-                                <i class="bi bi-person-circle me-2" style="color: #2e7eff"></i>From Account
-                            </label>
-                            <h3>{{ Auth::user()->username }}</h3>
+                    <!-- Account Info Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <i class="bi bi-person-circle fs-5" style="color: #6c5ce7"></i>
+                                        <label class="form-label mb-0">From Account</label>
+                                    </div>
+                                    <h4 class="mb-0">{{ Auth::user()->username }}</h4>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="form-label">
-                                <i class="bi bi-coin me-2" style="color: #2e7eff"></i>Available Coins
-                            </label>
-                            <h5>{{ Auth::user()->coin }}</h5>
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body p-3">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <i class="bi bi-coin fs-5" style="color: #6c5ce7"></i>
+                                        <label class="form-label mb-0">Available Coins</label>
+                                    </div>
+                                    <h4 class="mb-0">{{ number_format(Auth::user()->coin) }}</h4>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                                        <div class="mb-4">
-                        <label class="form-label">
-                            <i class="bi bi-person me-2" style="color: #2e7eff"></i>To Account
-                        </label>
-                        <input type="text" name="to_account" class="form-control bg-light border-0" required
-                            placeholder="Enter recipient account" value="{{$server->username}}">
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label">
-                            <i class="bi bi-coin me-2" style="color: #2e7eff"></i>Amount
-                        </label>
-                        <div class="input-group input-group-lg">
-                            <input type="number" name="coin" class="form-control bg-light border-0"
-                                placeholder="Enter amount" required min="1" max="{{ Auth::user()->coin }}">
-                            <span class="input-group-text bg-light border-0">coins</span>
-                        </div>
-                        <small class="text-muted">Available coins: {{ Auth::user()->coin }}</small>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="form-label">
-                            <i class="bi bi-lock me-2" style="color: #2e7eff"></i>Your Password
-                        </label>
-                        <div class="input-group input-group-lg">
-                            <input type="password" name="password" class="form-control bg-light border-0" required>
-                            <button class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                    <!-- Transfer Form -->
+                    <div class="card border-0 bg-light mb-4">
+                        <div class="card-body p-3">
+                            <div class="mb-3">
+                                <label class="form-label d-flex align-items-center gap-2">
+                                    <i class="bi bi-person fs-5" style="color: #6c5ce7"></i>
+                                    To Account
+                                </label>
+                                <input type="number" name="to_account" id="modalToAccount" class="form-control form-control-lg border-0"
+                                    required placeholder="Enter recipient account ID">
+                                <small class="text-muted" id="modalToAccountInfo"></small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label d-flex align-items-center gap-2">
+                                    <i class="bi bi-coin fs-5" style="color: #6c5ce7"></i>
+                                    Amount
+                                </label>
+                                <div class="input-group input-group-lg">
+                                    <input type="number" name="coin" class="form-control border-0"
+                                        placeholder="Enter amount" required min="1"
+                                        max="{{ Auth::user()->coin }}" oninput="validateAmount(this)">
+                                    <span class="input-group-text border-0 bg-white">coins</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <small class="text-muted">Available: {{ number_format(Auth::user()->coin) }}
+                                        coins</small>
+                                    <button type="button" class="btn btn-link btn-sm p-0"
+                                        onclick="setMaxAmount()">Use Max</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label d-flex align-items-center gap-2">
+                                    <i class="bi bi-lock fs-5" style="color: #6c5ce7"></i>
+                                    Your Password
+                                </label>
+                                <div class="input-group input-group-lg">
+                                    <input type="password" name="password" class="form-control border-0" required>
+                                    <button class="btn btn-white border-0" type="button"
+                                        onclick="togglePassword(this)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer border-0 p-4">
-                        <button type="button" class="btn btn-light btn-lg px-4"
-                            data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-yellow btn-lg px-4">Transfer</button>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-light btn-lg flex-grow-1" data-bs-dismiss="modal">
+                            <i class="bi bi-x-lg me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-lg flex-grow-1"
+                            style="background: linear-gradient(45deg, #6c5ce7, #3498db);">
+                            <i class="bi bi-arrow-left-right me-2"></i>Transfer
+                        </button>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
+
+<script>
+    function validateAmount(input) {
+        const maxAmount = {{ Auth::user()->coin }};
+        if (parseInt(input.value) > maxAmount) {
+            input.value = maxAmount;
+        }
+    }
+
+    function setMaxAmount() {
+        const input = document.querySelector('input[name="coin"]');
+        input.value = {{ Auth::user()->coin }};
+    }
+
+    // Add search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.card-privilege');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+
+            cards.forEach(card => {
+                const username = card.querySelector('h6.fw-bold').textContent.toLowerCase();
+                const parentCol = card.closest('.col-md-4');
+                
+                if (username.includes(searchTerm)) {
+                    parentCol.style.display = '';
+                } else {
+                    parentCol.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 
 
 
@@ -373,4 +472,101 @@
             icon.classList.add('bi-eye');
         }
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const form = document.getElementById('changePasswordForm');
+        const submitButton = document.getElementById('submitPassword');
+
+        // Password validation requirements
+        const requirements = {
+            length: /.{8,}/,
+            uppercase: /[A-Z]/,
+            lowercase: /[a-z]/,
+            number: /[0-9]/,
+            special: /[@$!%*?&]/
+        };
+
+        // Update requirement indicators
+        function updateRequirements(password) {
+            for (const [requirement, regex] of Object.entries(requirements)) {
+                const element = document.getElementById(requirement);
+                if (regex.test(password)) {
+                    element.classList.remove('text-danger');
+                    element.classList.add('text-success');
+                    element.querySelector('i').classList.remove('bi-x-circle');
+                    element.querySelector('i').classList.add('bi-check-circle');
+                } else {
+                    element.classList.remove('text-success');
+                    element.classList.add('text-danger');
+                    element.querySelector('i').classList.remove('bi-check-circle');
+                    element.querySelector('i').classList.add('bi-x-circle');
+                }
+            }
+        }
+
+        // Check if passwords match
+        function checkPasswordMatch() {
+            if (newPassword.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity("Passwords don't match");
+                document.getElementById('passwordMatch').style.display = 'block';
+            } else {
+                confirmPassword.setCustomValidity('');
+                document.getElementById('passwordMatch').style.display = 'none';
+            }
+        }
+
+        // Event listeners
+        newPassword.addEventListener('input', function() {
+            updateRequirements(this.value);
+            checkPasswordMatch();
+        });
+
+        confirmPassword.addEventListener('input', checkPasswordMatch);
+
+        // Form submission validation
+        form.addEventListener('submit', function(e) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            // Check if all requirements are met
+            const allRequirementsMet = Object.values(requirements).every(regex => regex.test(newPassword.value));
+            if (!allRequirementsMet) {
+                e.preventDefault();
+                alert('Please ensure all password requirements are met.');
+            }
+        });
+
+        form.classList.add('was-validated');
+
+        // Add modal data handling
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        changePasswordModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const accountId = button.getAttribute('data-account-id');
+            const username = button.getAttribute('data-username');
+
+            // Update modal fields
+            document.getElementById('modalAccountId').value = accountId;
+            document.getElementById('modalUsername').textContent = username;
+            document.getElementById('modalServerId').textContent = 'Server ' + accountId;
+        });
+
+        // Add modal data handling for transfer modal
+        const transferModal = document.getElementById('transferModal');
+        transferModal.addEventListener('show.bs.modal', function(event) {
+            const button = event.relatedTarget;
+            const accountId = button.getAttribute('data-account-id');
+            const username = button.getAttribute('data-username');
+
+            // Update modal fields
+            document.getElementById('modalToAccount').value = accountId;
+            document.getElementById('modalToAccountInfo').textContent = 'Account ID: ' + accountId + ' (' + username + ')';
+        });
+    });
 </script>

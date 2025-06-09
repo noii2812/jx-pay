@@ -36,7 +36,7 @@
             flex: 1;
         }
         .signup-form {
-            padding: 48px 40px 40px 40px;
+            padding: 28px 40px 28px 40px;
             background: linear-gradient(135deg, #fffbe6 0%, #fff 100%);
             border-radius: 0 15px 15px 0;
             box-shadow: 0 8px 32px rgba(255, 211, 42, 0.15), 0 1.5px 6px rgba(0,0,0,0.04);
@@ -44,8 +44,8 @@
             position: relative;
             overflow-y: auto;
             max-height: 100%;
-            scrollbar-width: thin;
-            scrollbar-color: #ffd32a #ffe066;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         .signup-form::-webkit-scrollbar {
             width: 8px;
@@ -77,7 +77,7 @@
             color: #bfa600;
             font-weight: bold;
             margin-bottom: 10px;
-            font-size: 2.2rem;
+            font-size: 2rem;
             text-align: center;
         }
         .signup-subtitle {
@@ -88,14 +88,14 @@
         }
         .divider {
             border-bottom: 1.5px dashed #ffe066;
-            margin: 18px 0 28px 0;
+            margin: 8px 0 10px 0;
         }
         .form-section {
             background: rgba(255, 211, 42, 0.05);
             border: 1px solid #ffe066;
             border-radius: 15px;
             padding: 20px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
         .form-section-title {
             color: #bfa600;
@@ -262,7 +262,7 @@
                         <img src="/images/banks/game-logo.jpg" alt="Game Logo" style="width: 100px; height: 100px; border-radius: 50%;">
                     </div>
                     <h1 class="signup-title">Create Account</h1>
-                    <p class="signup-subtitle">Join our gaming community today!</p>
+                    {{-- <p class="signup-subtitle">Join our gaming community today!</p> --}}
                     <div class="divider"></div>
                     
                     @if ($errors->any())
@@ -336,7 +336,7 @@
                                     <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="password-requirements">
+                            {{-- <div class="password-requirements">
                                 <div>
                                     <ul>
                                         <li><i class="bi bi-x-circle text-danger"></i> At least 8 characters</li>
@@ -344,7 +344,7 @@
                                         <li><i class="bi bi-x-circle text-danger"></i> Include special characters</li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="input-group position-relative" style="justify-content: space-between;">
                                 <label for="password_confirmation" class="form-label">Confirm Password <span class="required-star">*</span></label>
                                 <div class="position-relative">
