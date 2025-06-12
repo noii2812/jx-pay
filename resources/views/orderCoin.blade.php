@@ -11,6 +11,9 @@
     @endphp
 
     <div class="container-fluid">
+        {{-- Add SweetAlert2 CDN --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         {{-- Header Section --}}
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
@@ -441,6 +444,7 @@
                     notification.remove();
                 }, 5000);
             }
+
 
             // Add status filter functionality
             const statusFilter = document.getElementById('statusFilter');

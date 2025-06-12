@@ -1,4 +1,7 @@
 <x-layout>
+    {{-- Add SweetAlert2 CDN --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <div class="container-fluid">
         {{-- Header Section --}}
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -31,6 +34,7 @@
                                     placeholder="Search by username or email..." id="searchInput" value="{{ request('search') }}">
                             </div>
                         </div>
+
                         <div class="col-12 col-md-8">
                             <div class="d-flex gap-2 justify-content-md-end">
                                 <select class="form-select w-auto" name="status">
@@ -49,6 +53,7 @@
                                     Export
                                 </button>
                             </div>
+
                         </div>
                     </div>
                 </form>
@@ -69,6 +74,7 @@
                                 </th>
                                 <th scope="col">User</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Role</th>
                                 <th scope="col">Phone</th>
                                 <th scope="col">Coins</th>
                                 <th scope="col">Status</th>
@@ -99,6 +105,7 @@
                                                 <small class="text-muted">{{'@'.$user->username }}</small>
                                             </div>
                                         </div>
+
                                     </td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone ?: 'N/A' }}</td>
@@ -106,6 +113,7 @@
                                         <div class="d-flex align-items-center">
                                             <i class="bi bi-coin text-warning me-1"></i>
                                             {{ number_format($user->coin, 0) }}
+
                                         </div>
                                     </td>
                                     <td>
@@ -142,6 +150,7 @@
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
+
                                     </td>
                                 </tr>
                             @empty
@@ -155,6 +164,8 @@
                                     </td>
                                 </tr>
                             @endforelse
+
+                                
                         </tbody>
                     </table>
                 </div>
@@ -177,7 +188,6 @@
     </div>
 
    
-    
     {{-- Add JavaScript for search functionality --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -202,6 +212,7 @@
                     fetchUserDetails(userId);
                 });
             });
+
             
             function fetchUserDetails(userId) {
                 fetch(`/api/users/${userId}`)
@@ -277,10 +288,12 @@
                 // You can redirect to an edit page or open another modal for editing
                 // For now, we'll just alert
                 alert(`Edit user with ID: ${userId}`);
+
             });
         });
     </script>
 </x-layout>
+
 
 {{-- User Detail Modal --}}
 <div class="modal fade" id="userDetailModal" tabindex="-1" aria-labelledby="userDetailModalLabel" aria-hidden="true">
@@ -335,10 +348,12 @@
                                         <span class="text-muted">Address</span>
                                     </div>
                                     <p id="userModalAddress" class="mb-0 fw-medium">123 Main St, Anytown, CA 12345</p>
+
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     
                     <!-- Account Information -->
                     <div class="col-md-6">
@@ -367,12 +382,14 @@
                                         <span class="text-muted">Joined Date</span>
                                     </div>
                                     <p id="userModalJoinedDate" class="mb-0 fw-medium">Mar 15, 2024</p>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="modal-footer bg-light">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     <i class="bi bi-x-lg me-1"></i> Close
@@ -384,3 +401,4 @@
         </div>
     </div>
 </div>
+
