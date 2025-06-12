@@ -18,16 +18,17 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
         'phone',
         'address',
         'avatar',
-        'coin_balance',
+        'coin',
         'status',
         'full_name',
         'role',
+        'security_password',
     ];
 
     /**
@@ -51,5 +52,9 @@ class User extends Authenticatable
             
             'password' => 'hashed',
         ];
+    }
+
+    public function accounts (){
+        return $this->hasMany(Account::class, 'ref');
     }
 }

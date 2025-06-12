@@ -36,7 +36,7 @@
             flex: 1;
         }
         .signup-form {
-            padding: 48px 40px 40px 40px;
+            padding: 28px 40px 28px 40px;
             background: linear-gradient(135deg, #fffbe6 0%, #fff 100%);
             border-radius: 0 15px 15px 0;
             box-shadow: 0 8px 32px rgba(255, 211, 42, 0.15), 0 1.5px 6px rgba(0,0,0,0.04);
@@ -44,8 +44,8 @@
             position: relative;
             overflow-y: auto;
             max-height: 100%;
-            scrollbar-width: thin;
-            scrollbar-color: #ffd32a #ffe066;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         .signup-form::-webkit-scrollbar {
             width: 8px;
@@ -77,7 +77,7 @@
             color: #bfa600;
             font-weight: bold;
             margin-bottom: 10px;
-            font-size: 2.2rem;
+            font-size: 2rem;
             text-align: center;
         }
         .signup-subtitle {
@@ -88,14 +88,14 @@
         }
         .divider {
             border-bottom: 1.5px dashed #ffe066;
-            margin: 18px 0 28px 0;
+            margin: 8px 0 10px 0;
         }
         .form-section {
             background: rgba(255, 211, 42, 0.05);
             border: 1px solid #ffe066;
             border-radius: 15px;
             padding: 20px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
         .form-section-title {
             color: #bfa600;
@@ -262,9 +262,21 @@
                         <img src="/images/banks/game-logo.jpg" alt="Game Logo" style="width: 100px; height: 100px; border-radius: 50%;">
                     </div>
                     <h1 class="signup-title">Create Account</h1>
-                    <p class="signup-subtitle">Join our gaming community today!</p>
+                    {{-- <p class="signup-subtitle">Join our gaming community today!</p> --}}
                     <div class="divider"></div>
-                    <form>
+                    
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                    
+                    <form action="{{ route('register') }}" method="POST">
+                        @csrf
                         <div class="form-section">
                             <div class="form-section-title">
                                 <i class="bi bi-person-circle"></i> Account Information
@@ -273,24 +285,36 @@
                                 <label for="username" class="form-label">Username <span class="required-star">*</span></label>
                                 <div class="position-relative">
                                     <i class="bi bi-person input-icon"></i>
-                                    <input type="text" class="form-control input-with-icon" id="username" placeholder="Choose a username">
+                                    <input type="text" class="form-control input-with-icon @error('username') is-invalid @enderror" 
+                                        name="username" id="username" placeholder="Choose a username" value="{{ old('username') }}" required>
                                 </div>
+                                @error('username')
+                                    <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
+                                @enderror
                             </div>
     
                             <div class="input-group" style="justify-content: space-between">
-                                <label for="email" class="form-label">Email Address <span class="required-star">*</span></label>
+                                <label for="email" class="form-label">Email Address</label>
                                 <div class="position-relative">
                                     <i class="bi bi-envelope input-icon"></i>
-                                    <input type="email" class="form-control input-with-icon" id="email" placeholder="Enter your email">
+                                    <input type="email" class="form-control input-with-icon @error('email') is-invalid @enderror" 
+                                        name="email" id="email" placeholder="Enter your email (optional)" value="{{ old('email') }}">
                                 </div>
+                                @error('email')
+                                    <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
+                                @enderror
                             </div>
     
                             <div class="input-group" style="justify-content: space-between">
-                                <label for="phone" class="form-label">Phone Number <span class="required-star">*</span></label>
+                                <label for="phone" class="form-label">Phone Number</label>
                                 <div class="position-relative">
                                     <i class="bi bi-phone input-icon"></i>
-                                    <input type="tel" class="form-control input-with-icon" id="phone" placeholder="Enter your phone number">
+                                    <input type="tel" class="form-control input-with-icon @error('phone') is-invalid @enderror" 
+                                        name="phone" id="phone" placeholder="Enter your phone number (optional)" value="{{ old('phone') }}">
                                 </div>
+                                @error('phone')
+                                    <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
     
@@ -302,27 +326,32 @@
                                 <label for="password" class="form-label">Password <span class="required-star">*</span></label>
                                 <div class="position-relative">
                                     <i class="bi bi-key input-icon"></i>
-                                    <input type="password" class="form-control input-with-icon" id="password" placeholder="Create a password">
+                                    <input type="password" class="form-control input-with-icon @error('password') is-invalid @enderror" 
+                                        name="password" id="password" placeholder="Create a password" required>
                                     <span class="password-toggle" onclick="togglePassword('password', 'passwordToggle')">
                                         <i class="bi bi-eye" id="passwordToggle"></i>
                                     </span>
                                 </div>
+                                @error('password')
+                                    <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="password-requirements">
+                            {{-- <div class="password-requirements">
                                 <div>
                                     <ul>
-                                        <li><i class="bi bi-check-circle text-success"></i> At least 8 characters</li>
-                                        <li><i class="bi bi-check-circle text-success"></i> Include numbers and letters</li>
-                                        <li><i class="bi bi-check-circle text-success"></i> Include special characters</li>
+                                        <li><i class="bi bi-x-circle text-danger"></i> At least 8 characters</li>
+                                        <li><i class="bi bi-x-circle text-danger"></i> Include numbers and letters</li>
+                                        <li><i class="bi bi-x-circle text-danger"></i> Include special characters</li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="input-group position-relative" style="justify-content: space-between;">
-                                <label for="confirm-password" class="form-label">Confirm Password <span class="required-star">*</span></label>
+                                <label for="password_confirmation" class="form-label">Confirm Password <span class="required-star">*</span></label>
                                 <div class="position-relative">
                                     <i class="bi bi-key input-icon"></i>
-                                    <input type="password" class="form-control input-with-icon" id="confirm-password" placeholder="Confirm password" style="width: 100%;">
-                                    <span class="password-toggle" onclick="togglePassword('confirm-password', 'confirmToggle')">
+                                    <input type="password" class="form-control input-with-icon" 
+                                        name="password_confirmation" id="password_confirmation" placeholder="Confirm password" style="width: 100%;" required>
+                                    <span class="password-toggle" onclick="togglePassword('password_confirmation', 'confirmToggle')">
                                         <i class="bi bi-eye" id="confirmToggle"></i>
                                     </span>
                                 </div>
@@ -363,7 +392,45 @@
             document.addEventListener('scroll', function() {
                 tryPlayMusic();
             }, { once: true });
+            
+            // Password validation
+            const passwordInput = document.getElementById('password');
+            const confirmInput = document.getElementById('password_confirmation');
+            const lengthCheck = document.querySelector('.password-requirements li:nth-child(1) i');
+            const alphanumericCheck = document.querySelector('.password-requirements li:nth-child(2) i');
+            const specialCharCheck = document.querySelector('.password-requirements li:nth-child(3) i');
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                const hasEightChars = password.length >= 8;
+                const hasAlphaNumeric = /(?=.*[0-9])(?=.*[a-zA-Z])/.test(password);
+                const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                
+                // Update visual indicators
+                updateCheckIcon(lengthCheck, hasEightChars);
+                updateCheckIcon(alphanumericCheck, hasAlphaNumeric);
+                updateCheckIcon(specialCharCheck, hasSpecialChar);
+            });
+            
+            // Check if passwords match
+            confirmInput.addEventListener('input', function() {
+                if (passwordInput.value !== this.value) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+            });
         });
+        
+        function updateCheckIcon(icon, isValid) {
+            if (isValid) {
+                icon.classList.remove('bi-x-circle', 'text-danger');
+                icon.classList.add('bi-check-circle', 'text-success');
+            } else {
+                icon.classList.remove('bi-check-circle', 'text-success');
+                icon.classList.add('bi-x-circle', 'text-danger');
+            }
+        }
 
         function tryPlayMusic() {
             const bgMusic = document.getElementById('bgMusic');

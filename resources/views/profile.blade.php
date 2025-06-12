@@ -1,332 +1,466 @@
 <x-layout>
-
-
-
-    <div class="card shadow-lg border-0 position-relative overflow-hidden" style="border-radius: 20px;">
-        <!-- Background Pattern -->
-        <div class="position-absolute w-100 h-100" style="background: linear-gradient(45deg, #6c5ce7, #3498db);
-                        opacity: 0.95; z-index: 1;"></div>
-        <div class="position-absolute w-100 h-100" style="background: url('data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E');
-                        opacity: 0.1; z-index: 0;"></div>
-        <!-- Content -->
-        <div class="card-body text-center p-5 position-relative" style="z-index: 2;">
-            <div class="avatar-wrapper mb-4">
-                <div class="position-relative d-inline-block">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                        class="rounded-circle img-fluid border border-4 border-white shadow-lg"
-                        style="width: 150px; height: 150px; object-fit: cover;">
-                    <span class="position-absolute bottom-0 end-0 p-2 bg-success rounded-circle border border-white"
-                        style="width: 20px; height: 20px;"></span>
+    <div class="container py-4">
+        <!-- Profile Header Card -->
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px; background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="position-relative">
+                            <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=random' }}" 
+                                alt="avatar" class="rounded-circle border border-3 border-white shadow" 
+                                style="width: 120px; height: 120px; object-fit: cover;">
+                            <button class="btn btn-sm btn-light rounded-circle position-absolute bottom-0 end-0 shadow-sm" 
+                                data-bs-toggle="modal" data-bs-target="#editProfileModal"
+                                style="width: 32px; height: 32px;">
+                                <i class="bi bi-camera"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3 class="text-white mb-1">{{ auth()->user()->username }}</h3>
+                        <p class="text-white-50 mb-2">{{ auth()->user()->role ?? 'Member' }}</p>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                <i class="bi bi-pencil me-1"></i>Edit Profile
+                            </button>
+                            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                <i class="bi bi-key me-1"></i>Change Password
+                            </button>
+                            <button class="btn {{ auth()->user()->secpassword ? 'btn-light' : 'btn-danger' }} btn-sm position-relative" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#securityPasswordModal">
+                                <i class="bi {{ auth()->user()->secpassword ? 'bi-shield-lock' : 'bi-exclamation-triangle' }} me-1"></i>
+                                {{ auth()->user()->secpassword ? 'Change Security Password' : 'Security Password is not set' }}
+                                @unless(auth()->user()->secpassword)
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden">Warning</span>
+                                </span>
+                                @endunless
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <h3 class="fw-bold mb-2 text-white">john_doe</h3>
-            <p class="text-white-50 mb-4">Premium Member</p>
-            <div class="d-grid gap-2">
-                <button type="button" class="btn btn-yellow btn-lg shadow-sm" data-bs-toggle="modal"
-                    data-bs-target="#editProfileModal">
-                    <i class="bi bi-user-edit me-2"></i>Edit Profile
-                </button>
-                <button type="button" class="btn btn-light btn-lg shadow-sm" data-bs-toggle="modal"
-                    data-bs-target="#changePasswordModal">
-                    <i class="bi bi-key me-2"></i>Change Password
-                </button>
             </div>
         </div>
-    </div>
 
-
-    <div class="card card-privilege shadow-lg border-0" style="border-radius: 20px; margin-top: 20px;">
-        <div class="card-body p-4">
-            <div class="d-flex align-items-center mb-4">
-                <div class="bg-primary bg-gradient  rounded-circle me-3"
-                    style="width: 50px; height: 50px;display: flex; align-items: center; justify-content: center;">
-                    <i class="bi bi-person-circle" style="color: white;"></i>
-                </div>
-                <h4 class="fw-bold m-0" style="color: #2d3436;">Profile Details</h4>
-            </div>
-
-            <div class="row g-4">
-                <!-- Account ID -->
-                <div class="col-12">
-                    <div class="p-3 rounded-4 bg-light">
-                        <div class="row align-items-center">
-                            <div class="col-sm-4">
-                                <p class="text-muted mb-0"><i class="bi bi-fingerprint me-2"></i>Account ID</p>
+        <!-- Profile Stats -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary bg-opacity-10 rounded p-3 me-3">
+                                <i class="bi bi-wallet2 text-primary"></i>
                             </div>
-                            <div class="col-sm-8">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-white border-0" value="123456"
-                                        id="accountId" readonly style="border-radius: 10px 0 0 10px;">
-                                    <button class="btn btn-yellow" type="button" onclick="copyAccountId()" title="Copy"
-                                        style="border-radius: 0 10px 10px 0;">
-                                        <i class="bi bi-copy"></i>
-                                    </button>
-                                </div>
+                            <div>
+                                <h6 class="mb-0">Total Balance</h6>
+                                <h4 class="mb-0">${{ number_format(auth()->user()->balance ?? 0, 2) }}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Username -->
-                <div class="col-md-6">
-                    <div class="p-3 rounded-4 bg-light">
-                        <p class="text-muted mb-1"><i class="bi bi-user me-2"></i>Username</p>
-                        <h6 class="mb-0">john_doe</h6>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-success bg-opacity-10 rounded p-3 me-3">
+                                <i class="bi bi-arrow-up-circle text-success"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Total Deposits</h6>
+                                <h4 class="mb-0">${{ number_format(auth()->user()->total_deposits ?? 0, 2) }}</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Full Name -->
-                <div class="col-md-6">
-                    <div class="p-3 rounded-4 bg-light">
-                        <p class="text-muted mb-1"><i class="bi bi-id-card me-2"></i>Full Name</p>
-                        <h6 class="mb-0">John Doe</h6>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-info bg-opacity-10 rounded p-3 me-3">
+                                <i class="bi bi-arrow-down-circle text-info"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Total Withdrawals</h6>
+                                <h4 class="mb-0">${{ number_format(auth()->user()->total_withdrawals ?? 0, 2) }}</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <!-- Email -->
-                <div class="col-md-6">
-                    <div class="p-3 rounded-4 bg-light">
-                        <p class="text-muted mb-1"><i class="bi bi-envelope me-2"></i>Email</p>
-                        <h6 class="mb-0">john@example.com</h6>
+        <!-- Profile Details -->
+        <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+            <div class="card-body p-4">
+                <h5 class="mb-4">Profile Information</h5>
+                <div class="row g-4">
+                    <!-- Account ID -->
+                    <div class="col-12">
+                        <div class="bg-light rounded-3 p-3">
+                            <div class="row align-items-center">
+                                <div class="col-sm-2">
+                                    <p class="text-muted mb-0"><i class="bi bi-key me-2"></i>Account ID</p>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-white border-0" value="{{ auth()->id() }}" 
+                                            id="accountId" readonly style="border-radius: 10px 0 0 10px;">
+                                        <button class="btn btn-primary" type="button" onclick="copyAccountId()" title="Copy"
+                                            style="border-radius: 0 10px 10px 0;">
+                                            <i class="bi bi-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Phone -->
-                <div class="col-md-6">
-                    <div class="p-3 rounded-4 bg-light">
-                        <p class="text-muted mb-1"><i class="bi bi-phone me-2"></i>Phone</p>
-                        <h6 class="mb-0">+1 234 567 8900</h6>
+                    <!-- Personal Info -->
+                    <div class="col-md-6">
+                        <div class="bg-light rounded-3 p-3">
+                            <p class="text-muted mb-1"><i class="bi bi-person me-2"></i>Username</p>
+                            <h6 class="mb-0">{{ auth()->user()->username }}</h6>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Gender -->
-                <div class="col-md-6">
-                    <div class="p-3 rounded-4 bg-light">
-                        <p class="text-muted mb-1"><i class="bi bi-venus-mars me-2"></i>Gender</p>
-                        <h6 class="mb-0">
-                            <span class="badge bg-primary bg-gradient px-3 py-2"
-                                style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
-                                <i class="bi bi-mars me-1"></i>Male
-                            </span>
-                        </h6>
+                    <div class="col-md-6">
+                        <div class="bg-light rounded-3 p-3">
+                            <p class="text-muted mb-1"><i class="bi bi-envelope me-2"></i>Email</p>
+                            <h6 class="mb-0">{{ auth()->user()->email }}</h6>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="bg-light rounded-3 p-3">
+                            <p class="text-muted mb-1"><i class="bi bi-phone me-2"></i>Phone</p>
+                            <h6 class="mb-0">{{ auth()->user()->phone ?? 'Not set' }}</h6>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="bg-light rounded-3 p-3">
+                            <p class="text-muted mb-1"><i class="bi bi-calendar me-2"></i>Member Since</p>
+                            <h6 class="mb-0">{{ auth()->user()->created_at->format('M d, Y') }}</h6>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+   
+    <!-- Edit Profile Modal -->
+  
 
-
-
-
-
-
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
     <style>
-        .btn-yellow {
-            background-color: #ffd32a;
-            border: none;
-            color: #2d3436;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-yellow:hover {
-            background-color: #ffc107;
-            transform: translateY(-2px);
-            color: #2d3436;
-        }
-
         .card {
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease-in-out;
         }
-
         .card:hover {
             transform: translateY(-5px);
         }
-
-        .form-control,
-        .form-select {
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            border-radius: 10px;
+        .btn {
+            transition: all 0.2s ease-in-out;
         }
-
-        .form-control:focus,
-        .form-select:focus {
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .form-control:focus, .form-select:focus {
             box-shadow: none;
-            border-color: #6c5ce7;
-        }
-
-        .modal.fade .modal-dialog {
-            transform: scale(0.8);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .modal.show .modal-dialog {
-            transform: scale(1);
+            border-color: #6366f1;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        function copyAccountId() {
-            const accountId = document.getElementById('accountId');
-            accountId.select();
-            document.execCommand('copy');
-
-            // Show tooltip
-            const button = document.querySelector('[onclick="copyAccountId()"]');
-            const originalTitle = button.getAttribute('title');
-            button.setAttribute('title', 'Copied!');
-            setTimeout(() => button.setAttribute('title', originalTitle), 2000);
-        }
-
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const icon = event.currentTarget.querySelector('i');
-
+        // Global function for toggling password visibility
+        function togglePassword(button) {
+            const input = button.previousElementSibling;
+            const icon = button.querySelector('i');
+            
             if (input.type === 'password') {
                 input.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
             } else {
                 input.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make sure Swal is available
+            if (typeof Swal === 'undefined') {
+                console.error('SweetAlert2 is not loaded');
+                return;
+            }
+
+            function copyAccountId() {
+                const accountId = document.getElementById('accountId');
+                accountId.select();
+                document.execCommand('copy');
+                
+                const button = event.currentTarget;
+                const originalHtml = button.innerHTML;
+                button.innerHTML = '<i class="bi bi-check"></i>';
+                setTimeout(() => button.innerHTML = originalHtml, 2000);
+            }
+
+            // Handle security password form submission
+            const securityPasswordForm = document.getElementById('securityPasswordForm');
+            if (securityPasswordForm) {
+                securityPasswordForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const isSettingNew = !formData.has('current_security_password');
+                    const url = isSettingNew ? '/profile/security-password' : '/profile/security-password/change';
+                    
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(Object.fromEntries(formData))
+                        });
+
+                        const data = await response.json();
+                        console.log('Response:', response);
+                        console.log('Data:', data);
+                        
+                        if (response.ok) {
+                            // Show success message
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message,
+                                    confirmButtonColor: '#6366f1'
+                                }).then(() => {
+                                    // Reload the page to update the UI
+                                    window.location.reload();
+                                });
+                            } else {
+                                alert(data.message);
+                                window.location.reload();
+                            }
+                        } else {
+                            // Show error message
+                            if (typeof Swal !== 'undefined') {
+                                let errorMessage = data.message;
+                                if (data.errors) {
+                                    // Format validation errors
+                                    errorMessage = Object.values(data.errors).flat().join('\n');
+                                }
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: errorMessage,
+                                    confirmButtonColor: '#6366f1'
+                                });
+                            } else {
+                                alert(data.message);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'An unexpected error occurred',
+                                confirmButtonColor: '#6366f1'
+                            });
+                        } else {
+                            alert('An unexpected error occurred');
+                        }
+                    }
+                });
+            }
+
+            // Handle avatar preview
+            const avatarInput = document.querySelector('input[name="avatar"]');
+            if (avatarInput) {
+                avatarInput.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.querySelector('#editProfileModal img').src = e.target.result;
+                        }
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                });
+            }
+        });
     </script>
 </x-layout>
-<!-- Change Password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
-            <div class="modal-header border-0 bg-primary bg-gradient p-4"
-                style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
-                <h5 class="modal-title fw-bold text-white" id="changePasswordModalLabel">
-                    <i class="bi bi-key me-2"></i>Change Password
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form>
-                    <div class="mb-4">
-                        <label for="current_password" class="form-label">
-                            <i class="bi bi-lock me-2"></i>Current Password
-                        </label>
-                        <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" id="current_password"
-                                required>
-                            <button class="btn btn-light border-0" type="button"
-                                onclick="togglePassword('current_password')">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label for="new_password" class="form-label">
-                            <i class="bi bi-key me-2"></i>New Password
-                        </label>
-                        <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" id="new_password" required>
-                            <button class="btn btn-light border-0" type="button"
-                                onclick="togglePassword('new_password')">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label for="new_password_confirmation" class="form-label">
-                            <i class="bi bi-check-double me-2"></i>Confirm New Password
-                        </label>
-                        <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" id="new_password_confirmation"
-                                required>
-                            <button class="btn btn-light border-0" type="button"
-                                onclick="togglePassword('new_password_confirmation')">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer border-0 p-4">
-                <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-yellow btn-lg px-4">Update Password</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Edit Profile Modal -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
-            <div class="modal-header border-0 bg-primary bg-gradient p-4"
-                style="background: linear-gradient(45deg, #6c5ce7, #3498db) !important;">
-                <h5 class="modal-title fw-bold text-white" id="editProfileModalLabel">
-                    <i class="bi bi-user-edit me-2"></i>Edit Profile
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form>
-                    <div class="mb-4">
-                        <label for="avatar" class="form-label d-block text-center mb-3">Profile Picture</label>
-                        <div class="d-flex justify-content-center mb-3">
-                            <div class="position-relative">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                                    class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="position-absolute bottom-0 end-0">
-                                    <label for="avatar" class="btn btn-sm btn-yellow rounded-circle"
-                                        style="width: 32px; height: 32px;">
-                                        <i class="bi bi-camera"></i>
-                                    </label>
-                                    <input type="file" id="avatar" class="d-none">
-                                </div>
+
+  <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0" style="border-radius: 15px;">
+                <div class="modal-header border-0 bg-primary p-4">
+                    <h5 class="modal-title text-white">
+                        <i class="bi bi-person-edit me-2"></i>Edit Profile
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editProfileForm">
+                        <div class="text-center mb-4">
+                            <div class="position-relative d-inline-block">
+                                <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=random' }}" 
+                                    class="rounded-circle border border-3 border-primary" 
+                                    style="width: 100px; height: 100px; object-fit: cover;">
+                                <label class="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 end-0" 
+                                    style="width: 32px; height: 32px;">
+                                    <i class="bi bi-camera"></i>
+                                    <input type="file" name="avatar" class="d-none" accept="image/*">
+                                </label>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="full_name" class="form-label">
-                            <i class="bi bi-user me-2"></i>Full Name
-                        </label>
-                        <input type="text" class="form-control form-control-lg bg-light border-0" id="full_name"
-                            value="John Doe">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">
-                            <i class="bi bi-envelope me-2"></i>Email
-                        </label>
-                        <input type="email" class="form-control form-control-lg bg-light border-0" id="email"
-                            value="john@example.com">
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">
-                            <i class="bi bi-phone me-2"></i>Phone Number
-                        </label>
-                        <input type="tel" class="form-control form-control-lg bg-light border-0" id="phone"
-                            value="+1 234 567 8900">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gender" class="form-label">
-                            <i class="bi bi-venus-mars me-2"></i>Gender
-                        </label>
-                        <select class="form-select form-select-lg bg-light border-0" id="gender">
-                            <option value="male" selected>Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer border-0 p-4">
-                <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-yellow btn-lg px-4">Save Changes</button>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name" value="{{ auth()->user()->name }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" value="{{ auth()->user()->email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" name="phone" value="{{ auth()->user()->phone }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <select class="form-select" name="gender">
+                                <option value="male" {{ auth()->user()->gender === 'male' ? 'selected' : '' }}>Male</option>
+                                <option value="female" {{ auth()->user()->gender === 'female' ? 'selected' : '' }}>Female</option>
+                                <option value="other" {{ auth()->user()->gender === 'other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 p-4">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="editProfileForm" class="btn btn-primary">Save Changes</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+ <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0" style="border-radius: 15px;">
+                <div class="modal-header border-0 p-4" style="background-color: #6366f1">
+                    <h5 class="modal-title text-white">
+                        Change Password
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="changePasswordForm">
+                        <div class="mb-3">
+                            <label class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="current_password" required>
+                                <span class="btn btn-light" type="button" onclick="togglePassword(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="new_password" required>
+                                <span class="btn btn-light" type="button" onclick="togglePassword(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="new_password_confirmation" required>
+                                <span class="btn btn-light" type="button" onclick="togglePassword(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 p-4">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="changePasswordForm" class="btn" style="background-color: #6366f1; color:white">Update Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Password Modal -->
+    <div class="modal fade" id="securityPasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0" style="border-radius: 15px;">
+                <div class="modal-header border-0 p-4" style="background-color: {{ auth()->user()->secpassword ? '#6366f1' : '#dc3545' }}">
+                    <h5 class="modal-title text-white">
+                        <i class="bi {{ auth()->user()->secpassword ? 'bi-shield-lock' : 'bi-exclamation-triangle' }} me-2"></i>
+                        {{ auth()->user()->secpassword ? 'Change Security Password' : 'Set Security Password' }}
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    @unless(auth()->user()->secpassword)
+                    <div class="alert alert-warning mb-4">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <strong>Important:</strong> Setting up a security password is required for additional account protection.
+                    </div>
+                    @endunless
+                    <form id="securityPasswordForm" method="POST">
+                        @csrf
+                        @if(auth()->user()->secpassword)
+                        <div class="mb-3">
+                            <label class="form-label">Current Security Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="current_security_password" required>
+                                <span class="btn btn-light" type="button" onclick="togglePassword(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        @endif
+                        <div class="mb-3">
+                            <label class="form-label">New Security Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="new_security_password" required>
+                                <span class="btn btn-light" type="button" onclick="togglePassword(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm New Security Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="new_security_password_confirmation" required>
+                                <span class="btn btn-light" type="button" onclick="togglePassword(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 p-4">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="securityPasswordForm" class="btn" style="background-color: #6366f1; color:white">
+                        {{ auth()->user()->secpassword ? 'Update Security Password' : 'Set Security Password' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,13 +1,10 @@
-@extends('layouts.app')
-
 <x-layout>
     {{-- Notification Bar --}}
-    <div class="navbar navbar-expand-lg navbar-light bg-white shadow-sm rounded-3 mb-4">
+    <div class="navbar navbar-expand-lg navbar-light bg-transparent rounded-3 mb-4">
         <div class="container-fluid">
             <h5 style="font-size: 1.5rem; font-weight: 600; margin-top: 1rem;">
                 Admin Board
             </h5>
-            
             <div class="d-flex ms-auto">
                 <div class="dropdown">
                     <button class="btn position-relative" type="button" id="notificationDropdown"
@@ -45,7 +42,7 @@
                                     </div>
                                 </div>
                             </a></li>
-                       
+
                     </ul>
                 </div>
             </div>
@@ -157,7 +154,8 @@
                             <td>#OC001</td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                        style="width: 35px; height: 35px;">
                                         <i class="bi bi-person text-secondary"></i>
                                     </div>
                                     <div class="ms-2">John Doe</div>
@@ -180,7 +178,8 @@
                             <td>#OC002</td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                        style="width: 35px; height: 35px;">
                                         <i class="bi bi-person text-secondary"></i>
                                     </div>
                                     <div class="ms-2">Jane Smith</div>
@@ -203,7 +202,8 @@
                             <td>#OC003</td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+                                        style="width: 35px; height: 35px;">
                                         <i class="bi bi-person text-secondary"></i>
                                     </div>
                                     <div class="ms-2">Mike Johnson</div>
@@ -241,60 +241,7 @@
         </div>
     </div>
 
-    {{-- Recent Orders --}}
-    {{-- <h5 style="font-size: 1.2rem; font-weight: 600; margin-top: 1rem; color: #414141;">
-        Recent Orders
-    </h5>
-    <div class="row mt-4">
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 h-100" style="border-radius: 15px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="badge bg-success">Completed</span>
-                        <small class="text-muted">#ORD-2024001</small>
-                    </div>
-                    <h5 class="card-title">Gold Package</h5>
-                    <p class="card-text text-muted">User: John Doe</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">$199.99</h4>
-                        <button class="btn btn-outline-primary btn-sm">View Details</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 h-100" style="border-radius: 15px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="badge bg-warning">Pending</span>
-                        <small class="text-muted">#ORD-2024002</small>
-                    </div>
-                    <h5 class="card-title">Silver Package</h5>
-                    <p class="card-text text-muted">User: Jane Smith</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">$99.99</h4>
-                        <button class="btn btn-outline-primary btn-sm">View Details</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card border-0 h-100" style="border-radius: 15px; box-shadow: 0 2px 20px rgba(0,0,0,0.05);">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="badge bg-danger">Cancelled</span>
-                        <small class="text-muted">#ORD-2024003</small>
-                    </div>
-                    <h5 class="card-title">Bronze Package</h5>
-                    <p class="card-text text-muted">User: Mike Johnson</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">$49.99</h4>
-                        <button class="btn btn-outline-primary btn-sm">View Details</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    
 
     {{-- User Data Table --}}
     <div class="d-flex justify-content-between align-items-center">
@@ -392,7 +339,8 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header border-0 bg-light">
-                <h5 class="modal-title" id="orderDetailModalLabel" style="font-size: 1.2rem; font-weight: 600; color: #414141;">
+                <h5 class="modal-title" id="orderDetailModalLabel"
+                    style="font-size: 1.2rem; font-weight: 600; color: #414141;">
                     Order Payment Detail
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -433,7 +381,8 @@
                             <div class="card-body">
                                 <h6 class="card-subtitle mb-3 text-muted">Customer Information</h6>
                                 <div class="d-flex align-items-center mb-3">
-                                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center"
+                                        style="width: 48px; height: 48px;">
                                         <i class="bi bi-person text-secondary fs-4"></i>
                                     </div>
                                     <div class="ms-3">
@@ -520,7 +469,8 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0">
             <div class="modal-header border-0 bg-light">
-                <h5 class="modal-title" id="editUserModalLabel" style="font-size: 1.2rem; font-weight: 600; color: #414141;">
+                <h5 class="modal-title" id="editUserModalLabel"
+                    style="font-size: 1.2rem; font-weight: 600; color: #414141;">
                     Edit User
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -533,7 +483,7 @@
                             <div class="card border-0 bg-light">
                                 <div class="card-body">
                                     <h6 class="card-subtitle mb-3 text-muted">Basic Information</h6>
-                                    
+
                                     <div class="mb-3">
                                         <label class="form-label small text-muted">Username</label>
                                         <div class="input-group">
@@ -560,9 +510,11 @@
                                             <span class="input-group-text bg-white">
                                                 <i class="bi bi-key"></i>
                                             </span>
-                                            <input type="password" class="form-control" placeholder="Leave blank to keep current">
+                                            <input type="password" class="form-control"
+                                                placeholder="Leave blank to keep current">
                                         </div>
-                                        <div class="form-text">Leave blank if you don't want to change the password</div>
+                                        <div class="form-text">Leave blank if you don't want to change the password
+                                        </div>
                                     </div>
 
                                     <div class="mb-3">
@@ -618,7 +570,8 @@ United States</textarea>
                                                 <i class="bi bi-coin"></i>
                                             </span>
                                             <input type="number" class="form-control" value="1000">
-                                            <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#coinHistoryModal">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#coinHistoryModal">
                                                 <i class="bi bi-clock-history"></i>
                                             </button>
                                         </div>
@@ -678,34 +631,44 @@ United States</textarea>
         </div>
     </div>
 </div>
-
+<style>
+    .modal-content {
+        background-color: #e8f4ff;
+    }
+    body {
+            background-color: #e8f4ff;
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+</style>
 {{-- Update the view and edit buttons to trigger the modal --}}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add click event listeners to all view buttons
-    document.querySelectorAll('[title="View"]').forEach(button => {
-        button.addEventListener('click', function() {
-            var modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
-            modal.show();
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add click event listeners to all view buttons
+        document.querySelectorAll('[title="View"]').forEach(button => {
+            button.addEventListener('click', function () {
+                var modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));
+                modal.show();
+            });
+        });
+
+        // Add click event listeners to all edit buttons
+        document.querySelectorAll('.btn-outline-primary').forEach(button => {
+            button.addEventListener('click', function () {
+                var modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+                modal.show();
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('editUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Add your form submission logic here
+
+            // Close the modal after successful submission
+            var modal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
+            modal.hide();
         });
     });
-
-    // Add click event listeners to all edit buttons
-    document.querySelectorAll('.btn-outline-primary').forEach(button => {
-        button.addEventListener('click', function() {
-            var modal = new bootstrap.Modal(document.getElementById('editUserModal'));
-            modal.show();
-        });
-    });
-
-    // Handle form submission
-    document.getElementById('editUserForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Add your form submission logic here
-        
-        // Close the modal after successful submission
-        var modal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
-        modal.hide();
-    });
-});
 </script>

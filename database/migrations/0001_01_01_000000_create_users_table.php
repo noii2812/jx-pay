@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('phone')->nullable();
+            $table->string('phoneNumber')->nullable();
+            $table->integer('coin')->default(0);
+            $table->enum('role', ['admin', 'gm', 'user'])->default('user');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->string('address')->nullable();
             $table->rememberToken();
             $table->timestamps();

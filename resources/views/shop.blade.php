@@ -1,17 +1,17 @@
-@extends('layouts.app')
-
 <x-layout>
     <!-- Main Content -->
-    <div class="col-12 shop-content">
+    <div class="col-12 shop-content" >
         <!-- Header -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+        <!-- <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
             <div class="server-status mb-3 mb-md-0">
                 <span class="badge bg-success"></span>
                 Server online
                 <span class="text-muted ms-2">125</span>
             </div>
-        </div>
+        </div> -->
         <!-- Promo Banner -->
+
+        <!--
         <div class="banner p-3 p-md-4 mb-4">
             <div class="row align-items-center">
                 <div class="col-12 col-md-8 text-center text-md-start">
@@ -24,14 +24,15 @@
                     <button class="btn btn-yellow mt-3">Buy now</button>
                 </div>
                 <div class="col-12 col-md-4 mt-3 mt-md-0 text-center">
-                    <!-- Add character illustrations here -->
+                    Add character illustrations here
                 </div>
             </div>
-        </div>
+        </div> 
+-->
 
         <!-- Privilege Cards -->
-        <h5 class="mb-4">Privilege</h5>
-        <div class="row g-4">
+        {{-- <h5 class="mb-4">Privilege</h5> --}}
+        {{-- <div class="row g-4">
             <!-- Emperor Card -->
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card card-privilege bg-primary text-white h-100">
@@ -66,10 +67,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Coin Cards -->
-        <div class="row g-4 mt-2">
+        <h4 class="mb-0 ">Shop</h4>
+        <div class="row g-4 mt-0">
             @php
                 $coinCards = [
                     ['points' => 4000, 'price' => 100.00],
@@ -86,7 +88,7 @@
             @foreach($coinCards as $card)
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="card card-privilege mx-auto"
-                        style="max-width: 280px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        style="">
                         <div class="card-body">
                             <img src="{{ URL('images/coin.png') }}" alt="Coin Icon" class="img-fluid"
                                 style="width: 100px; height: auto; margin: auto; display: block;">
@@ -99,7 +101,7 @@
                                 </div>
                             </div>
                             <button type="button" class="buy-coins-btn btn btn-yellow w-100 mt-3"
-                                style="border-radius: 20px; font-weight: bold;" data-points="{{ $card['points'] }}"
+                                data-points="{{ $card['points'] }}"
                                 data-price="{{ $card['price'] }}">
                                 Buy now
                             </button>
@@ -108,15 +110,248 @@
                 </div>
             @endforeach
         </div>
-
-
-
-
     </div>
+
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize the modals
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            // Function to generate reference number
+            // function generateReference() {
+            //     const timestamp = Date.now().toString();
+            //     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            //     return `TRX-${timestamp}${random}`;
+            // }
+
+            // Function to handle coin purchase
+            function handleCoinPurchase(points, price) {
+                // Update modal content
+                document.querySelector('.points-amount').textContent = points;
+                document.getElementById('paymentAmount').textContent = price.toFixed(2);
+                document.getElementById('referenceId').value = "";
+
+                // Generate QR code
+                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KHQR_PAYMENT_${price}_${points}`;
+                document.getElementById('qrCodeImage').src = qrCodeUrl;
+
+                // Show the modal
+                paymentModal.show();
+            }
+
+            // Add click event listeners to all buy buttons
+            document.querySelectorAll('.buy-coins-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    const points = this.getAttribute('data-points');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    handleCoinPurchase(points, price);
+                });
+            });
+
+            // Handle send order button
+            document.getElementById('sendOrderBtn').addEventListener('click', function () {
+                const points = document.querySelector('.points-amount').textContent;
+                const price = parseFloat(document.getElementById('paymentAmount').textContent);
+                const referenceId = document.getElementById('referenceId').value;
+                const paymentMethod = document.querySelector('input[name="payment_method"]:checked').id;
+
+                // Create transaction data
+                const transactionData = {
+                    price: price,
+                    coin: points,
+                    payment_method: paymentMethod,
+                    reference_id: referenceId,
+                    payment_methods: "khqr"
+                };
+
+                // Send AJAX request to create transaction
+                fetch('/transactions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(transactionData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data.success) {
+                        paymentModal.hide();
+                        setTimeout(() => {
+                            successModal.show();
+                        }, 300);
+                    } else {
+                        alert('Error creating transaction: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your request.');
+                });
+            });
+
+            // Handle modal close buttons
+            document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(button => {
+                button.addEventListener('click', function () {
+                    paymentModal.hide();
+                    successModal.hide();
+                });
+            });
+
+            // show info modal 
+            document.getElementById('info-icon').addEventListener('click', () => {
+                const infoModal =  new bootstrap.Modal(document.getElementById('infoModal'))
+                infoModal.show()
+            })
+
+            // close info modal
+            document.getElementById('button-close-info').addEventListener('click', () => {
+                bootstrap.Modal.getInstance(document.getElementById('infoModal')).hide();
+            })
+        });
+    </script>
+
+    <style>
+        .text-navy {
+            color: #1e3a8a;
+        }
+
+        .payment-option label {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option label:hover {
+            background-color: #f8fafc;
+        }
+
+        .payment-option.selected label {
+            border-color: #0d6efd;
+            background-color: #f0f9ff;
+        }
+
+        .qr-section {
+            background-color: #fff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .qr-header {
+            border-radius: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .bank-logos img {
+            max-height: 40px;
+            object-fit: contain;
+        }
+
+        .payment-amount {
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .game-title {
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        #sendOrderBtn {
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Success Modal Styles */
+        #successModal .modal-content {
+            border-radius: 1rem;
+        }
+
+        #successModal .bi-check-circle {
+            color: #10b981;
+        }
+
+        /* Modal Styles */
+        .modal {
+            z-index: 9999;
+        }
+
+        .modal-dialog {
+            margin: 1.75rem auto;
+            max-width: 500px;
+            position: relative;
+            z-index: 10000;
+        }
+
+        .modal-content {
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10000;
+            background: #fff;
+        }
+
+        .modal.show {
+            overflow-y: auto !important;
+            display: block !important;
+            pointer-events: auto !important;
+        }
+
+        .modal-open {
+            overflow: hidden;
+            padding-right: 0 !important;
+        }
+
+        .modal input,
+        .modal button,
+        .modal .payment-option,
+        .modal-body,
+        .modal-header,
+        .modal-footer {
+            position: relative;
+            z-index: 10001;
+        }
+
+        .btn-close {
+            opacity: 1;
+            padding: 1rem;
+            z-index: 10002;
+            position: relative;
+        }
+
+        .modal-dialog {
+            transform: none !important;
+            pointer-events: auto !important;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+        }
+    </style>
+
 </x-layout>
+
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-lg" style="max-width: 800px">
         <div class="modal-content">
             <div class="modal-header border-0 pb-0">
                 <h5 class="modal-title" id="paymentModalLabel">
@@ -125,11 +360,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="d-flex">
+                <div>
+                    <div class="col-md-12">
                         <div class="payment-methods mb-4">
                             <h6 class="text-navy mb-3">Payment Methods</h6>
-                            <div class="payment-option selected">
+                            <div class="payment-option selected mt-3">
                                 <input type="radio" name="payment_method" id="khqr" checked class="d-none">
                                 <label for="khqr" class="d-flex align-items-center p-3 rounded-3 border">
                                     <img src="{{ asset('images/banks/khqr-logo.png') }}" alt="KHQR" height="30">
@@ -138,21 +374,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="order-info">
-                            <h6 class="text-navy mb-3">Order Information</h6>
-                            <div class="mb-3">
-                                <label class="form-label d-flex align-items-center">
-                                    Reference #
-                                    <i class="bi bi-info-circle ms-1" data-bs-toggle="tooltip"
-                                        title="Please save this reference number for tracking your payment"></i>
-                                </label>
-                                <input type="text" class="form-control" id="referenceId">
-                            </div>
+                </div>
+                <div class="px-3">
+                <div style="display: flex;flex-direction:column;align-items:center">
+                    <div class="order-info mx-3 w-100" >
+                        <h6 class="text-navy mb-3">Order Information</h6>
+                        <div class="mb-3">
+                            <label class="form-label d-flex align-items-center">
+                                Reference #
+                                <i id="info-icon" class="bi bi-info-circle ms-1" style="cursor: pointer;"></i>
+                            </label>
+                            <input type="text" class="form-control w-100" id="referenceId" required="true">
                         </div>
                     </div>
                 </div>
-
                 <div class="qr-section text-center mt-3">
                     <div class="qr-header bg-dark text-warning p-2 mb-3">
                         THIS IS KHQR CODE, CAN SCAN WITH ANY BANK!
@@ -169,11 +404,13 @@
                         <h4 class="game-title text-uppercase">JX2</h4>
                     </div>
                 </div>
+                </div>
+            </div>
 
-                <div class="payment-banks mt-4">
+                {{-- <div class="payment-banks mt-4">
                     <div class="secure-text text-danger mb-2">Secure Payments By:</div>
                     <div class="bank-logos p-3 border rounded-3">
-                        <div class="row align-items-center g-3">
+                        <div class="row align-items-center justify-content-center g-3">
                             <div class="col"><img src="{{ asset('images/banks/aba.jpg') }}" alt="ABA" class="img-fluid">
                             </div>
                             <div class="col"><img src="{{ asset('images/banks/wing.jpg') }}" alt="Wing"
@@ -184,7 +421,7 @@
                                     class="img-fluid"></div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-primary w-100" id="sendOrderBtn">Send Order</button>
@@ -192,6 +429,29 @@
         </div>
     </div>
 </div>
+
+<!-- Info Modal -->
+<div class="modal fade " id="infoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" style="z-index: 1056;max-width:800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">About Reference Number</h5>
+                <button id="button-close-info" type="button" class="btn-close" ></button>
+            </div>
+            <div class="modal-body">
+                <p>The reference number is a unique identifier for your transaction. Please save this number as it will help you:</p>
+                <ul>
+                    <li>Track your payment status</li>
+                    <li>Reference your transaction in case of any issues</li>
+                    <li>Verify your payment with customer support</li>
+                </ul>
+                <p class="mb-0">Make sure to keep this number until your payment is confirmed.</p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
 <!-- Success Modal -->
 <div class="modal fade" id="successModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -205,264 +465,3 @@
         </div>
     </div>
 </div>
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize the modals
-        const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'), {
-            backdrop: 'static',
-            keyboard: false
-        });
-
-        const successModal = new bootstrap.Modal(document.getElementById('successModal'), {
-            backdrop: 'static',
-            keyboard: false
-        });
-
-        // Function to generate reference number
-        function generateReference() {
-            const timestamp = Date.now().toString();
-            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            return `REF${timestamp}${random}`;
-        }
-
-        // Function to handle coin purchase
-        function handleCoinPurchase(points, price) {
-            // Update modal content
-            document.querySelector('.points-amount').textContent = points;
-            document.getElementById('paymentAmount').textContent = price.toFixed(2);
-            document.getElementById('referenceId').value = generateReference();
-
-            // Generate QR code
-            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KHQR_PAYMENT_${price}_${points}`;
-            document.getElementById('qrCodeImage').src = qrCodeUrl;
-
-            // Show the modal
-            paymentModal.show();
-        }
-
-        // Add click event listeners to all buy buttons
-        document.querySelectorAll('.buy-coins-btn').forEach(button => {
-            button.addEventListener('click', function (e) {
-                const points = this.getAttribute('data-points');
-                const price = parseFloat(this.getAttribute('data-price'));
-                handleCoinPurchase(points, price);
-            });
-        });
-
-        // Handle send order button
-        document.getElementById('sendOrderBtn').addEventListener('click', function () {
-            paymentModal.hide();
-            setTimeout(() => {
-                successModal.show();
-            }, 300);
-        });
-
-        // Handle modal close buttons
-        document.querySelectorAll('[data-bs-dismiss="modal"]').forEach(button => {
-            button.addEventListener('click', function () {
-                paymentModal.hide();
-                successModal.hide();
-            });
-        });
-    });
-</script>
-
-<style>
-    @media (max-width: 991px) {
-        .shop-content {
-            padding-bottom: 2rem;
-            min-height: 100%;
-            height: auto;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .banner {
-            text-align: center;
-        }
-
-        .h2-md {
-            font-size: 1.5rem;
-        }
-
-        .card-privilege {
-            margin-bottom: 1rem;
-        }
-
-        .shop-content {
-            padding-bottom: 4rem;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .server-status {
-            font-size: 0.9rem;
-        }
-
-        .banner h3 {
-            font-size: 1.5rem;
-        }
-
-        .card-privilege {
-            max-width: 100%;
-        }
-
-        .shop-content {
-            padding-bottom: 3rem;
-        }
-    }
-
-    .card-privilege {
-        transition: transform 0.2s;
-    }
-
-    .card-privilege:hover {
-        transform: translateY(-5px);
-    }
-
-    .btn-yellow {
-        background-color: #ffd32a;
-        border: none;
-        color: #333;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-
-    .btn-yellow:hover {
-        background-color: #ffc107;
-        transform: scale(1.05);
-    }
-
-    /* Payment Modal Styles */
-    .modal {
-        z-index: 9999;
-    }
-
-    /* .modal-backdrop {
-        z-index: 9998;
-    } */
-
-    .modal-dialog {
-        margin: 1.75rem auto;
-        max-width: 500px;
-        position: relative;
-        z-index: 10000;
-    }
-
-    .modal-content {
-        border: none;
-        border-radius: 1rem;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        position: relative;
-        z-index: 10000;
-        background: #fff;
-    }
-
-    /* Fix modal scrolling */
-    .modal.show {
-        overflow-y: auto !important;
-        display: block !important;
-        pointer-events: auto !important;
-    }
-
-    .modal-open {
-        overflow: hidden;
-        padding-right: 0 !important;
-    }
-
-    /* Ensure form elements are clickable */
-    .modal input,
-    .modal button,
-    .modal .payment-option,
-    .modal-body,
-    .modal-header,
-    .modal-footer {
-        position: relative;
-        z-index: 10001;
-    }
-
-    /* Make close button more visible */
-    .btn-close {
-        opacity: 1;
-        padding: 1rem;
-        z-index: 10002;
-        position: relative;
-    }
-
-    /* Additional fixes for modal interaction */
-    .modal-dialog {
-        transform: none !important;
-        pointer-events: auto !important;
-    }
-
-    .modal-backdrop.show {
-        opacity: 0.5;
-    }
-
-    .text-navy {
-        color: #1e3a8a;
-    }
-
-    .payment-option label {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .payment-option label:hover {
-        background-color: #f8fafc;
-    }
-
-    .payment-option.selected label {
-        border-color: #0d6efd;
-        background-color: #f0f9ff;
-    }
-
-    .qr-section {
-        background-color: #fff;
-        border-radius: 1rem;
-        padding: 1.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .qr-header {
-        border-radius: 0.5rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
-
-    .bank-logos img {
-        max-height: 40px;
-        object-fit: contain;
-    }
-
-    .payment-amount {
-        color: #1a1a1a;
-        font-weight: 700;
-    }
-
-    .game-title {
-        color: #4a5568;
-        font-weight: 600;
-    }
-
-    #sendOrderBtn {
-        border-radius: 0.5rem;
-        padding: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* Success Modal Styles */
-    #successModal .modal-content {
-        border-radius: 1rem;
-    }
-
-    #successModal .bi-check-circle {
-        color: #10b981;
-    }
-</style>

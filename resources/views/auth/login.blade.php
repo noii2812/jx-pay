@@ -228,15 +228,25 @@
                     <h6></h6>
                     <p class="login-subtitle">ឱកាសក្លាយជាអ្នកក្លាហានក្នុងដៃអ្នក</p>
 
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="divider"></div>
-                    <form>
+                    <form action="/login" method="POST">
+                        @csrf
                         <div class="mb-4">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                            <label for="username"  class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
                             <span class="password-toggle" onclick="togglePassword()"
                                 style="padding-top: 30px; padding-right: 10px;">
                                 <i class="bi bi-eye" id="toggleIcon"></i>
@@ -246,8 +256,9 @@
                         <div class="mb-4">
                             <button type="submit" class="btn btn-login w-100">Login</button>
                         </div>
-                        <a href="/signup" class="signup-link">Don't have an account? Sign Up</a>
+                       
                     </form>
+                    <a href="/signup" class="signup-link">Don't have an account? Sign Up</a>
                 </div>
             </div>
         </div>
@@ -260,16 +271,16 @@
             const bgMusic = document.getElementById('bgMusic');
 
             // Try to play immediately
-            tryPlayMusic();
+            // tryPlayMusic();
 
             // Also try to play on first user interaction
             document.addEventListener('click', function () {
-                tryPlayMusic();
+                // tryPlayMusic();
             }, { once: true });
             //
             // Also try to play on first scroll
             document.addEventListener('scroll', function () {
-                tryPlayMusic();
+                // tryPlayMusic();
             }, { once: true });
         });
 

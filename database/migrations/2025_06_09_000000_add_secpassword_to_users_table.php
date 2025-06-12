@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->integer('coin');
-            $table->string('username');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('secpassword')->nullable()->after('password');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('secpassword');
+        });
     }
-};
+}; 
