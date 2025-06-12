@@ -132,7 +132,7 @@
                                 <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">#</th>
                                 <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">Transfer ID</th>
                                 <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">From Account</th>
-                                <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">To Account</th>
+                                <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">To Game Account</th>
                                 <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">Coin Amount</th>
                                 <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">Status</th>
                                 <th class="border-0 py-4 px-4" style="background: #f8f9fa; font-size: 0.95rem;">Completed Date</th>
@@ -154,7 +154,7 @@
                                         </div>
                                     </td>
                                     <td class="py-4 px-4">
-                                        <span class="fw-medium">{{ $transfer->to_account }}</span>
+                                        <span class="fw-medium">{{ $transfer->toAccount->username }}</span>
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="d-flex align-items-center gap-2">

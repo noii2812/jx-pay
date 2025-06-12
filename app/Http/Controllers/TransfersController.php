@@ -29,19 +29,20 @@ class TransfersController extends Controller
      */
     public function store(Request $request)
     {
+       
         $validated = $request->validate([
-            'to_account' => 'required|integer|exists:accounts,id',
+            'to_account' => 'required|integer|exists:account,id',
             'coin' => 'required|integer|min:1',
-            'password' => 'required|string',
+            // 'password' => 'required|string',
         ]);
 
         try {
             $user = Auth::user();
             $result = DB::transaction(function () use ($validated, $user) {
                 // Verify password
-                if (!Hash::check($validated['password'], $user->password)) {
-                    throw new \Exception('Invalid password');
-                }
+                // if (!Hash::check($validated['password'], $user->password)) {
+                //     throw new \Exception('Invalid password');
+                // }
 
                 // Check if user has enough coins
                 if ($user->coin < $validated['coin']) {
@@ -68,6 +69,7 @@ class TransfersController extends Controller
                 $user->decrement('coin', $validated['coin']);
                 $destinationAccount->increment('coin', $validated['coin']);
 
+                // dd($transfer);
                 return [
                     'success' => true,
                     'remaining_coins' => $user->coin
@@ -77,6 +79,7 @@ class TransfersController extends Controller
             return redirect()->route('game')->with('success', 'Transfer completed successfully. Remaining coins: ' . $result['remaining_coins']);
 
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('game')->with('error', 'Transfer failed: ' . $e->getMessage());
         }
     }

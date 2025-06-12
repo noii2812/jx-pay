@@ -87,7 +87,7 @@ class AccountController extends Controller
     {
         try {
             $request->validate([
-                'account_id' => 'required|exists:accounts,id',
+                'account_id' => 'required|exists:account,id',
                 'current_password' => 'required|string',
                 'new_password' => 'required|string|min:6|max:64',
                 'confirm_password' => 'required|same:new_password'
@@ -110,7 +110,7 @@ class AccountController extends Controller
 
             return redirect()->back()->with('success', 'Password updated successfully');
         } catch (\Exception $e) {
-            dd($e->getMessage());
+           
             return redirect()->back()->with('error', 'Failed to update password. Please try again.');
         }
     }

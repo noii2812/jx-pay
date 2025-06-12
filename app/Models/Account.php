@@ -10,6 +10,7 @@ class Account extends Model
     use HasFactory;
 
     public $timestamps = false;
+    protected $table = 'account';
 
     /**
      * The attributes that are mass assignable.

@@ -141,7 +141,8 @@
                                 <button class="btn btn-light btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#changePasswordModal"
                                     data-account-id="{{ $server['id'] }}"
-                                    data-username="{{ $server['username'] }}">
+                                    data-username="{{ $server['username'] }}"
+                                    >
                                     <i class="bi bi-key me-1"></i>Change Password
                                 </button>
                                 <button class="col-md-6 btn btn-yellow btn-sm" data-bs-toggle="modal"
@@ -360,14 +361,23 @@
                     <!-- Transfer Form -->
                     <div class="card border-0 bg-light mb-4">
                         <div class="card-body p-3">
+                            <div class="mb-3 d-none">
+                                <label class="form-label d-flex align-items-center gap-2">
+                                    <i class="bi bi-person fs-5" style="color: #6c5ce7"></i>
+                                    To Account
+                                </label>
+                                <input  type="number" name="to_account" id="modalToAccount" class="form-control form-control-lg border-0"
+                                    required placeholder="Enter recipient account ID">
+                                <small class="text-muted" id="modalToAccountInfo"></small>
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label d-flex align-items-center gap-2">
                                     <i class="bi bi-person fs-5" style="color: #6c5ce7"></i>
                                     To Account
                                 </label>
-                                <input type="number" name="to_account" id="modalToAccount" class="form-control form-control-lg border-0"
+                                <input disabled name="to_account_username" id="modalToAccountUsername" class="form-control form-control-lg border-0"
                                     required placeholder="Enter recipient account ID">
-                                <small class="text-muted" id="modalToAccountInfo"></small>
+                                <small class="text-muted" id="modalToAccountInfoUsername"></small>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label d-flex align-items-center gap-2">
@@ -387,7 +397,7 @@
                                         onclick="setMaxAmount()">Use Max</button>
                                 </div>
                             </div>
-                            <div>
+                            {{-- <div>
                                 <label class="form-label d-flex align-items-center gap-2">
                                     <i class="bi bi-lock fs-5" style="color: #6c5ce7"></i>
                                     Your Password
@@ -399,7 +409,7 @@
                                         <i class="bi bi-eye"></i>
                                     </button>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -408,9 +418,10 @@
                         <button type="button" class="btn btn-light btn-lg flex-grow-1" data-bs-dismiss="modal">
                             <i class="bi bi-x-lg me-2"></i>Cancel
                         </button>
-                        <button type="submit" class="btn btn-primary btn-lg flex-grow-1"
+                        <button type="submit" class="btn btn-primary btn-lg flex-grow-1" id="transferButton"
                             style="background: linear-gradient(45deg, #6c5ce7, #3498db);">
                             <i class="bi bi-arrow-left-right me-2"></i>Transfer
+                            <span class="spinner-border spinner-border-sm ms-1 d-none" id="transferSpinner" role="status" aria-hidden="true"></span>
                         </button>
                     </div>
                 </form>
@@ -566,7 +577,24 @@
 
             // Update modal fields
             document.getElementById('modalToAccount').value = accountId;
+            document.getElementById('modalToAccountUsername').value = username;
             document.getElementById('modalToAccountInfo').textContent = 'Account ID: ' + accountId + ' (' + username + ')';
+        });
+        
+        // Handle transfer form submission with loading animation
+        const transferForm = document.querySelector('#transferModal form');
+        const transferButton = document.getElementById('transferButton');
+        const transferSpinner = document.getElementById('transferSpinner');
+        
+        transferForm.addEventListener('submit', function() {
+            // Show loading spinner
+            transferSpinner.classList.remove('d-none');
+            
+            // Disable button to prevent multiple submissions
+            transferButton.disabled = true;
+            transferButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
+            
+            // Form will submit normally
         });
     });
 </script>
