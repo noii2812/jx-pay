@@ -1,4 +1,5 @@
 <x-layout>
+    {{-- <x-loading-animation /> --}}
     
         <!-- Header Section -->
         <div class="d-flex align-items-center justify-content-between mb-4">

@@ -54,4 +54,12 @@ class Account extends Model
         'ref',
         'refer',
     ];
+
+    /**
+     * Get the user that owns this account.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'ref');
+    }
 }

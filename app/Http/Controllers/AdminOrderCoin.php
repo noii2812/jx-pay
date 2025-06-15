@@ -42,6 +42,16 @@ class AdminOrderCoin extends Controller
         return view('orderCoin', $compact);
     }
 
+    public function getOrderDetails($id)
+    {
+        $transaction = Transaction::with('user')->where('order_id', $id)->firstOrFail();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $transaction
+        ]);
+    }
+
     public function approve($id)
     {
         $transaction = Transaction::where('order_id', $id)->firstOrFail();

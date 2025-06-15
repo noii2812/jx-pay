@@ -319,6 +319,7 @@
                 }
             } else {
                 bgMusic.pause();
+                
                 musicIcon.classList.remove('bi-volume-mute-fill');
                 musicIcon.classList.add('bi-volume-up-fill');
             }

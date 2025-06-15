@@ -1,4 +1,6 @@
 <x-layout>
+    {{-- <x-loading-animation /> --}}
+    
     <!-- Add success message for registration -->
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">

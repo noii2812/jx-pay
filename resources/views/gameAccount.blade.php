@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app') --}}
 
 <x-layout>
     {{-- Add static data array --}}
@@ -209,6 +209,8 @@
         </div>
 
         {{-- Game Accounts Table --}}
+
+
         <div class="card border-0 shadow-sm">
             <div class="card-body">
                 <div class="table-responsive">

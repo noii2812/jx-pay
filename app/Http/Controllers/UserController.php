@@ -87,14 +87,14 @@ class UserController extends Controller
 
         $user = auth()->user();
         
-        if ($user->security_password) {
+        if ($user->secpassword) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Security password is already set'
             ], 400);
         }
 
-        $user->security_password = Hash::make($request->new_security_password);
+        $user->secpassword = Hash::make($request->new_security_password);
         $user->save();
 
         return response()->json([
@@ -151,5 +151,52 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'Security password has been changed successfully'
         ]);
+    }
+
+    public function getUserDetails($id)
+    {
+        $user = User::findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        $validatedData = $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+            'status' => 'required|string|in:active,pending,inactive',
+            'coin' => 'required|integer|min:0',
+        ]);
+        
+        // Only update password if provided
+        if ($request->filled('password')) {
+            $validatedData['password'] = bcrypt($request->password);
+        }
+        
+        $user->update($validatedData);
+        
+        return redirect()->back()->with('success', 'User updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Check if user is not an admin
+        if ($user->role === 'admin' || $user->role === 'gm') {
+            return redirect()->back()->with('error', 'Cannot delete admin or GM users');
+        }
+        
+        $user->delete();
+        
+        return redirect()->back()->with('success', 'User deleted successfully');
     }
 } 
