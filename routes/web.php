@@ -1,6 +1,6 @@
 <?php
-
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransferCoinHistoryController;
 use Illuminate\Support\Facades\Route;
@@ -49,15 +49,24 @@ Route::middleware('auth')->group(function () {
     
     // Routes accessible only to admin or gm roles
     Route::group(['middleware' => 'admin.gm.check'], function () {
-        Route::get('/admin', function () {
-            return view('admin');
-        });
+        Route::get('/admin', [AdminDashboardController::class, 'index']);
         Route::get('/users', [UserController::class, 'index'])->name('users.search');
+        Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        
+        // Game accounts management
+        Route::get('/gameAccounts', [AccountController::class, 'adminIndex'])->name('admin.gameAccounts');
+        Route::get('/api/accounts/{id}', [AccountController::class, 'getAccountDetails'])->name('admin.account.details');
+        Route::post('/api/accounts/{id}/toggle-status', [AccountController::class, 'toggleStatus'])->name('admin.account.toggle');
+        Route::put('/api/accounts/{id}', [AccountController::class, 'updateAccount'])->name('admin.account.update');
+        Route::post('/api/accounts', [AccountController::class, 'store'])->name('admin.account.store');
         
         // Add other admin-only routes here
         Route::get('/orderCoin', [AdminOrderCoin::class, 'show']);
         Route::post('/orderCoin/{id}/approve', [AdminOrderCoin::class, 'approve'])->name('orderCoin.approve');
         Route::post('/orderCoin/{id}/reject', [AdminOrderCoin::class, 'reject'])->name('orderCoin.reject');
+        Route::get('/api/orders/{id}', [AdminOrderCoin::class, 'getOrderDetails']);
+        Route::get('/api/users/{id}', [UserController::class, 'getUserDetails']);
     });
 
     Route::resource('transactions', TransactionController::class);

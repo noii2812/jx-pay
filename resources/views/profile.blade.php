@@ -1,4 +1,6 @@
 <x-layout>
+    {{-- <x-loading-animation /> --}}
+    
     <div class="container py-4">
         <!-- Profile Header Card -->
         <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px; background: linear-gradient(135deg, #6366f1, #8b5cf6);">

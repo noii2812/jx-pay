@@ -74,7 +74,7 @@
                                 </th>
                                 <th scope="col">User</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Role</th>
+                                {{-- <th scope="col">Role</th> --}}
                                 <th scope="col">Phone</th>
                                 <th scope="col">Coins</th>
                                 <th scope="col">Status</th>
@@ -108,6 +108,7 @@
 
                                     </td>
                                     <td>{{ $user->email }}</td>
+                                    {{-- <td>{{ $user->role ?: 'N/A' }}</td> --}}
                                     <td>{{ $user->phone ?: 'N/A' }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -215,6 +216,10 @@
 
             
             function fetchUserDetails(userId) {
+                // Show loading state in modal
+                showLoadingInModal();
+                userDetailModal.show();
+                
                 fetch(`/api/users/${userId}`)
                     .then(response => {
                         if (!response.ok) {
@@ -222,22 +227,51 @@
                         }
                         return response.json();
                     })
-                    .then(user => {
-                        populateUserModal(user);
-                        userDetailModal.show();
+                    .then(data => {
+                        populateUserModal(data);
+                        showUserDataToast();
                     })
                     .catch(error => {
                         console.error('Error fetching user details:', error);
-                        alert('Failed to load user details. Please try again later.');
+                        document.getElementById('userModalBody').innerHTML = `
+                            <div class="alert alert-danger text-center">
+                                <i class="bi bi-exclamation-triangle-fill fs-1 mb-3 d-block"></i>
+                                <h5>Failed to load user details</h5>
+                                <p>Please try again later or contact support.</p>
+                            </div>
+                        `;
                     });
             }
             
-            function populateUserModal(user) {
-                // Set user data in modal
-                document.getElementById('userModalName').textContent = user.full_name || 'User';
+            function showLoadingInModal() {
+                document.getElementById('userModalBody').innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5 class="mt-3">Loading user data...</h5>
+                        <p class="text-muted">Please wait while we fetch the latest information</p>
+                    </div>
+                `;
+                
+                // Reset modal title and other elements
+                document.getElementById('userModalName').textContent = 'Loading...';
+                document.getElementById('userModalUsername').textContent = '';
+                document.getElementById('userModalStatus').innerHTML = '';
+                document.querySelector('#userModalAvatar').innerHTML = `
+                    <div class="spinner-grow text-secondary" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                `;
+            }
+            
+            function populateUserModal(response) {
+                // Extract user data from response
+                const user = response.data || response;
+                
+                // Set user data in modal header
+                document.getElementById('userModalName').textContent = user.full_name || user.username || 'User';
                 document.getElementById('userModalUsername').textContent = '@' + user.username;
-                document.getElementById('userModalEmail').textContent = user.email || 'N/A';
-                document.getElementById('userModalPhone').textContent = user.phone || 'N/A';
                 
                 // Set status with appropriate badge
                 const statusBadgeClass = {
@@ -249,13 +283,6 @@
                 
                 document.getElementById('userModalStatus').innerHTML = 
                     `<span class="badge rounded-pill ${statusBadgeClass} px-3 py-2">${user.status ? user.status.charAt(0).toUpperCase() + user.status.slice(1) : 'Inactive'}</span>`;
-                
-                // Set other fields
-                document.getElementById('userModalCoins').textContent = Number(user.coin_balance || 0).toLocaleString();
-                document.getElementById('userModalJoinedDate').textContent = 
-                    new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-                document.getElementById('userModalRole').textContent = user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User';
-                document.getElementById('userModalAddress').textContent = user.address || 'N/A';
                 
                 // Set user avatar
                 const avatarContainer = document.querySelector('#userModalAvatar');
@@ -273,13 +300,126 @@
                     headerBg.classList.add('bg-success-subtle');
                 } else if (user.status === 'pending') {
                     headerBg.classList.add('bg-warning-subtle');
-                } else if (user.status === 'suspended') {
+                } else if (user.status === 'suspended' || user.status === 'inactive') {
                     headerBg.classList.add('bg-danger-subtle');
                 }
                 
                 // Set edit button data attribute
                 const editBtn = document.getElementById('editUserBtn');
                 editBtn.setAttribute('data-user-id', user.id);
+                
+                // Create user details content
+                const modalBody = document.getElementById('userModalBody');
+                
+                // Format date
+                const joinedDate = new Date(user.created_at).toLocaleDateString('en-US', { 
+                    year: 'numeric', month: 'short', day: 'numeric' 
+                });
+                
+                modalBody.innerHTML = `
+                    <!-- Personal Information -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-3">
+                            <div class="card-header bg-white border-0 pt-3">
+                                <h5 class="card-title mb-0"><i class="bi bi-person-vcard me-2 text-primary"></i>Personal Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-envelope text-secondary me-2"></i>
+                                        <span class="text-muted">Email</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium">${user.email || 'N/A'}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-telephone text-secondary me-2"></i>
+                                        <span class="text-muted">Phone</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium">${user.phone || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-geo-alt text-secondary me-2"></i>
+                                        <span class="text-muted">Address</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium">${user.address || 'N/A'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Account Information -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-3">
+                            <div class="card-header bg-white border-0 pt-3">
+                                <h5 class="card-title mb-0"><i class="bi bi-bank me-2 text-primary"></i>Account Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-coin text-warning me-2"></i>
+                                        <span class="text-muted">Coin Balance</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium fs-5">${Number(user.coin || 0).toLocaleString()}</p>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-shield-check text-secondary me-2"></i>
+                                        <span class="text-muted">Role</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium">${user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User'}</p>
+                                </div>
+                                <div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-calendar-event text-secondary me-2"></i>
+                                        <span class="text-muted">Joined Date</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium">${joinedDate}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Transaction History (if available) -->
+                    ${user.transactions && user.transactions.length > 0 ? `
+                    <div class="col-12 mt-3">
+                        <div class="card border-0 shadow-sm rounded-3">
+                            <div class="card-header bg-white border-0 pt-3">
+                                <h5 class="card-title mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Transactions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Type</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${user.transactions.slice(0, 3).map(tx => `
+                                                <tr>
+                                                    <td>${new Date(tx.created_at).toLocaleDateString()}</td>
+                                                    <td>${tx.type || 'Purchase'}</td>
+                                                    <td>${Number(tx.coin || 0).toLocaleString()} coins</td>
+                                                    <td>
+                                                        <span class="badge bg-${tx.status === 'approved' ? 'success' : tx.status === 'pending' ? 'warning' : 'secondary'}">
+                                                            ${tx.status ? tx.status.charAt(0).toUpperCase() + tx.status.slice(1) : 'N/A'}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+                `;
             }
             
             // Initialize edit button event listener once
@@ -320,73 +460,8 @@
                 </div>
                 
                 <!-- User Details -->
-                <div class="row g-4">
-                    <!-- Personal Information -->
-                    <div class="col-md-6">
-                        <div class="card h-100 border-0 shadow-sm rounded-3">
-                            <div class="card-header bg-white border-0 pt-3">
-                                <h5 class="card-title mb-0"><i class="bi bi-person-vcard me-2 text-primary"></i>Personal Information</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-envelope text-secondary me-2"></i>
-                                        <span class="text-muted">Email</span>
-                                    </div>
-                                    <p id="userModalEmail" class="mb-0 fw-medium">email@example.com</p>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-telephone text-secondary me-2"></i>
-                                        <span class="text-muted">Phone</span>
-                                    </div>
-                                    <p id="userModalPhone" class="mb-0 fw-medium">+1 (555) 123-4567</p>
-                                </div>
-                                <div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-geo-alt text-secondary me-2"></i>
-                                        <span class="text-muted">Address</span>
-                                    </div>
-                                    <p id="userModalAddress" class="mb-0 fw-medium">123 Main St, Anytown, CA 12345</p>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <!-- Account Information -->
-                    <div class="col-md-6">
-                        <div class="card h-100 border-0 shadow-sm rounded-3">
-                            <div class="card-header bg-white border-0 pt-3">
-                                <h5 class="card-title mb-0"><i class="bi bi-bank me-2 text-primary"></i>Account Information</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-coin text-warning me-2"></i>
-                                        <span class="text-muted">Coin Balance</span>
-                                    </div>
-                                    <p id="userModalCoins" class="mb-0 fw-medium fs-5">1,500</p>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-shield-check text-secondary me-2"></i>
-                                        <span class="text-muted">Role</span>
-                                    </div>
-                                    <p id="userModalRole" class="mb-0 fw-medium">User</p>
-                                </div>
-                                <div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <i class="bi bi-calendar-event text-secondary me-2"></i>
-                                        <span class="text-muted">Joined Date</span>
-                                    </div>
-                                    <p id="userModalJoinedDate" class="mb-0 fw-medium">Mar 15, 2024</p>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row g-4" id="userModalBody">
+                    <!-- This content will be replaced by JavaScript -->
                 </div>
             </div>
 
@@ -401,4 +476,27 @@
         </div>
     </div>
 </div>
+
+{{-- Toast Notification --}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="userDataToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="bi bi-check-circle me-2"></i>
+            <strong class="me-auto">Success</strong>
+            <small>Just now</small>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <i class="bi bi-database-check me-2"></i> User data loaded successfully!
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to show toast notification
+    function showUserDataToast() {
+        const toast = new bootstrap.Toast(document.getElementById('userDataToast'));
+        toast.show();
+    }
+</script>
 

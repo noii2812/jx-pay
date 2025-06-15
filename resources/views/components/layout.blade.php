@@ -514,7 +514,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/gameAccount" data-path="/gameAccount"><i class="bi bi-controller"></i> Game Account</a>
+                    <a class="nav-link" href="/gameAccounts" data-path="/gameAccounts"><i class="bi bi-controller"></i> Game Account</a>
                 </li>
                
 

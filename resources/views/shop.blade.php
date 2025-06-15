@@ -1,4 +1,6 @@
 <x-layout>
+    
+    
     <!-- Main Content -->
     <div class="col-12 shop-content" >
         <!-- Header -->
@@ -115,8 +117,20 @@
     
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
     <script>
+        const listQrCode = [
+            "{{ asset('images/banks/1.png') }}",
+            "{{ asset('images/banks/3.png') }}",
+            "{{ asset('images/banks/5.png') }}",
+            "{{ asset('images/banks/10.png') }}",
+            "{{ asset('images/banks/20.png') }}",
+            "{{ asset('images/banks/30.png') }}",
+            "{{ asset('images/banks/50.png') }}",
+            "{{ asset('images/banks/100.png') }}"
+
+        ];
         document.addEventListener('DOMContentLoaded', function () {
             // Initialize the modals
             const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'), {
@@ -129,12 +143,7 @@
                 keyboard: false
             });
 
-            // Function to generate reference number
-            // function generateReference() {
-            //     const timestamp = Date.now().toString();
-            //     const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            //     return `TRX-${timestamp}${random}`;
-            // }
+
 
             // Function to handle coin purchase
             function handleCoinPurchase(points, price) {
@@ -143,9 +152,20 @@
                 document.getElementById('paymentAmount').textContent = price.toFixed(2);
                 document.getElementById('referenceId').value = "";
 
-                // Generate QR code
-                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KHQR_PAYMENT_${price}_${points}`;
-                document.getElementById('qrCodeImage').src = qrCodeUrl;
+                // Use QR code from listQrCode based on price
+                let qrCodeIndex = 0;
+                
+                // Select appropriate QR code based on price
+                if (price === 1.00) qrCodeIndex = 0;       
+                else if (price === 3.00) qrCodeIndex = 1;  
+                else if (price === 5.00) qrCodeIndex = 2;  
+                else if (price === 10.00) qrCodeIndex = 3; 
+                else if (price === 20.00) qrCodeIndex = 4; 
+                else if (price === 30.00) qrCodeIndex = 5; 
+                else if (price === 50.00) qrCodeIndex = 6; 
+                else if (price === 100.00) qrCodeIndex = 7; 
+                // Set the QR code image
+                document.getElementById('qrCodeImage').src = listQrCode[qrCodeIndex];
 
                 // Show the modal
                 paymentModal.show();
@@ -190,9 +210,24 @@
                 .then(data => {
                     console.log(data)
                     if (data.success) {
+                        // Update success modal with transaction details
+                        document.getElementById('successOrderId').textContent = data.transaction_id || '123456';
+                        document.getElementById('successAmount').textContent = price.toFixed(2);
+                        
+                        // Hide payment modal and show success modal
                         paymentModal.hide();
                         setTimeout(() => {
+                            // Trigger animation on show
                             successModal.show();
+                            setTimeout(() => {
+                                const successCircle = document.querySelector('.success-circle');
+                                if (successCircle) {
+                                    successCircle.style.animation = 'none';
+                                    setTimeout(() => {
+                                        successCircle.style.animation = 'success-circle-animation 1s ease-out';
+                                    }, 10);
+                                }
+                            }, 300);
                         }, 300);
                     } else {
                         alert('Error creating transaction: ' + data.message);
@@ -237,6 +272,8 @@
 
         .payment-option label:hover {
             background-color: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .payment-option.selected label {
@@ -249,6 +286,11 @@
             border-radius: 1rem;
             padding: 1.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .qr-section:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
 
         .qr-header {
@@ -278,6 +320,49 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        #sendOrderBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+        }
+
+        /* QR Scan Animation */
+        .qr-overlay {
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .qr-scan-animation {
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, #0d6efd, transparent);
+            animation: qrScan 2s infinite;
+            position: absolute;
+            box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+        }
+
+        @keyframes qrScan {
+            0% {
+                transform: translateY(-50px);
+            }
+            50% {
+                transform: translateY(50px);
+            }
+            100% {
+                transform: translateY(-50px);
+            }
+        }
+
+        /* Hover Effects */
+        .hover-effect {
+            transition: all 0.3s ease;
+        }
+
+        .hover-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
 
         /* Success Modal Styles */
@@ -307,6 +392,7 @@
             position: relative;
             z-index: 10000;
             background: #fff;
+            overflow: hidden;
         }
 
         .modal.show {
@@ -345,86 +431,142 @@
         .modal-backdrop.show {
             opacity: 0.5;
         }
+
+        /* Input styling */
+        .input-group-text {
+            border-right: none;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            border-color: #86b7fe;
+        }
+
+        /* Button styling */
+        .btn {
+            font-weight: 500;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+        }
+
+        /* Success Animation */
+        .success-animation {
+            position: relative;
+            display: inline-block;
+        }
+
+        .success-circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid #10b981;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: success-circle-animation 1s ease-out;
+            opacity: 0;
+        }
+
+        @keyframes success-circle-animation {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .order-details {
+            border-left: 4px solid #10b981;
+        }
     </style>
 
 </x-layout>
-
+{{-- <x-loading-animation /> --}}
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal">
     <div class="modal-dialog modal-dialog-lg" style="max-width: 800px">
         <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
+            <div class="modal-header border-0 pb-0 bg-primary text-white">
                 <h5 class="modal-title" id="paymentModalLabel">
-                    Order: <span class="text-danger points-amount">0</span> Points
+                    <i class="bi bi-cart-check me-2"></i>Order: <span class="text-warning points-amount fw-bold">0</span> Points
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex">
-                <div>
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5">
                         <div class="payment-methods mb-4">
-                            <h6 class="text-navy mb-3">Payment Methods</h6>
+                            <h6 class="text-navy mb-3 border-bottom pb-2 fw-bold"><i class="bi bi-credit-card me-2"></i>Payment Methods</h6>
                             <div class="payment-option selected mt-3">
                                 <input type="radio" name="payment_method" id="khqr" checked class="d-none">
-                                <label for="khqr" class="d-flex align-items-center p-3 rounded-3 border">
+                                <label for="khqr" class="d-flex align-items-center p-3 rounded-3 border shadow-sm hover-effect">
                                     <img src="{{ asset('images/banks/khqr-logo.png') }}" alt="KHQR" height="30">
-                                    <span class="ms-2">KHQR Payment</span>
+                                    <span class="ms-2 fw-bold">KHQR Payment</span>
                                 </label>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="px-3">
-                <div style="display: flex;flex-direction:column;align-items:center">
-                    <div class="order-info mx-3 w-100" >
-                        <h6 class="text-navy mb-3">Order Information</h6>
-                        <div class="mb-3">
-                            <label class="form-label d-flex align-items-center">
-                                Reference #
-                                <i id="info-icon" class="bi bi-info-circle ms-1" style="cursor: pointer;"></i>
-                            </label>
-                            <input type="text" class="form-control w-100" id="referenceId" required="true">
-                        </div>
-                    </div>
-                </div>
-                <div class="qr-section text-center mt-3">
-                    <div class="qr-header bg-dark text-warning p-2 mb-3">
-                        THIS IS KHQR CODE, CAN SCAN WITH ANY BANK!
-                    </div>
-                    <div class="game-logo mb-3">
-                        <img src="{{ asset('images/banks/game-logo.jpg') }}" style="border-radius: 10px;"
-                            alt="Game Logo" height="60">
-                    </div>
-                    <div class="qr-code mb-3">
-                        <img src="" id="qrCodeImage" alt="QR Code" class="img-fluid" style="max-width: 200px;">
-                    </div>
-                    <div class="price-info">
-                        <h3 class="payment-amount mb-2">$<span id="paymentAmount">0.00</span></h3>
-                        <h4 class="game-title text-uppercase">JX2</h4>
-                    </div>
-                </div>
-                </div>
-            </div>
-
-                {{-- <div class="payment-banks mt-4">
-                    <div class="secure-text text-danger mb-2">Secure Payments By:</div>
-                    <div class="bank-logos p-3 border rounded-3">
-                        <div class="row align-items-center justify-content-center g-3">
-                            <div class="col"><img src="{{ asset('images/banks/aba.jpg') }}" alt="ABA" class="img-fluid">
+                        
+                        <div class="order-info mx-3 w-100">
+                            <h6 class="text-navy mb-3 border-bottom pb-2 fw-bold"><i class="bi bi-info-circle me-2"></i>Order Information</h6>
+                            <div class="mb-3">
+                                <label class="form-label d-flex align-items-center">
+                                    Reference #
+                                    <i id="info-icon" class="bi bi-info-circle ms-1 text-primary" style="cursor: pointer;"></i>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-hash"></i></span>
+                                    <input type="text" class="form-control w-100" id="referenceId" required="true" placeholder="Enter reference number">
+                                </div>
                             </div>
-                            <div class="col"><img src="{{ asset('images/banks/wing.jpg') }}" alt="Wing"
-                                    class="img-fluid"></div>
-                            <div class="col"><img src="{{ asset('images/banks/pipay.jpg') }}" alt="PiPay"
-                                    class="img-fluid"></div>
-                            <div class="col"><img src="{{ asset('images/banks/true-money.jpg') }}" alt="True Money"
-                                    class="img-fluid"></div>
                         </div>
                     </div>
-                </div> --}}
+                    
+                    <div class="col-md-7">
+                        <div class="qr-section text-center mt-3 shadow-sm border rounded-4 p-4">
+                            <div class="qr-header bg-dark text-warning p-2 mb-3 rounded-3">
+                                <i class="bi bi-qr-code me-2"></i>SCAN WITH ANY BANK APP
+                            </div>
+                            <div class="game-logo mb-3">
+                                <img src="{{ asset('images/banks/game-logo.jpg') }}" style="border-radius: 10px;"
+                                    alt="Game Logo" height="60" class="shadow-sm">
+                            </div>
+                            <div class="qr-code mb-3 position-relative">
+                                <div class="qr-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                                    <div class="qr-scan-animation"></div>
+                                </div>
+                                <img src="" id="qrCodeImage" alt="QR Code" class="img-fluid" style="max-width: 200px; border: 8px solid white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            </div>
+                            <div class="price-info bg-light p-3 rounded-3">
+                                <h3 class="payment-amount mb-2">$<span id="paymentAmount" class="text-success">0.00</span></h3>
+                                <h4 class="game-title text-uppercase text-primary">JX2</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-primary w-100" id="sendOrderBtn">Send Order</button>
+            <div class="modal-footer border-0 bg-light rounded-bottom">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="sendOrderBtn">
+                    <i class="bi bi-send me-1"></i>Send Order
+                </button>
             </div>
         </div>
     </div>
@@ -435,19 +577,19 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg" style="z-index: 1056;max-width:800px">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">About Reference Number</h5>
+                <strong>របៀបកម្មង់ទិញ Jpoint</strong>
                 <button id="button-close-info" type="button" class="btn-close" ></button>
             </div>
             <div class="modal-body">
-                <p>The reference number is a unique identifier for your transaction. Please save this number as it will help you:</p>
+                <p>ធ្វើតាមបីចំនុចខាងក្រោមដើម្បីបង្កើតការទិញ Jpoint:</p>
                 <ul>
-                    <li>Track your payment status</li>
-                    <li>Reference your transaction in case of any issues</li>
-                    <li>Verify your payment with customer support</li>
+                    <li>បន្ទាប់ពីអ្នកបានស្កេន QRCode បង់ថ្លៃការទិញរួចរាល់ សូមបងប្អូនចម្លងលេខ Reference ពីវិក័យបត្រដែលអ្នកបានទិញ</li>
+                    <li>វាយបញ្ចូលលេខ Reference ដែលអ្នកបានចម្លងទៅក្នុង Payment method Reference</li>
+                    <li>ចុច SEND ORDER ដើមប្បីធ្វើការកម្មង់ទិញ</li>
                 </ul>
-                <p class="mb-0">Make sure to keep this number until your payment is confirmed.</p>
+                <p class="mb-0">ត្រូវចាំ ! អ្នកត្រូវរក្សាទុកលេខ Reference របស់លោកអ្នកសិន រហូតទាល់តែកាបញ្ជារទិញរបស់លោកអ្នកបានសម្រេច</p>
             </div>
-            
+            <img src="{{ asset('images/banks/tip.png') }}" alt="KHQR" >
         </div>
     </div>
 </div>
@@ -456,11 +598,34 @@
 <div class="modal fade" id="successModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body text-center p-4">
-                <i class="bi bi-check-circle text-success" style="font-size: 4rem;"></i>
+            <div class="modal-header bg-success text-white border-0">
+                <h5 class="modal-title"><i class="bi bi-check-circle me-2"></i>Success</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-5">
+                <div class="success-animation mb-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    <div class="success-circle"></div>
+                </div>
                 <h4 class="mt-3">Payment Successful!</h4>
-                <p class="text-muted">Your order has been processed successfully.</p>
-                <button type="button" class="btn btn-success mt-3" data-bs-dismiss="modal">Close</button>
+                <p class="text-muted mb-4">Your order has been processed successfully. Points will be added to your account shortly.</p>
+                <div class="order-details bg-light p-3 rounded-3 text-start mb-4">
+                    <div class="row mb-2">
+                        <div class="col-6 text-muted">Order ID:</div>
+                        <div class="col-6 fw-bold">#<span id="successOrderId">123456</span></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6 text-muted">Points:</div>
+                        <div class="col-6 fw-bold"><span class="text-success points-amount">0</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 text-muted">Amount:</div>
+                        <div class="col-6 fw-bold">$<span id="successAmount">0.00</span></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success px-5 py-2 hover-effect" data-bs-dismiss="modal">
+                    <i class="bi bi-arrow-return-left me-2"></i>Return to Shop
+                </button>
             </div>
         </div>
     </div>
