@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login - Game Store</title>
     <!-- Bootstrap CSS -->
@@ -84,7 +85,7 @@
         }
 
         .form-control {
-            border-radius: 12px;
+            border-radius: 6px;
             border: 2px solid #ffe066;
             background: #fffde7;
             font-size: 1.08rem;
@@ -94,6 +95,22 @@
         .form-control:focus {
             border-color: #ffd32a;
             box-shadow: 0 0 10px #ffe06655;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            background-color: #fff8f8;
+        }
+
+        .form-control.is-invalid:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 10px rgba(220, 53, 69, 0.25);
+        }
+
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
         }
 
         .forgot-link {
@@ -207,19 +224,20 @@
     <div style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
         <img src="/images/sky.jpg" alt="Kunlun"
             style="width: 100vw; height: 100vh; object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1;">
-        <div class="container" style="width:1000px;">
+        <div class="container" style="width:1500px;">
             <div class="row login-container">
                 <!-- Game Wallpaper Side -->
-                <div class="col-md-6 game-wallpaper d-none d-md-block">
+                <div class="col-md-8 game-wallpaper d-none d-md-block">
                     <video autoplay muted loop playsinline
                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px 0 0 15px;">
-                        <source src="/images/login.mp4" type="video/mp4">
+                        {{-- <source src="/images/login.mp4" type="video/mp4"> --}}
+                        <source src="/videos/bg.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
 
                 <!-- Login Form Side -->
-                <div class="col-md-6 login-form">
+                <div class="col-md-4 login-form">
                     <div class="login-icon">
                         <img src="/images/banks/game-logo.jpg" alt="Coin Icon"
                             style="width: 100px; height: 100px; border-radius: 50%;">
@@ -238,25 +256,38 @@
                         </div>
                     @endif
                     <div class="divider"></div>
-                    <form action="/login" method="POST">
+                    <form action="/login" method="POST" id="loginForm" novalidate>
                         @csrf
                         <div class="mb-4">
-                            <label for="username"  class="form-label">Username</label>
-                            <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="username"
+                                placeholder="Enter your username" required>
+                            <div class="invalid-feedback">Please enter your username.</div>
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" id="password" placeholder="Enter your password">
+                            <input type="password" name="password" class="form-control" id="password"
+                                placeholder="Enter your password" required>
+                            <div class="invalid-feedback">Please enter your password.</div>
                             <span class="password-toggle" onclick="togglePassword()"
                                 style="padding-top: 30px; padding-right: 10px;">
                                 <i class="bi bi-eye" id="toggleIcon"></i>
                             </span>
                         </div>
-                        <a href="/login/forgot" class="forgot-link">Forgot password?</a>
+                        <div class="mb-4">
+                            <label for="captcha" class="form-label">Captcha</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="{{ route('captcha.generate') }}" alt="Captcha" id="captchaImage"
+                                    style="height: 40px; cursor: pointer;border-radius: 4px" onclick="refreshCaptcha()">
+                                <input type="text" name="captcha" class="form-control" id="captcha"
+                                    placeholder="Enter captcha" required>
+                            </div>
+                            <div class="invalid-feedback">Please enter the captcha.</div>
+                        </div>
+                        <a href="/reset-password" class="forgot-link">Forgot password?</a>
                         <div class="mb-4">
                             <button type="submit" class="btn btn-login w-100">Login</button>
                         </div>
-                       
                     </form>
                     <a href="/signup" class="signup-link">Don't have an account? Sign Up</a>
                 </div>
@@ -267,21 +298,35 @@
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const bgMusic = document.getElementById('bgMusic');
+            const loginForm = document.getElementById('loginForm');
+
+            // Form validation
+            loginForm.addEventListener('submit', function(event) {
+                if (!loginForm.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                loginForm.classList.add('was-validated');
+            });
 
             // Try to play immediately
             // tryPlayMusic();
 
             // Also try to play on first user interaction
-            document.addEventListener('click', function () {
+            document.addEventListener('click', function() {
                 // tryPlayMusic();
-            }, { once: true });
+            }, {
+                once: true
+            });
             //
             // Also try to play on first scroll
-            document.addEventListener('scroll', function () {
+            document.addEventListener('scroll', function() {
                 // tryPlayMusic();
-            }, { once: true });
+            }, {
+                once: true
+            });
         });
 
         function tryPlayMusic() {
@@ -293,10 +338,10 @@
 
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
-                        // Playback started successfully
-                        musicIcon.classList.remove('bi-volume-up-fill');
-                        musicIcon.classList.add('bi-volume-mute-fill');
-                    })
+                            // Playback started successfully
+                            musicIcon.classList.remove('bi-volume-up-fill');
+                            musicIcon.classList.add('bi-volume-mute-fill');
+                        })
                         .catch(error => {
                             // Auto-play was prevented
                             console.log("Autoplay prevented:", error);
@@ -319,7 +364,7 @@
                 }
             } else {
                 bgMusic.pause();
-                
+
                 musicIcon.classList.remove('bi-volume-mute-fill');
                 musicIcon.classList.add('bi-volume-up-fill');
             }
@@ -338,6 +383,11 @@
                 toggleIcon.classList.remove('bi-eye-slash');
                 toggleIcon.classList.add('bi-eye');
             }
+        }
+
+        function refreshCaptcha() {
+            const captchaImage = document.getElementById('captchaImage');
+            captchaImage.src = "{{ route('captcha.generate') }}?" + new Date().getTime();
         }
     </script>
 </body>

@@ -1,5 +1,5 @@
 <x-layout>
-    {{-- <x-loading-animation /> --}}
+    <x-loading-animation />
     
         <!-- Header Section -->
         <div class="d-flex align-items-center justify-content-between mb-4">
@@ -155,7 +155,7 @@
                                         </div>
                                     </td>
                                     <td class="py-4 px-4">
-                                        <span class="fw-medium">{{ $transfer->toAccount->username }}</span>
+                                        <span class="fw-medium">{{ $transfer->toAccount->username ?? "N/A" }}</span>
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="d-flex align-items-center gap-2">

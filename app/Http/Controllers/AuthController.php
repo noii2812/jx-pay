@@ -18,6 +18,22 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+            'captcha' => 'required'
+        ]);
+
+        // Verify CAPTCHA
+        $userInput = strtolower($request->input('captcha'));
+        $sessionCaptcha = strtolower(session('captcha'));
+
+        if ($userInput !== $sessionCaptcha) {
+            return back()->withErrors([
+                'captcha' => 'Invalid CAPTCHA. Please try again.',
+            ]);
+        }
+
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
@@ -26,7 +42,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'username' => 'The provided credentials do not match our records.',
         ]);
     }
 

@@ -4,7 +4,7 @@
 
 
 <x-layout>
-
+    <x-loading-animation />
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <button class="btn btn-yellow me-3" data-bs-toggle="modal" data-bs-target="#createServerModal">
-                        <i class="bi bi-plus-circle me-1"></i>Create Server
+                        <i class="bi bi-plus-circle me-2"></i>Create Game Account 
                     </button>
                     {{-- <span class="badge bg-success me-2">
                         <i class="bi bi-circle-fill me-1"></i>4 Online
@@ -176,53 +176,65 @@
             <div class="modal-body p-4">
                 <form action="/createAccount" method="POST">
                     @csrf
-                    {{-- <div class="mb-4">
-                            <label class="form-label">
-                                <i class="bi bi-server me-2"></i>Server Type
-                            </label>
-                            <select class="form-select form-select-lg bg-light border-0" required>
-                                <option value="">Select Server Type</option>
-                                <option value="alpha">Alpha Server</option>
-                                <option value="beta">Beta Server</option>
-                                <option value="gamma">Gamma Server</option>
-                                <option value="delta">Delta Server</option>
-                            </select>
-                        </div> --}}
                     <div class="mb-4">
-                        <label class="form-label">
-                            <i class="bi bi-person me-2"></i>Username
+                        <label class="form-label fw-bold text-dark">
+                            <i class="bi bi-person me-2 text-primary"></i>Username
                         </label>
-                        <input type="text" name="username" class="form-control form-control-lg bg-light border-0"
-                            required placeholder="Enter username">
+                        <input type="text" name="username" class="form-control form-control-lg bg-white border @error('username') is-invalid @enderror"
+                            required placeholder="Enter username" value="{{ old('username') }}">
+                        <small class="text-muted">Username must be between 3-32 characters and unique.</small>
+                        @error('username')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">
-                            <i class="bi bi-lock me-2"></i>Password
+                        <label class="form-label fw-bold text-dark">
+                            <i class="bi bi-lock me-2 text-primary"></i>Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" required
-                                placeholder="Enter password" name="password">
-                            <span class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
-                                <i class="bi bi-eye"></i>
+                            <input type="password" name="password" class="form-control bg-white border @error('password') is-invalid @enderror" required
+                                placeholder="Enter password">
+                            <span class="btn btn-outline-secondary border" type="button" onclick="togglePassword(this)">
+                                <i class="bi bi-eye text-primary"></i>
                             </span>
                         </div>
+                        @error('password')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">
-                            <i class="bi bi-check-double me-2"></i>Confirm Password
+                        <label class="form-label fw-bold text-dark">
+                            <i class="bi bi-lock me-2 text-primary"></i>Confirm Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control bg-light border-0" required
+                            <input type="password" name="password_confirmation" class="form-control bg-white border @error('password_confirmation') is-invalid @enderror" required
                                 placeholder="Confirm password">
-                            <span class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
-                                <i class="bi bi-eye"></i>
+                            <span class="btn btn-outline-secondary border" type="button" onclick="togglePassword(this)">
+                                <i class="bi bi-eye text-primary"></i>
                             </span>
                         </div>
+                        @error('password_confirmation')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="modal-footer border-0 p-4">
-                        <button type="button" class="btn btn-light btn-lg px-4"
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-dark">
+                            <i class="bi bi-shield-lock me-2 text-primary"></i>Captcha
+                        </label>
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="{{ route('captcha.generate') }}" alt="Captcha" id="createAccountCaptchaImage"
+                                style="height: 40px; cursor: pointer; border-radius: 4px; border: 1px solid #dee2e6" onclick="refreshCreateAccountCaptcha()">
+                            <input type="text" name="captcha" class="form-control bg-white border @error('captcha') is-invalid @enderror" id="createAccountCaptcha"
+                                placeholder="Enter captcha" required>
+                        </div>
+                        @error('captcha')
+                            <div class="text-danger mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="modal-footer border-0 py-2">
+                        <button type="button" class="btn  btn-lg px-4"
                             data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-yellow btn-lg px-4">Create Server</button>
+                        <button type="submit" class="btn btn-primary btn-lg pl-4">Create Account</button>
                     </div>
                 </form>
             </div>
@@ -258,7 +270,7 @@
                             <label class="form-label">
                                 <i class="bi bi-server me-2" style="color: #2e7eff"></i>Server
                             </label>
-                            <h5 id="modalServerId"></h5>
+                            {{-- <h5 id="modalServerId"></h5> --}}
                         </div>
                     </div>
                     <div class="mb-4">
@@ -299,7 +311,7 @@
                             Passwords do not match
                         </div>
                     </div>
-                    <div class="password-requirements mt-2">
+                    {{-- <div class="password-requirements mt-2">
                             <small class="text-muted">New password must contain:</small>
                             <ul class="list-unstyled mb-0">
                                 <li id="length" class="text-danger"><i class="bi bi-x-circle"></i> At least 8 characters</li>
@@ -308,7 +320,7 @@
                                 <li id="number" class="text-danger"><i class="bi bi-x-circle"></i> One number</li>
                                 <li id="special" class="text-danger"><i class="bi bi-x-circle"></i> One special character</li>
                             </ul>
-                        </div>
+                        </div> --}}
                     <div class="modal-footer border-0 p-4">
                         <button type="button" class="btn btn-light btn-lg px-4" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-yellow btn-lg px-4" id="submitPassword">Update Password</button>
@@ -568,6 +580,21 @@
             document.getElementById('modalServerId').textContent = 'Server ' + accountId;
         });
 
+        // Reset form when modal is closed
+        changePasswordModal.addEventListener('hidden.bs.modal', function() {
+            const form = document.getElementById('changePasswordForm');
+            form.reset();
+            // Reset validation state
+            form.classList.remove('was-validated');
+            // Hide password match error message
+            document.getElementById('passwordMatch').style.display = 'none';
+            // Reset any custom validation messages
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.setCustomValidity('');
+            });
+        });
+
         // Add modal data handling for transfer modal
         const transferModal = document.getElementById('transferModal');
         transferModal.addEventListener('show.bs.modal', function(event) {
@@ -598,3 +625,39 @@
         });
     });
 </script>
+
+<script>
+    function refreshCreateAccountCaptcha() {
+        const captchaImage = document.getElementById('createAccountCaptchaImage');
+        captchaImage.src = "{{ route('captcha.generate') }}?" + new Date().getTime();
+    }
+</script>
+
+<script>
+    // Check for validation errors and show modal if needed
+    @if($errors->any())
+        document.addEventListener('DOMContentLoaded', function() {
+            const createServerModal = new bootstrap.Modal(document.getElementById('createServerModal'));
+            createServerModal.show();
+        });
+    @endif
+
+    // Reset create server form when modal is closed
+    const createServerModal = document.getElementById('createServerModal');
+    createServerModal.addEventListener('hidden.bs.modal', function() {
+        const form = this.querySelector('form');
+        form.reset();
+        // Reset validation state
+        form.classList.remove('was-validated');
+        // Reset any custom validation messages
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.setCustomValidity('');
+        });
+        // Refresh captcha
+        refreshCreateAccountCaptcha();
+    });
+</script>
+
+</body>
+</html>

@@ -8,7 +8,11 @@
 </head>
 
 <body>
-    Hello World
+    <x-layout>
+        <x-loading-animation />
+        
+        <!-- Content -->
+    </x-layout>
 </body>
 
 </html>

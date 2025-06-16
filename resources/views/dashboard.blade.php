@@ -1,5 +1,5 @@
 <x-layout>
-    {{-- <x-loading-animation /> --}}
+    <x-loading-animation />
     
     <!-- Add success message for registration -->
     @if (session('success'))
@@ -111,7 +111,7 @@
                                             <div class="rounded-circle bg-light p-2 me-2">
                                                 <i class="bi bi-person text-primary"></i>
                                             </div>
-                                        <span class="fw-medium">{{ $transfer->to_account }}</span>
+                                        <span class="fw-medium">{{ $transfer->toAccount->username ?? "n/a" }}</span>
                                     </div>
                                 </td>
                                 <td style="border-bottom: 1px solid rgba(0,0,0,0.05);">
