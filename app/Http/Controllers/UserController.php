@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -198,5 +199,97 @@ class UserController extends Controller
         $user->delete();
         
         return redirect()->back()->with('success', 'User deleted successfully');
+    }
+
+    /**
+     * Change user password
+     */
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+            'new_password_confirmation' => 'required'
+        ], [
+            'current_password.required' => 'Please enter your current password',
+            'new_password.required' => 'Please enter a new password',
+            'new_password.min' => 'New password must be at least 8 characters',
+            'new_password.confirmed' => 'New password confirmation does not match',
+            'new_password_confirmation.required' => 'Please confirm your new password'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = auth()->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Current password is incorrect'
+            ], 400);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Password has been changed successfully'
+        ]);
+    }
+
+    /**
+     * Update user profile
+     */
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
+            'phone' => 'nullable|string|max:20',
+            'gender' => 'nullable|in:male,female,other'
+        ], [
+            'name.required' => 'Please enter your name',
+            'email.required' => 'Please enter your email',
+            'email.email' => 'Please enter a valid email address',
+            'email.unique' => 'This email is already taken',
+            'phone.max' => 'Phone number must not exceed 20 characters',
+            'gender.in' => 'Please select a valid gender'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $user = auth()->user();
+            
+            // Update user details
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->gender = $request->gender;
+            $user->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Profile updated successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update profile. Please try again.'
+            ], 500);
+        }
     }
 } 

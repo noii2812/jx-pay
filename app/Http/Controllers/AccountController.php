@@ -69,6 +69,7 @@ class AccountController extends Controller
             } catch (\Exception $e) {
                 $errorMessage = 'Failed to create account. ';
                 
+                dd($e);
                 // Check for common database errors
                 if (str_contains($e->getMessage(), 'Duplicate entry')) {
                     $errorMessage .= 'This username is already taken.';
@@ -270,13 +271,14 @@ class AccountController extends Controller
             $account->history_add_coin = 0;
             
             $account->save();
-            
+            dd($account) ;
             return response()->json([
                 'success' => true,
                 'message' => 'Game account created successfully',
                 'data' => $account
             ]);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to create game account: ' . $e->getMessage()

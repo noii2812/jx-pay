@@ -4,7 +4,7 @@
 
 
 <x-layout>
-
+    <x-loading-animation />
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="d-flex align-items-center">
                     <button class="btn btn-yellow me-3" data-bs-toggle="modal" data-bs-target="#createServerModal">
-                        <i class="bi bi-plus-circle me-1"></i>Create Server
+                        <i class="bi bi-plus-circle me-2"></i>Create Game Account 
                     </button>
                     {{-- <span class="badge bg-success me-2">
                         <i class="bi bi-circle-fill me-1"></i>4 Online
@@ -222,7 +222,7 @@
                     <div class="modal-footer border-0 p-4">
                         <button type="button" class="btn btn-light btn-lg px-4"
                             data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-yellow btn-lg px-4">Create Server</button>
+                        <button type="submit" class="btn btn-yellow btn-lg px-4">Create Game Account</button>
                     </div>
                 </form>
             </div>

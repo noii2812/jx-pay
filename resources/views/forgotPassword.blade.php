@@ -123,6 +123,8 @@
     </style>
 </head>
 <body>
+    <x-loading-animation />
+    
     <!-- Background Music -->
     <audio id="bgMusic" loop>
         <source src="{{ asset('images/music/song.mp3') }}" type="audio/mp3" style="width:30px; height:30px;">

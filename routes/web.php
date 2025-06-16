@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     });
     Route::post('/profile/security-password', [UserController::class, 'setSecurityPassword'])->name('security-password.set');
     Route::post('/profile/security-password/change', [UserController::class, 'changeSecurityPassword'])->name('security-password.change');
+    Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('password.change');
+    Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
     
     Route::get('/transferCoinHistory', [TransferCoinHistoryController::class,'index' ])->name('transferCoinHistory.index');
     Route::get('/game', [AccountController::class,'index'])->name('game');
@@ -74,4 +76,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/transactions/{transaction}/decline', [TransactionController::class, 'decline'])->name('transactions.decline');
     Route::post('/transactions/{transaction}/mark-as-paid', [TransactionController::class, 'markAsPaid'])->name('transactions.mark-as-paid');
 
+});
+
+Route::get('/test-500', function() {
+    abort(500);
 });

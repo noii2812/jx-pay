@@ -1,5 +1,5 @@
+
 <x-layout>
-    <x-loading-animation />
     
     {{-- Notification Bar --}}
     <div class="navbar navbar-expand-lg navbar-light bg-transparent rounded-3 mb-4">
@@ -280,6 +280,7 @@
     </div>
 </x-layout>
 
+<x-loading-animation />
 {{-- Order Payment Detail Modal --}}
 <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">

@@ -1,4 +1,6 @@
 <x-layout>
+    <x-loading-animation />
+
     {{-- Add static data array --}}
     @php
         // Update statistics based on new data

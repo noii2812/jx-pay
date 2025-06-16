@@ -1,6 +1,8 @@
 {{-- @extends('layouts.app') --}}
 
 <x-layout>
+    <x-loading-animation />
+
     {{-- Add static data array --}}
     @php
         $gameAccounts = [

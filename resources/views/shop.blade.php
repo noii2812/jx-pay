@@ -102,9 +102,11 @@
                                     <h5 class="text-primary">${{ number_format($card['price'], 2) }}</h5>
                                 </div>
                             </div>
-                            <button type="button" class="buy-coins-btn btn btn-yellow w-100 mt-3"
+                            <button type="button" class="buy-coins-btn btn btn-yellow w-100 mt-3" 
                                 data-points="{{ $card['points'] }}"
-                                data-price="{{ $card['price'] }}">
+                                data-price="{{ $card['price'] }}"
+                                onmouseover="this.style.backgroundColor='#BFA600'"
+                                onmouseout="this.style.backgroundColor=''">
                                 Buy now
                             </button>
                         </div>
@@ -497,14 +499,14 @@
     </style>
 
 </x-layout>
-{{-- <x-loading-animation /> --}}
+<x-loading-animation />
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal">
     <div class="modal-dialog modal-dialog-lg" style="max-width: 800px">
         <div class="modal-content">
-            <div class="modal-header border-0 pb-0 bg-primary text-white">
+            <div class="modal-header border-0 pb-2 bg-primary text-white">
                 <h5 class="modal-title" id="paymentModalLabel">
-                    <i class="bi bi-cart-check me-2"></i>Order: <span class="text-warning points-amount fw-bold">0</span> Points
+                    <i class="bi bi-cart-check me-2 mb-2"></i>Order: <span class="text-warning points-amount fw-bold">0</span> Points
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -523,14 +525,14 @@
                         </div>
                         
                         <div class="order-info mx-3 w-100">
-                            <h6 class="text-navy mb-3 border-bottom pb-2 fw-bold"><i class="bi bi-info-circle me-2"></i>Order Information</h6>
+                            <h6 class="text-navy mb-3 border-bottom pb-2 fw-bold"></i>Order Information</h6>
                             <div class="mb-3">
                                 <label class="form-label d-flex align-items-center">
-                                    Reference #
+                                    # Reference 
                                     <i id="info-icon" class="bi bi-info-circle ms-1 text-primary" style="cursor: pointer;"></i>
                                 </label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-hash"></i></span>
+                                    {{-- <span class="input-group-text bg-light"><i class="bi bi-hash"></i></span> --}}
                                     <input type="text" class="form-control w-100" id="referenceId" required="true" placeholder="Enter reference number">
                                 </div>
                             </div>
@@ -561,8 +563,8 @@
                 </div>
             </div>
             <div class="modal-footer border-0 bg-light rounded-bottom">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle me-1"></i>Cancel
+                <button type="button" class="btn text-danger" data-bs-dismiss="modal">
+                    Cancel
                 </button>
                 <button type="button" class="btn btn-primary" id="sendOrderBtn">
                     <i class="bi bi-send me-1"></i>Send Order
@@ -574,7 +576,7 @@
 
 <!-- Info Modal -->
 <div class="modal fade " id="infoModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg" style="z-index: 1056;max-width:800px">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" style="z-index: 1056;max-width:1024px">
         <div class="modal-content">
             <div class="modal-header">
                 <strong>របៀបកម្មង់ទិញ Jpoint</strong>

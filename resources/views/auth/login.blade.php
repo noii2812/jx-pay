@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login - Game Store</title>
     <!-- Bootstrap CSS -->
@@ -207,19 +208,20 @@
     <div style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
         <img src="/images/sky.jpg" alt="Kunlun"
             style="width: 100vw; height: 100vh; object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1;">
-        <div class="container" style="width:1000px;">
+        <div class="container" style="width:1500px;">
             <div class="row login-container">
                 <!-- Game Wallpaper Side -->
-                <div class="col-md-6 game-wallpaper d-none d-md-block">
+                <div class="col-md-8 game-wallpaper d-none d-md-block">
                     <video autoplay muted loop playsinline
                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px 0 0 15px;">
-                        <source src="/images/login.mp4" type="video/mp4">
+                        {{-- <source src="/images/login.mp4" type="video/mp4"> --}}
+                        <source src="/videos/bg.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
 
                 <!-- Login Form Side -->
-                <div class="col-md-6 login-form">
+                <div class="col-md-4 login-form">
                     <div class="login-icon">
                         <img src="/images/banks/game-logo.jpg" alt="Coin Icon"
                             style="width: 100px; height: 100px; border-radius: 50%;">

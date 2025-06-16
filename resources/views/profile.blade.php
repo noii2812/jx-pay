@@ -1,5 +1,5 @@
 <x-layout>
-    {{-- <x-loading-animation /> --}}
+    <x-loading-animation />
     
     <div class="container py-4">
         <!-- Profile Header Card -->
@@ -52,16 +52,17 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-primary bg-opacity-10 rounded p-3 me-3">
-                                <i class="bi bi-wallet2 text-primary"></i>
+                                <i class="bi bi-database text-primary"></i>
                             </div>
                             <div>
-                                <h6 class="mb-0">Total Balance</h6>
-                                <h4 class="mb-0">${{ number_format(auth()->user()->balance ?? 0, 2) }}</h4>
+                                <h6 class="mb-0">Total Coins</h6>
+                                <h4 class="mb-0">{{ auth()->user()->coin ?? 0 }}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            @unless(auth()->user()->role === 'admin')
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
                     <div class="card-body">
@@ -70,23 +71,24 @@
                                 <i class="bi bi-arrow-up-circle text-success"></i>
                             </div>
                             <div>
-                                <h6 class="mb-0">Total Deposits</h6>
-                                <h4 class="mb-0">${{ number_format(auth()->user()->total_deposits ?? 0, 2) }}</h4>
+                                <h6 class="mb-0">Total Orders</h6>
+                                <h4 class="mb-0">{{ auth()->user()->transactions()->count()  }}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            @endunless
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-info bg-opacity-10 rounded p-3 me-3">
-                                <i class="bi bi-arrow-down-circle text-info"></i>
+                                <i class="bi bi-people text-info"></i>
                             </div>
                             <div>
-                                <h6 class="mb-0">Total Withdrawals</h6>
-                                <h4 class="mb-0">${{ number_format(auth()->user()->total_withdrawals ?? 0, 2) }}</h4>
+                                <h6 class="mb-0">Accounts</h6>
+                                <h4 class="mb-0">{{ auth()->user()->accounts()->count() }}</h4>
                             </div>
                         </div>
                     </div>
@@ -300,6 +302,122 @@
                     }
                 });
             }
+
+            // Handle change password form submission
+            const changePasswordForm = document.getElementById('changePasswordForm');
+            if (changePasswordForm) {
+                changePasswordForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    
+                    try {
+                        const response = await fetch('/profile/change-password', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(Object.fromEntries(formData))
+                        });
+
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: data.message,
+                                confirmButtonColor: '#6366f1'
+                            }).then(() => {
+                                // Close the modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                                modal.hide();
+                                // Reset the form
+                                changePasswordForm.reset();
+                            });
+                        } else {
+                            let errorMessage = data.message;
+                            if (data.errors) {
+                                errorMessage = Object.values(data.errors).flat().join('\n');
+                            }
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: errorMessage,
+                                confirmButtonColor: '#6366f1'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An unexpected error occurred',
+                            confirmButtonColor: '#6366f1'
+                        });
+                    }
+                });
+            }
+
+            // Handle edit profile form submission
+            const editProfileForm = document.getElementById('editProfileForm');
+            if (editProfileForm) {
+                editProfileForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    
+                    try {
+                        const response = await fetch('/profile/update', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(Object.fromEntries(formData))
+                        });
+
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: data.message || 'Profile updated successfully',
+                                confirmButtonColor: '#6366f1'
+                            }).then(() => {
+                                // Close the modal
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+                                modal.hide();
+                                // Reload the page to show updated profile
+                                window.location.reload();
+                            });
+                        } else {
+                            let errorMessage = data.message;
+                            if (data.errors) {
+                                errorMessage = Object.values(data.errors).flat().join('\n');
+                            }
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: errorMessage,
+                                confirmButtonColor: '#6366f1'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An unexpected error occurred',
+                            confirmButtonColor: '#6366f1'
+                        });
+                    }
+                });
+            }
         });
     </script>
 </x-layout>
@@ -315,18 +433,6 @@
                 </div>
                 <div class="modal-body p-4">
                     <form id="editProfileForm">
-                        <div class="text-center mb-4">
-                            <div class="position-relative d-inline-block">
-                                <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=random' }}" 
-                                    class="rounded-circle border border-3 border-primary" 
-                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                <label class="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 end-0" 
-                                    style="width: 32px; height: 32px;">
-                                    <i class="bi bi-camera"></i>
-                                    <input type="file" name="avatar" class="d-none" accept="image/*">
-                                </label>
-                            </div>
-                        </div>
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
                             <input type="text" class="form-control" name="name" value="{{ auth()->user()->name }}" required>
