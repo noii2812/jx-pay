@@ -304,7 +304,7 @@
             }
         }
     </style>
-     <style>
+    <style>
         body {
             background-color: #e8f4ff;
             height: 100%;
@@ -418,20 +418,24 @@
             border-radius: 15px;
             transition: transform 0.2s;
         }
+
         .card-privilege:hover {
             transform: translateY(-5px);
         }
+
         .banner {
             background: linear-gradient(45deg, #6c5ce7, #3498db);
             border-radius: 15px;
             color: white;
         }
+
         .btn-yellow {
             background-color: #ffd32a;
             border: none;
             color: #333;
             font-weight: bold;
         }
+
         .server-status {
             font-size: 0.9rem;
         }
@@ -499,28 +503,38 @@
                         style="border-radius: 10px; width: 100%; height: 100%;">
                 </div>
             </div>
-            
-            @if(auth()->check() && in_array(auth()->user()->role, ['admin', 'gm']))
-            <div class="sidebar-title">Admin</div>
-            <ul class="nav flex-column mb-2">
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin" data-path="/admin"><i class="bi bi-grid"></i> Admin Board</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/orderCoin" data-path="/orderCoin"><i class="bi bi-tag"></i> Order Coin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/users" data-path="/users"><i class="bi bi-people"></i> Users</a>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/gameAccounts" data-path="/gameAccounts"><i class="bi bi-controller"></i> Game Account</a>
-                </li>
-               
+            @if (auth()->check() && in_array(auth()->user()->role, ['admin', 'gm']))
+                <div class="sidebar-title">Admin</div>
+                <ul class="nav flex-column mb-2">
+                    @if(auth()->check() && in_array(auth()->user()->role, ['admin']))
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin" data-path="/admin"><i class="bi bi-grid"></i> Admin Board</a>
+                    </li>
+                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orderCoin" data-path="/orderCoin"><i class="bi bi-tag"></i> Order
+                            Coin</a>
+                    </li>
+                    @if(auth()->check() && in_array(auth()->user()->role, ['admin']))
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users" data-path="/users"><i class="bi bi-people"></i> Users</a>
+                    </li>
+                    @endif
 
-            </ul>
+                    @if(auth()->check() && in_array(auth()->user()->role, ['admin']))
+                    <li class="nav-item">
+                        <a class="nav-link" href="/gameAccounts" data-path="/gameAccounts"><i
+                                class="bi bi-controller"></i> Game Account</a>
+                    </li>
+                    @endif
+
+
+                </ul>
             @endif
-            
+
+
+            @if(auth()->check() && auth()->user()->role === 'user')
             <div class="sidebar-title">Pages</div>
             <ul class="nav flex-column mb-2">
                 <li class="nav-item">
@@ -533,15 +547,18 @@
                     <a class="nav-link" href="/game" data-path="/game"><i class="bi bi-controller"></i>Game</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/transferCoinHistory" data-path="/transferCoinHistory"><i class="bi bi-clipboard2-check"></i>Transfer Coin History</a>
+                    <a class="nav-link" href="/transferCoinHistory" data-path="/transferCoinHistory"><i
+                            class="bi bi-clipboard2-check"></i>Transfer Coin History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/topUpHistory" data-path="/topUpHistory"><i class="bi bi-coin"></i>Top Up History</a>
+                    <a class="nav-link" href="/topUpHistory" data-path="/topUpHistory"><i class="bi bi-coin"></i>Top Up
+                        History</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/shop" data-path="/shop"><i class="bi bi-cart"></i>Shop</a>
                 </li>
             </ul>
+            @endif
 
             <div class="sidebar-footer mt-4">
 
@@ -549,15 +566,15 @@
         </aside>
 
         <div>
-        @include('components.nav')
-        <main class="main-content page-transition" id="mainContent">
-            {{ $slot }}
-        </main>
+            @include('components.nav')
+            <main class="main-content page-transition" id="mainContent">
+                {{ $slot }}
+            </main>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const body = document.body;
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('mainContent');
@@ -568,7 +585,7 @@
             // Set no-transition class initially to prevent flash during page load
             sidebar.classList.add('no-transition');
             mainContent.classList.add('no-transition');
-            
+
             // Remove the no-transition class after a short delay
             setTimeout(() => {
                 sidebar.classList.remove('no-transition');
@@ -590,17 +607,17 @@
                 link.addEventListener('click', function(e) {
                     // Don't do this for active links
                     if (this.classList.contains('active')) return;
-                    
+
                     // Store the current scroll position
                     const scrollPos = window.scrollY;
                     localStorage.setItem('scrollPosition', scrollPos);
-                    
+
                     // Store sidebar state
                     localStorage.setItem('sidebarOpen', sidebar.classList.contains('show'));
-                    
+
                     // Add animation for page transition
                     mainContent.classList.remove('show');
-                    
+
                     // Small delay for the animation to be visible
                     setTimeout(() => {
                         // Continue with the navigation
@@ -610,7 +627,7 @@
 
             // Close sidebar when clicking on a link (for mobile)
             navLinks.forEach(link => {
-                link.addEventListener('click', function () {
+                link.addEventListener('click', function() {
                     if (window.innerWidth <= 991) {
                         toggleSidebar();
                     }
@@ -618,7 +635,7 @@
             });
 
             // Handle window resize
-            window.addEventListener('resize', function () {
+            window.addEventListener('resize', function() {
                 if (window.innerWidth > 991) {
                     sidebar.classList.remove('show');
                     sidebarBackdrop.classList.remove('show');
@@ -649,14 +666,14 @@
 
             // Set initial active state
             setActiveLink();
-            
+
             // Restore scroll position if exists
             const savedScrollPosition = localStorage.getItem('scrollPosition');
             if (savedScrollPosition) {
                 window.scrollTo(0, parseInt(savedScrollPosition));
                 localStorage.removeItem('scrollPosition');
             }
-            
+
             // Restore sidebar state if exists
             const savedSidebarOpen = localStorage.getItem('sidebarOpen');
             if (savedSidebarOpen === 'true' && window.innerWidth <= 991) {

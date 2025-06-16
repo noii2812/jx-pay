@@ -5,7 +5,7 @@
     <div class="navbar navbar-expand-lg navbar-light bg-transparent rounded-3 mb-4">
         <div class="container-fluid">
             <h5 style="font-size: 1.5rem; font-weight: 600; margin-top: 1rem;">
-                Admin Board
+            Admin Board
             </h5>
             <div class="d-flex ms-auto">
                 <div class="dropdown">
@@ -132,9 +132,9 @@
                     <h5 class="mb-0" style="font-size: 1.2rem; font-weight: 600; color: #414141;">Order Coin List</h5>
                 </div>
                 <div class="col-auto">
-                    <a href="/orderCoin" class="btn btn-primary btn-sm navigation-btn">
+                    {{-- <a href="/orderCoin" class="btn btn-primary btn-sm navigation-btn">
                         <i class="bi bi-list-ul me-1"></i>View All Orders
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>
@@ -222,7 +222,7 @@
         <h5 style="font-size: 1.2rem; font-weight: 600; margin-top: 1rem; color: #414141;">
             Registered Users
         </h5>
-        <a href="/users" class="btn btn-primary btn-sm navigation-btn">View All Users</a>
+        {{-- <a href="/users" class="btn btn-primary btn-sm navigation-btn">View All Users</a> --}}
     </div>
     <div class="card border-0 shadow-sm mt-4">
         <div class="card-body">

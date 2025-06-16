@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminOrderCoin;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\TransfersController;
+use App\Http\Controllers\CaptchaController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -77,6 +78,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/transactions/{transaction}/mark-as-paid', [TransactionController::class, 'markAsPaid'])->name('transactions.mark-as-paid');
 
 });
+
+Route::get('/captcha', [CaptchaController::class, 'generate'])->name('captcha.generate');
+
 
 Route::get('/test-500', function() {
     abort(500);

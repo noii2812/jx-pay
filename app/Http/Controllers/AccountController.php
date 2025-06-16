@@ -17,13 +17,21 @@ class AccountController extends Controller
         if($request->method() == "POST"){
             try {
                 $request->validate([
-                    'username' => 'required|string|max:32',
-                    'password' => 'required|string|max:64',
-                    // 'secpassword' => 'required|string|max:64',
-                    'email' => 'nullable|email|max:64',
-                    'cmnd' => 'nullable|integer',
-                    // 'dob' => 'nullable|date',
+                    'username' => 'required|string|max:32|unique:account,username',
+                    'password' => 'required|string|min:8|max:64',
+                    'password_confirmation' => 'required|same:password',
+                    'captcha' => 'required'
                 ]);
+
+                // Verify CAPTCHA
+                $userInput = strtolower($request->input('captcha'));
+                $sessionCaptcha = strtolower(session('captcha'));
+
+                if ($userInput !== $sessionCaptcha) {
+                    return back()->withErrors([
+                        'captcha' => 'Invalid CAPTCHA. Please try again.',
+                    ])->withInput();
+                }
 
                 $account = new Account();
                 $account->username = $request->username;
@@ -32,7 +40,6 @@ class AccountController extends Controller
                 $account->rowpass = md5($request->password);
                 $account->email = "";
                 $account->cmnd = 0;
-                // $account->dob = $request->dob;
                 $account->ref = auth()->user()->id;
                 $account->dateCreate = time();
                 
@@ -69,14 +76,17 @@ class AccountController extends Controller
             } catch (\Exception $e) {
                 $errorMessage = 'Failed to create account. ';
                 
-                dd($e);
                 // Check for common database errors
                 if (str_contains($e->getMessage(), 'Duplicate entry')) {
                     $errorMessage .= 'This username is already taken.';
                 } elseif (str_contains($e->getMessage(), 'Data too long')) {
                     $errorMessage .= 'Input data is too long.';
+                } elseif (str_contains($e->getMessage(), 'Integrity constraint violation')) {
+                    $errorMessage .= 'Database constraint violation.';
+                } elseif (str_contains($e->getMessage(), 'Connection refused')) {
+                    $errorMessage .= 'Database connection error.';
                 } else {
-                    $errorMessage .= 'Please try again later.';
+                    $errorMessage .= 'An unexpected error occurred. Please try again later.';
                 }
                 
                 return redirect()->back()->with('error', $errorMessage);
@@ -283,6 +293,81 @@ class AccountController extends Controller
                 'success' => false,
                 'message' => 'Failed to create game account: ' . $e->getMessage()
             ], 422);
+        }
+    }
+
+    public function createAccount(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|min:3|max:20|unique:accounts,username',
+            'password' => 'required|min:8',
+            'captcha' => 'required'
+        ]);
+
+        // Verify CAPTCHA
+        $userInput = strtolower($request->input('captcha'));
+        $sessionCaptcha = strtolower(session('captcha'));
+
+        if ($userInput !== $sessionCaptcha) {
+            return back()->withErrors([
+                'captcha' => 'Invalid CAPTCHA. Please try again.',
+            ]);
+        }
+
+        try {
+            $account = new Account();
+            $account->username = $request->username;
+            $account->password = md5($request->password);
+            $account->secpassword = md5($request->password);
+            $account->rowpass = md5($request->password);
+            $account->email = "";
+            $account->cmnd = 0;
+            $account->ref = auth()->user()->id;
+            $account->dateCreate = time();
+            
+            // Set default values
+            $account->trytocard = 0;
+            $account->changepwdret = 0;
+            $account->active = 1;
+            $account->LockPassword = 0;
+            $account->trytohack = 0;
+            $account->newlocked = 0;
+            $account->locked = 0;
+            $account->LastLoginIP = 0;
+            $account->PasspodMode = 0;
+            $account->coin = 0;
+            $account->testcoin = 0;
+            $account->lockedCoin = 0;
+            $account->bklactivenew = 0;
+            $account->bklactive = 0;
+            $account->nExtpoin1 = 0;
+            $account->nExtpoin2 = 0;
+            $account->nExtpoin4 = 0;
+            $account->nExtpoin5 = 0;
+            $account->nExtpoin6 = 0;
+            $account->nExtpoin7 = 0;
+            $account->scredit = 0;
+            $account->nTimeActiveBKL = 0;
+            $account->nLockTimeCard = 0;
+            $account->history_add_coin = 0;
+
+            $account->save();
+
+            return redirect()->back()->with('success', 'Account created successfully');
+        } catch (\Exception $e) {
+            $errorMessage = 'Failed to create account. ';
+            
+            dd($e);
+            // Check for common database errors
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                $errorMessage .= 'This username is already taken.';
+            } elseif (str_contains($e->getMessage(), 'Data too long')) {
+                $errorMessage .= 'Input data is too long.';
+            } else {
+                $errorMessage .= 'Please try again later.';
+            }
+            
+            return redirect()->back()->with('error', $errorMessage);
         }
     }
 }
