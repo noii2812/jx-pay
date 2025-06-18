@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png" />
     <title>Sign Up - Game Store</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,6 +22,7 @@
             padding: 2rem 0;
             min-height: 100vh;
         }
+
         .signup-container {
             background: white;
             border-radius: 15px;
@@ -28,6 +32,7 @@
             max-height: calc(100vh - 4rem);
             display: flex;
         }
+
         .game-wallpaper {
             position: relative;
             height: auto;
@@ -35,11 +40,12 @@
             overflow: hidden;
             flex: 1;
         }
+
         .signup-form {
             padding: 28px 40px 28px 40px;
             background: linear-gradient(135deg, #fffbe6 0%, #fff 100%);
             border-radius: 0 15px 15px 0;
-            box-shadow: 0 8px 32px rgba(255, 211, 42, 0.15), 0 1.5px 6px rgba(0,0,0,0.04);
+            box-shadow: 0 8px 32px rgba(255, 211, 42, 0.15), 0 1.5px 6px rgba(0, 0, 0, 0.04);
             border: 1.5px solid #ffe066;
             position: relative;
             overflow-y: auto;
@@ -47,20 +53,25 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
+
         .signup-form::-webkit-scrollbar {
             width: 8px;
         }
+
         .signup-form::-webkit-scrollbar-track {
             background: #ffe066;
             border-radius: 4px;
         }
+
         .signup-form::-webkit-scrollbar-thumb {
             background: #ffd32a;
             border-radius: 4px;
         }
+
         .signup-form::-webkit-scrollbar-thumb:hover {
             background: #ffb300;
         }
+
         .signup-icon {
             display: flex;
             justify-content: center;
@@ -68,28 +79,43 @@
             margin-bottom: 18px;
             animation: bounceIn 1s;
         }
+
         @keyframes bounceIn {
-            0% { transform: scale(0.7); opacity: 0; }
-            60% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
+
         .signup-title {
             color: #bfa600;
             font-weight: bold;
             margin-bottom: 10px;
-            font-size: 2rem;
+            font-size: 1.2rem;
             text-align: center;
         }
+
         .signup-subtitle {
             color: #8e7c3b;
             text-align: center;
             margin-bottom: 0;
             font-size: 1rem;
         }
+
         .divider {
             border-bottom: 1.5px dashed #ffe066;
             margin: 8px 0 10px 0;
         }
+
         .form-section {
             background: rgba(255, 211, 42, 0.05);
             border: 1px solid #ffe066;
@@ -97,6 +123,7 @@
             padding: 20px;
             margin-bottom: 12px;
         }
+
         .form-section-title {
             color: #bfa600;
             font-size: 1.1rem;
@@ -106,13 +133,16 @@
             align-items: center;
             gap: 8px;
         }
+
         .input-group {
             margin-bottom: 20px;
             position: relative;
         }
+
         .input-group:last-child {
             margin-bottom: 0;
         }
+
         .form-label {
             font-weight: 500;
             color: #bfa600;
@@ -121,24 +151,28 @@
             align-items: center;
             gap: 4px;
         }
+
         .required-star {
             color: #ff6b6b;
             font-size: 14px;
         }
+
         .form-control {
-            border-radius: 12px;
+            border-radius: 8px;
             border: 2px solid #ffe066;
             background: #fffde7;
             font-size: 1.08rem;
             box-shadow: 0 1px 4px #ffe06622;
-            padding: 12px;
+            padding: 8px;
             transition: all 0.3s ease;
         }
+
         .form-control:focus {
             border-color: #ffd32a;
             box-shadow: 0 0 10px #ffe06655;
             transform: translateY(-1px);
         }
+
         .input-icon {
             position: absolute;
             left: 12px;
@@ -147,29 +181,35 @@
             color: #bfa600;
             z-index: 2;
         }
+
         .input-with-icon {
             padding-left: 35px;
         }
+
         .password-requirements {
             font-size: 0.85rem;
             color: #8e7c3b;
             margin-top: 8px;
             padding-left: 8px;
         }
+
         .password-requirements ul {
             list-style: none;
             padding-left: 0;
             margin-bottom: 0;
         }
+
         .password-requirements li {
             margin-bottom: 4px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
+
         .password-requirements i {
             font-size: 12px;
         }
+
         .btn-signup {
             background-color: #ffd32a;
             border: none;
@@ -178,36 +218,42 @@
             border-radius: 20px;
             padding: 12px 30px;
             text-transform: uppercase;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
             transition: all 0.3s, box-shadow 0.2s;
             letter-spacing: 1px;
             font-size: 1.1rem;
             position: relative;
             overflow: hidden;
         }
+
         .btn-signup:hover {
             background-color: #ffc107;
             transform: scale(1.07);
             box-shadow: 0 8px 24px #ffe06655;
         }
+
         .btn-signup:active {
             transform: scale(0.98);
         }
+
         .terms-text {
             text-align: center;
             font-size: 0.9rem;
             color: #8e7c3b;
             margin-top: 15px;
         }
+
         .terms-text a {
             color: #bfa600;
             text-decoration: none;
             font-weight: 500;
         }
+
         .terms-text a:hover {
             text-decoration: underline;
             color: #ffb300;
         }
+
         .back-to-signin {
             display: block;
             text-align: center;
@@ -216,10 +262,12 @@
             text-decoration: none;
             transition: color 0.2s;
         }
+
         .back-to-signin:hover {
             color: #ffb300;
             text-decoration: underline;
         }
+
         .password-toggle {
             cursor: pointer;
             position: absolute;
@@ -230,6 +278,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Background Music -->
     <audio id="bgMusic" loop>
@@ -246,35 +295,37 @@
     <div style="height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center;">
         <img src="/images/sky.jpg" alt="Kunlun"
             style="width: 100vw; height: 100vh; object-fit: cover; position: absolute; top: 0; left: 0; z-index: -1;">
-    <div class="container">
-        <div class="signup-container">
+        <div class="container" style="width:1500px;">
+            <div class="signup-container">
                 <!-- Game Wallpaper Side -->
-                <div class="col-md-6 game-wallpaper d-none d-md-block">
-                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px 0 0 15px;">
-                        <source src="/images/login.mp4" type="video/mp4">
+                <div class="col-md-7 game-wallpaper d-none d-md-block">
+                    <video autoplay muted loop playsinline
+                        style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px 0 0 15px;">
+                        <source src="/videos/bg.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 </div>
-                
+
                 <!-- Sign Up Form Side -->
-                <div class="col-md-6 signup-form">
+                <div class="col-md-5 signup-form">
                     <div class="signup-icon">
-                        <img src="/images/banks/game-logo.jpg" alt="Game Logo" style="width: 100px; height: 100px; border-radius: 50%;">
+                        <img src="/images/banks/game-logo.jpg" alt="Game Logo"
+                            style="width: 80px; height: 80px; border-radius: 50%;">
                     </div>
                     <h1 class="signup-title">Create Account</h1>
                     {{-- <p class="signup-subtitle">Join our gaming community today!</p> --}}
                     <div class="divider"></div>
-                    
+
                     @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                        <div class="alert alert-danger" style="background-color: #ff2c2c; border-color: #ffcdd2; color: white;">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
-                    
+
                     <form action="{{ route('register') }}" method="POST">
                         @csrf
                         <div class="form-section">
@@ -282,42 +333,49 @@
                                 <i class="bi bi-person-circle"></i> Account Information
                             </div>
                             <div class="input-group" style="justify-content: space-between">
-                                <label for="username" class="form-label">Username <span class="required-star">*</span></label>
+                                <label for="username" class="form-label">Username <span
+                                        class="required-star">*</span></label>
                                 <div class="position-relative">
                                     <i class="bi bi-person input-icon"></i>
-                                    <input type="text" class="form-control input-with-icon @error('username') is-invalid @enderror" 
-                                        name="username" id="username" placeholder="Choose a username" value="{{ old('username') }}" required>
+                                    <input type="text"
+                                        class="form-control input-with-icon @error('username') is-invalid @enderror"
+                                        name="username" id="username" placeholder="Choose a username"
+                                        value="{{ old('username') }}" required>
                                 </div>
                                 @error('username')
                                     <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
                                 @enderror
                             </div>
-    
+
                             <div class="input-group" style="justify-content: space-between">
                                 <label for="email" class="form-label">Email Address</label>
                                 <div class="position-relative">
                                     <i class="bi bi-envelope input-icon"></i>
-                                    <input type="email" class="form-control input-with-icon @error('email') is-invalid @enderror" 
-                                        name="email" id="email" placeholder="Enter your email (optional)" value="{{ old('email') }}">
+                                    <input type="email"
+                                        class="form-control input-with-icon @error('email') is-invalid @enderror"
+                                        name="email" id="email" placeholder="Enter your email (optional)"
+                                        value="{{ old('email') }}">
                                 </div>
                                 @error('email')
                                     <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
                                 @enderror
                             </div>
-    
+
                             <div class="input-group" style="justify-content: space-between">
                                 <label for="phone" class="form-label">Phone Number</label>
                                 <div class="position-relative">
                                     <i class="bi bi-phone input-icon"></i>
-                                    <input type="tel" class="form-control input-with-icon @error('phone') is-invalid @enderror" 
-                                        name="phone" id="phone" placeholder="Enter your phone number (optional)" value="{{ old('phone') }}">
+                                    <input type="tel"
+                                        class="form-control input-with-icon @error('phone') is-invalid @enderror"
+                                        name="phone" id="phone" placeholder="Enter your phone number (optional)"
+                                        value="{{ old('phone') }}">
                                 </div>
                                 @error('phone')
                                     <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-    
+
                         <div class="form-section">
                             <div class="form-section-title">
                                 <i class="bi bi-shield-lock"></i> Security
@@ -326,7 +384,7 @@
                                 <label for="password" class="form-label">Password <span class="required-star">*</span></label>
                                 <div class="position-relative">
                                     <i class="bi bi-key input-icon"></i>
-                                    <input type="password" class="form-control input-with-icon @error('password') is-invalid @enderror" 
+                                    <input type="password" class="form-control input-with-icon @error('password') is-invalid @enderror"
                                         name="password" id="password" placeholder="Create a password" required>
                                     <span class="password-toggle" onclick="togglePassword('password', 'passwordToggle')">
                                         <i class="bi bi-eye" id="passwordToggle"></i>
@@ -349,22 +407,42 @@
                                 <label for="password_confirmation" class="form-label">Confirm Password <span class="required-star">*</span></label>
                                 <div class="position-relative">
                                     <i class="bi bi-key input-icon"></i>
-                                    <input type="password" class="form-control input-with-icon" 
-                                        name="password_confirmation" id="password_confirmation" placeholder="Confirm password" style="width: 100%;" required>
+                                    <input type="password" class="form-control input-with-icon"
+                                        name="password_confirmation" id="password_confirmation"
+                                        placeholder="Confirm password" required>
                                     <span class="password-toggle" onclick="togglePassword('password_confirmation', 'confirmToggle')">
                                         <i class="bi bi-eye" id="confirmToggle"></i>
                                     </span>
                                 </div>
                             </div>
+
+                            <!-- Add CAPTCHA Section -->
+                            <div class="input-group position-relative" style="display:flex; justify-content: space-between;">
+                                <div style="flex: 1;">
+                                    <img src="{{ route('captcha.generate') }}" alt="CAPTCHA" id="captchaImage"
+                                        style="cursor: pointer; height: 100%;width: 100%;; border-radius: 8px;"
+                                        onclick="refreshCaptcha()">
+                                </div>
+                                {{-- <label for="captcha" class="form-label" style="flex: 1;">CAPTCHA <span class="required-star">*</span></label> --}}
+                                <div class="position-relative" style="flex: 2;margin-left: 12px">
+                                    <i class="bi bi-shield-check input-icon"></i>
+                                    <input type="text" class="form-control input-with-icon @error('captcha') is-invalid @enderror"
+                                        name="captcha" id="captcha" placeholder="Enter CAPTCHA" required>
+                                </div>
+                                
+                            </div>
+                            @error('captcha')
+                                    <div class="text-danger mt-1" style="font-size: 0.85rem;">{{ $message }}</div>
+                            @enderror
                         </div>
-    
+
                         <div class="mb-4">
                             <button type="submit" class="btn btn-signup w-100">Create Account</button>
-                            <p class="terms-text">
+                            {{-- <p class="terms-text">
                                 By creating an account, you agree to our
                                 <a href="#">Terms of Service</a> and
                                 <a href="#">Privacy Policy</a>
-                            </p>
+                            </p> --}}
                         </div>
                     </form>
                     <a href="/login" class="back-to-signin">Already have an account? Sign In</a>
@@ -379,39 +457,43 @@
         // Add this at the beginning of your script section
         document.addEventListener('DOMContentLoaded', function() {
             const bgMusic = document.getElementById('bgMusic');
-            
+
             // Try to play immediately
             tryPlayMusic();
 
             // Also try to play on first user interaction
             document.addEventListener('click', function() {
                 tryPlayMusic();
-            }, { once: true });
+            }, {
+                once: true
+            });
 
             // Also try to play on first scroll
             document.addEventListener('scroll', function() {
                 tryPlayMusic();
-            }, { once: true });
-            
+            }, {
+                once: true
+            });
+
             // Password validation
             const passwordInput = document.getElementById('password');
             const confirmInput = document.getElementById('password_confirmation');
             const lengthCheck = document.querySelector('.password-requirements li:nth-child(1) i');
             const alphanumericCheck = document.querySelector('.password-requirements li:nth-child(2) i');
             const specialCharCheck = document.querySelector('.password-requirements li:nth-child(3) i');
-            
+
             passwordInput.addEventListener('input', function() {
                 const password = this.value;
                 const hasEightChars = password.length >= 8;
                 const hasAlphaNumeric = /(?=.*[0-9])(?=.*[a-zA-Z])/.test(password);
                 const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-                
+
                 // Update visual indicators
                 updateCheckIcon(lengthCheck, hasEightChars);
                 updateCheckIcon(alphanumericCheck, hasAlphaNumeric);
                 updateCheckIcon(specialCharCheck, hasSpecialChar);
             });
-            
+
             // Check if passwords match
             confirmInput.addEventListener('input', function() {
                 if (passwordInput.value !== this.value) {
@@ -420,8 +502,14 @@
                     this.classList.remove('is-invalid');
                 }
             });
+
+            // Add form submission handler
+            document.querySelector('form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                verifyCaptcha();
+            });
         });
-        
+
         function updateCheckIcon(icon, isValid) {
             if (isValid) {
                 icon.classList.remove('bi-x-circle', 'text-danger');
@@ -435,20 +523,20 @@
         function tryPlayMusic() {
             const bgMusic = document.getElementById('bgMusic');
             const musicIcon = document.getElementById('musicIcon');
-            
+
             if (bgMusic.paused) {
                 const playPromise = bgMusic.play();
-                
+
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
-                        // Playback started successfully
-                        musicIcon.classList.remove('bi-volume-up-fill');
-                        musicIcon.classList.add('bi-volume-mute-fill');
-                    })
-                    .catch(error => {
-                        // Auto-play was prevented
-                        console.log("Autoplay prevented:", error);
-                    });
+                            // Playback started successfully
+                            musicIcon.classList.remove('bi-volume-up-fill');
+                            musicIcon.classList.add('bi-volume-mute-fill');
+                        })
+                        .catch(error => {
+                            // Auto-play was prevented
+                            console.log("Autoplay prevented:", error);
+                        });
                 }
             }
         }
@@ -475,7 +563,7 @@
         function togglePassword(inputId, toggleId) {
             const passwordInput = document.getElementById(inputId);
             const toggleIcon = document.getElementById(toggleId);
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleIcon.classList.remove('bi-eye');
@@ -486,6 +574,43 @@
                 toggleIcon.classList.add('bi-eye');
             }
         }
+
+        // Add CAPTCHA refresh function
+        function refreshCaptcha() {
+            const captchaImage = document.getElementById('captchaImage');
+            captchaImage.src = "{{ route('captcha.generate') }}?" + new Date().getTime();
+        }
+
+        // Add CAPTCHA verification function
+        function verifyCaptcha() {
+            const captchaInput = document.getElementById('captcha').value;
+
+            fetch("{{ route('captcha.verify') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        captcha: captchaInput
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.querySelector('form').submit();
+                    } else {
+                        alert('Invalid CAPTCHA. Please try again.');
+                        refreshCaptcha();
+                        document.getElementById('captcha').value = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+        }
     </script>
 </body>
+
 </html>

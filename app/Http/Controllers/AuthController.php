@@ -72,7 +72,18 @@ class AuthController extends Controller
             'password' => 'required|min:8|confirmed',
             'email' => 'nullable|email|unique:users,email',
             'phoneNumber' => 'nullable|string|max:20',
+            'captcha' => 'required'
         ]);
+
+        // Verify CAPTCHA
+        $userInput = strtolower($request->input('captcha'));
+        $sessionCaptcha = strtolower(session('captcha'));
+
+        if ($userInput !== $sessionCaptcha) {
+            return back()->withErrors([
+                'captcha' => 'Invalid CAPTCHA. Please try again.',
+            ])->withInput();
+        }
 
         // Prepare user data
         $userData = [

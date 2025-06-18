@@ -76,14 +76,14 @@
         <div class="row g-4 mt-0">
             @php
                 $coinCards = [
-                    ['points' => 4000, 'price' => 100.00],
-                    ['points' => 2000, 'price' => 50.00],
-                    ['points' => 1200, 'price' => 30.00],
-                    ['points' => 800, 'price' => 20.00],
-                    ['points' => 400, 'price' => 10.00],
-                    ['points' => 200, 'price' => 5.00],
-                    ['points' => 120, 'price' => 3.00],
-                    ['points' => 40, 'price' => 1.00],
+                    ['points' => 40000, 'price' => 100.00],
+                    ['points' => 20000, 'price' => 50.00],
+                    ['points' => 12000, 'price' => 30.00],
+                    ['points' => 8000, 'price' => 20.00],
+                    ['points' => 4000, 'price' => 10.00],
+                    ['points' => 2000, 'price' => 5.00],
+                    ['points' => 1200, 'price' => 3.00],
+                    ['points' => 400, 'price' => 1.00],
                 ];
             @endphp
 
@@ -99,7 +99,7 @@
                                     <h6 class="text-muted" style="margin-top: 3px;">{{ $card['points'] }} Jpoint</h6>
                                 </div>
                                 <div class="col-6">
-                                    <h5 class="text-primary">${{ number_format($card['price'], 2) }}</h5>
+                                    <h5 class="text-primary text-end">${{ number_format($card['price'], 2) }}</h5>
                                 </div>
                             </div>
                             <button type="button" class="buy-coins-btn btn btn-yellow w-100 mt-3" 
@@ -213,7 +213,8 @@
                     console.log(data)
                     if (data.success) {
                         // Update success modal with transaction details
-                        document.getElementById('successOrderId').textContent = data.transaction_id || '123456';
+                        document.getElementById('successOrderId').textContent = data.data.order_id|| '';
+                        document.getElementById('successPoints').textContent = data.data.coin|| '';
                         document.getElementById('successAmount').textContent = price.toFixed(2);
                         
                         // Hide payment modal and show success modal
@@ -614,11 +615,11 @@
                 <div class="order-details bg-light p-3 rounded-3 text-start mb-4">
                     <div class="row mb-2">
                         <div class="col-6 text-muted">Order ID:</div>
-                        <div class="col-6 fw-bold">#<span id="successOrderId">123456</span></div>
+                        <div class="col-6 fw-bold">#<span id="successOrderId"></span></div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-6 text-muted">Points:</div>
-                        <div class="col-6 fw-bold"><span class="text-success points-amount">0</span></div>
+                        <div class="col-6 fw-bold"><span id="successPoints" class="text-success points-amount">0</span></div>
                     </div>
                     <div class="row">
                         <div class="col-6 text-muted">Amount:</div>

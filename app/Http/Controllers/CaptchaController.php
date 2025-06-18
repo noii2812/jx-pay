@@ -40,8 +40,8 @@ class CaptchaController extends Controller
     private function createCaptchaImage($text)
     {
         // Image dimensions
-        $width = 120;
-        $height = 35;
+        $width = 130;
+        $height = 40;
         
         // Create image
         $image = imagecreate($width, $height);

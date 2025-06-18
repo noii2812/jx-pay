@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/captcha', [CaptchaController::class, 'generate'])->name('captcha.generate');
-
+Route::post('/captcha/verify', [CaptchaController::class, 'verify'])->name('captcha.verify');
 
 Route::get('/test-500', function() {
     abort(500);
