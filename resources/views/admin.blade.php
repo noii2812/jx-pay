@@ -751,10 +751,10 @@
 <script>
     // Show toast notification when page loads
     window.addEventListener('load', function() {
-        const toast = new bootstrap.Toast(document.getElementById('liveToast'));
-        setTimeout(() => {
-            toast.show();
-        }, 500);
+        // const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+        // setTimeout(() => {
+        //     toast.show();
+        // }, 500);
     });
 </script>
 

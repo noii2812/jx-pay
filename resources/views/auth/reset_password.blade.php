@@ -83,7 +83,10 @@
                 <span class="toggle-password"><i class="bi bi-eye"></i></span>
             </div>
 
-            <button type="submit" class="w-full bg-gray-200 text-gray-600 font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75">Submit</button>
+            <button type="submit" class=" w-full bg-gray-200 text-gray-600 font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75" 
+                    style="background-color: #ffd32a;">
+                Submit
+            </button>
         </form>
 
         @if (session('success'))

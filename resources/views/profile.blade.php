@@ -433,26 +433,26 @@
                 </div>
                 <div class="modal-body p-4">
                     <form id="editProfileForm">
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Full Name</label>
                             <input type="text" class="form-control" name="name" value="{{ auth()->user()->name }}" required>
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" name="email" value="{{ auth()->user()->email }}" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" name="phone" value="{{ auth()->user()->phone }}">
+                            <input type="tel" class="form-control" name="phone" value="{{ auth()->user()->phoneNumber }}">
                         </div>
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label class="form-label">Gender</label>
                             <select class="form-select" name="gender">
                                 <option value="male" {{ auth()->user()->gender === 'male' ? 'selected' : '' }}>Male</option>
                                 <option value="female" {{ auth()->user()->gender === 'female' ? 'selected' : '' }}>Female</option>
                                 <option value="other" {{ auth()->user()->gender === 'other' ? 'selected' : '' }}>Other</option>
                             </select>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
                 <div class="modal-footer border-0 p-4">

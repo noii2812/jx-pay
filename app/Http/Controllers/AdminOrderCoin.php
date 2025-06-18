@@ -71,10 +71,7 @@ class AdminOrderCoin extends Controller
                 $user->save();
             });
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Transaction approved successfully'
-            ]);
+            return redirect()->back()->with('success', 'Transaction approved successfully');
         }
 
         return redirect()->back()->with('error', 'Transaction cannot be approved');

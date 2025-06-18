@@ -1,5 +1,8 @@
 <x-layout>
     
+    <!-- Add SweetAlert2 CSS and JS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <!-- Main Content -->
     <div class="col-12 shop-content" >
@@ -233,13 +236,50 @@
                             }, 300);
                         }, 300);
                     } else {
-                        alert('Error creating transaction: ' + data.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text:data.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3085d6'
+                        });
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('An error occurred while processing your request.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while processing your request.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#ffd32a'
+                    });
                 });
+            });
+
+            // Add loading state for transaction submission
+            document.getElementById('sendOrderBtn').addEventListener('click', function() {
+                // Swal.fire({
+                //     title: 'Processing Order...',
+                //     text: 'Please wait... We are sending your order to GM',
+                //     allowOutsideClick: false,
+                //     allowEscapeKey: false,
+                //     showConfirmButton: false,
+                //     didOpen: () => {
+                //         Swal.showLoading();
+                //     }
+                // });
+
+                // // Add success handler
+                // setTimeout(() => {
+                //     Swal.fire({
+                //         icon: 'success',
+                //         title: 'Order Sent Successfully!',
+                //         text: 'Your order has been sent to GM',
+                //         confirmButtonText: 'OK',
+                //         confirmButtonColor: '#6c5ce7'
+                //     });
+                // }, 2000); // Adjust timeout as needed
             });
 
             // Handle modal close buttons
@@ -264,6 +304,15 @@
     </script>
 
     <style>
+        /* SweetAlert2 z-index fix */
+        .swal2-container {
+            z-index: 99999 !important;
+        }
+        
+        .swal2-popup {
+            z-index: 99999 !important;
+        }
+
         .text-navy {
             color: #1e3a8a;
         }

@@ -4,9 +4,9 @@
     <!-- Header Section -->
     <div class="d-flex align-items-center justify-content-between mb-5">
         <div class="d-flex align-items-center gap-4">
-            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
+            {{-- <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
                 <i class="bi bi-credit-card text-white fs-4"></i>
-            </div>
+            </div> --}}
             <h2 class="fw-bold m-0 fs-1">Top Up History</h2>
         </div>
         <div class="d-flex align-items-center gap-3">

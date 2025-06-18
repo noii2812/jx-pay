@@ -42,7 +42,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
+            // 'username' => 'The provided credentials do not match our records.',
+            'username' => 'Invalid Username or Password',
         ]);
     }
 
@@ -127,7 +128,7 @@ class AuthController extends Controller
 
         $user = User::where('username', $request->username)->first();
 
-        if (!$user || !password_verify($request->security_password, $user->security_password)) {
+        if (!$user || !password_verify($request->security_password, $user->secpassword)) {
             return back()->withErrors([
                 'security_password' => 'Invalid username or security password.',
             ]);

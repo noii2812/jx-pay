@@ -247,7 +247,7 @@
                     <p class="login-subtitle">ឱកាសក្លាយជាអ្នកក្លាហានក្នុងដៃអ្នក</p>
 
                     @if ($errors->any())
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger mt-4">
                             <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>

@@ -86,7 +86,8 @@ class AccountController extends Controller
                 } elseif (str_contains($e->getMessage(), 'Connection refused')) {
                     $errorMessage .= 'Database connection error.';
                 } else {
-                    $errorMessage .= 'An unexpected error occurred. Please try again later.';
+                    // $errorMessage .= 'An unexpected error occurred. Please try again later.';
+                    $errorMessage .= 'An unexpected error occurred. Make sure the password and confirm password is correct';
                 }
                 
                 return redirect()->back()->with('error', $errorMessage);

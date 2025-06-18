@@ -131,21 +131,21 @@ class UserController extends Controller
 
         $user = auth()->user();
         
-        if (!$user->security_password) {
+        if (!$user->secpassword) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Security password is not set'
             ], 400);
         }
 
-        if (!Hash::check($request->current_security_password, $user->security_password)) {
+        if (!Hash::check($request->current_security_password, $user->secpassword)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Current security password is incorrect'
             ], 400);
         }
 
-        $user->security_password = Hash::make($request->new_security_password);
+        $user->secpassword= Hash::make($request->new_security_password);
         $user->save();
 
         return response()->json([

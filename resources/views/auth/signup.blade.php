@@ -12,6 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #e8f4ff;
@@ -453,6 +455,8 @@
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Add this at the beginning of your script section
         document.addEventListener('DOMContentLoaded', function() {
@@ -506,9 +510,40 @@
             // Add form submission handler
             document.querySelector('form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                verifyCaptcha();
+                
+                // Show loading state
+                Swal.fire({
+                    title: 'Creating Account...',
+                    text: 'Please wait while we process your registration',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Submit the form
+                this.submit();
             });
         });
+
+        // Show error messages using SweetAlert2
+        @if($errors->any())
+            Swal.fire({
+                icon: 'error',
+                title: 'Registration Failed',
+                html: `
+                    <ul class="text-start">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                `,
+                confirmButtonText: 'Try Again',
+                confirmButtonColor: '#ffd32a'
+            });
+        @endif
 
         function updateCheckIcon(icon, isValid) {
             if (isValid) {
@@ -579,36 +614,6 @@
         function refreshCaptcha() {
             const captchaImage = document.getElementById('captchaImage');
             captchaImage.src = "{{ route('captcha.generate') }}?" + new Date().getTime();
-        }
-
-        // Add CAPTCHA verification function
-        function verifyCaptcha() {
-            const captchaInput = document.getElementById('captcha').value;
-
-            fetch("{{ route('captcha.verify') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        captcha: captchaInput
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.querySelector('form').submit();
-                    } else {
-                        alert('Invalid CAPTCHA. Please try again.');
-                        refreshCaptcha();
-                        document.getElementById('captcha').value = '';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred. Please try again.');
-                });
         }
     </script>
 </body>

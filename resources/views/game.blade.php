@@ -63,7 +63,7 @@
                                     <i class="bi bi-search"></i>
                                 </span>
                                 <input type="text" class="form-control bg-light border-0"
-                                    placeholder="Search servers..." id="searchInput">
+                                    placeholder="Search accounts..." id="searchInput">
                             </div>
                         </div>
                         {{-- <div class="col-md-3">
@@ -395,6 +395,7 @@
                                 <label class="form-label d-flex align-items-center gap-2">
                                     <i class="bi bi-coin fs-5" style="color: #6c5ce7"></i>
                                     Amount
+                                    
                                 </label>
                                 <div class="input-group input-group-lg">
                                     <input type="number" name="coin" class="form-control border-0"
@@ -408,6 +409,9 @@
                                     <button type="button" class="btn btn-link btn-sm p-0"
                                         onclick="setMaxAmount()">Use Max</button>
                                 </div>
+                                <span class="badge bg-success" id="x2Badge">
+                                    <i class="bi bi-lightning-fill me-1"></i>2X Coins: <span id="x2Amount">0</span>
+                                </span>
                             </div>
                             {{-- <div>
                                 <label class="form-label d-flex align-items-center gap-2">
@@ -448,11 +452,18 @@
         if (parseInt(input.value) > maxAmount) {
             input.value = maxAmount;
         }
+        updateX2Amount(input.value);
     }
 
     function setMaxAmount() {
         const input = document.querySelector('input[name="coin"]');
         input.value = {{ Auth::user()->coin }};
+        updateX2Amount(input.value);
+    }
+
+    function updateX2Amount(amount) {
+        const doubledAmount = amount * 2;
+        document.getElementById('x2Amount').textContent = new Intl.NumberFormat().format(doubledAmount);
     }
 
     // Add search functionality
