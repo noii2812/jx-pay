@@ -173,11 +173,11 @@
                                     </td>
                                     <td>
                                         @if ($account->user)
-                                            <a href="{{ route('users.search', ['search' => $account->user->username]) }}"
-                                                class="text-decoration-none d-inline-flex align-items-center">
+                                            {{-- <a href="{{ route('users.search', ['search' => $account->user->username]) }}"
+                                                class="text-decoration-none d-inline-flex align-items-center"> --}}
                                                 <span class="me-1">{{ $account->user->username }}</span>
-                                                <i class="bi bi-box-arrow-up-right text-muted small"></i>
-                                            </a>
+                                                {{-- <i class="bi bi-box-arrow-up-right text-muted small"></i> --}}
+                                            {{-- </a> --}}
                                         @else
                                             <span class="text-muted">Unknown</span>
                                         @endif
@@ -636,143 +636,114 @@
                 }
             };
 
-            // Function to fetch account details
             function fetchAccountDetails(accountId) {
-                // Show loading state
-                document.getElementById('accountModalBody').innerHTML = `
-                    <div class="text-center py-5">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <p class="mt-3">Loading account details...</p>
-                    </div>
-                `;
+                const modalBody = document.getElementById('accountModalBody');
+                modalBody.innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading account details...</p>
+        </div>
+    `;
 
                 accountDetailModal.show();
 
-                // In a real implementation, you'd fetch data from an API endpoint
-                // For now, we'll just simulate loading with a timeout
-                setTimeout(() => {
-                    // For demo purposes, we'll just show some placeholder content
-                    document.getElementById('accountModalBody').innerHTML = `
-                        <div class="text-center mb-4">
-                            <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center mx-auto"
-                                style="width: 100px; height: 100px;">
-                                <i class="bi bi-person-badge fs-1 text-primary"></i>
+                fetch('/admin/account/' + accountId)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        if (!data.success) {
+                            modalBody.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                            return;
+                        }
+                        const account = data.account;
+                        modalBody.innerHTML = `
+                <div class="text-center mb-4">
+                    <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center mx-auto"
+                        style="width: 100px; height: 100px;">
+                        <i class="bi bi-person-badge fs-1 text-primary"></i>
+                    </div>
+                    <h4 class="mt-3 mb-1">Account #${account.id}</h4>
+                    <p class="text-muted">Created on ${account.dateCreate ? new Date(account.dateCreate * 1000).toLocaleDateString() : ''}</p>
+                    <span class="badge ${account.active ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'} px-3 py-2 rounded-pill">
+                        <i class="bi ${account.active ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-1"></i> ${account.active ? 'Active' : 'Inactive'}
+                    </span>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-3">
+                            <div class="card-header bg-white border-0 pt-3">
+                                <h5 class="card-title mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Account Information</h5>
                             </div>
-                            <h4 class="mt-3 mb-1">Account #${accountId}</h4>
-                            <p class="text-muted">Created on 2023-01-01</p>
-                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
-                                <i class="bi bi-check-circle-fill me-1"></i> Active
-                            </span>
-                        </div>
-                        
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <div class="card h-100 border-0 shadow-sm rounded-3">
-                                    <div class="card-header bg-white border-0 pt-3">
-                                        <h5 class="card-title mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Account Information</h5>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-person text-secondary me-2"></i>
+                                        <span class="text-muted">Username</span>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="bi bi-person text-secondary me-2"></i>
-                                                <span class="text-muted">Username</span>
-                                            </div>
-                                            <p class="mb-0 fw-medium">game_user_${accountId}</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="bi bi-envelope text-secondary me-2"></i>
-                                                <span class="text-muted">Email</span>
-                                            </div>
-                                            <p class="mb-0 fw-medium">user${accountId}@example.com</p>
-                                        </div>
-                                        <div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="bi bi-shield-lock text-secondary me-2"></i>
-                                                <span class="text-muted">Last Password Change</span>
-                                            </div>
-                                            <p class="mb-0 fw-medium">2023-04-10</p>
-                                        </div>
-                                    </div>
+                                    <p class="mb-0 fw-medium">${account.username}</p>
                                 </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <div class="card h-100 border-0 shadow-sm rounded-3">
-                                    <div class="card-header bg-white border-0 pt-3">
-                                        <h5 class="card-title mb-0"><i class="bi bi-bank me-2 text-primary"></i>Game Information</h5>
+                                <!--<<div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-envelope text-secondary me-2"></i>
+                                        <span class="text-muted">Email</span>
                                     </div>
-                                    <div class="card-body">
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="bi bi-coin text-warning me-2"></i>
-                                                <span class="text-muted">Coin Balance</span>
-                                            </div>
-                                            <p class="mb-0 fw-medium fs-5">1,500</p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="bi bi-clock-history text-secondary me-2"></i>
-                                                <span class="text-muted">Last Login</span>
-                                            </div>
-                                            <p class="mb-0 fw-medium">2023-05-15</p>
-                                        </div>
-                                        <div>
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="bi bi-person-check text-secondary me-2"></i>
-                                                <span class="text-muted">Owner</span>
-                                            </div>
-                                            <p class="mb-0 fw-medium">
-                                                <a href="#" class="text-decoration-none">user123</a>
-                                            </p>
-                                        </div>
-                                    </div>
+                                    <p class="mb-0 fw-medium">${account.user && account.user.email ? account.user.email : 'N/A'}</p>
                                 </div>
-                            </div>
-
-                            <div class="col-12">
-                                <div class="card border-0 shadow-sm rounded-3">
-                                    <div class="card-header bg-white border-0 pt-3">
-                                        <h5 class="card-title mb-0"><i class="bi bi-activity me-2 text-primary"></i>Recent Activity</h5>
+                                -->
+                                <div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-shield-lock text-secondary me-2"></i>
+                                        <span class="text-muted">Last Password Change</span>
                                     </div>
-                                    <div class="card-body p-0">
-                                        <ul class="list-group list-group-flush">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
-                                                <div>
-                                                    <p class="mb-0 fw-medium">Login from 192.168.1.1</p>
-                                                    <small class="text-muted">2023-05-15 14:30:22</small>
-                                                </div>
-                                                <span class="badge bg-primary rounded-pill">Login</span>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
-                                                <div>
-                                                    <p class="mb-0 fw-medium">Purchased 500 coins</p>
-                                                    <small class="text-muted">2023-05-14 09:15:47</small>
-                                                </div>
-                                                <span class="badge bg-success rounded-pill">Purchase</span>
-                                            </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
-                                                <div>
-                                                    <p class="mb-0 fw-medium">Password changed</p>
-                                                    <small class="text-muted">2023-04-10 16:22:05</small>
-                                                </div>
-                                                <span class="badge bg-warning text-dark rounded-pill">Security</span>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <p class="mb-0 fw-medium">${account.updated_at ? new Date(account.updated_at).toLocaleDateString() : 'N/A'}</p>
                                 </div>
                             </div>
                         </div>
-                    `;
-
-                    // Show toast notification
-                    const toast = new bootstrap.Toast(document.getElementById('accountDataToast'));
-                    toast.show();
-                }, 1000);
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm rounded-3">
+                            <div class="card-header bg-white border-0 pt-3">
+                                <h5 class="card-title mb-0"><i class="bi bi-bank me-2 text-primary"></i>Game Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-coin text-warning me-2"></i>
+                                        <span class="text-muted">Coin Balance</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium fs-5">${account.coin}</p>
+                                </div>
+                                <!-- <div class="mb-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-clock-history text-secondary me-2"></i>
+                                        <span class="text-muted">Last Login</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium">${account.last_login ? new Date(account.last_login).toLocaleDateString() : 'N/A'}</p>
+                                </div>
+                                -->
+                                <div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-person-check text-secondary me-2"></i>
+                                        <span class="text-muted">Owner</span>
+                                    </div>
+                                    <p class="mb-0 fw-medium">
+                                        ${account.user.username ?? ""}
+                                        <!-- ${account.user ? `<a href=\"/users/${account.user.id}\" class=\"text-decoration-none\">${account.user.username}</a>` : 'Unknown'} -->
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                    })
+                    .catch(error => {
+                        modalBody.innerHTML =
+                            `<div class="alert alert-danger">Failed to load account details.</div>`;
+                    });
             }
-
             // Function to show edit modal
             function showEditModal(accountId) {
                 // Show loading state
@@ -787,114 +758,143 @@
 
                 editAccountModal.show();
 
-                // In a real implementation, you'd fetch data from an API endpoint
-                // For now, we'll just simulate loading with a timeout
-                setTimeout(() => {
-                    // For demo purposes, we'll just show a form with placeholder values
-                    document.getElementById('editAccountModalBody').innerHTML = `
-                        <form id="editAccountForm">
-                            <div class="mb-3">
-                                <label for="edit_username" class="form-label">Username</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white">
-                                        <i class="bi bi-person"></i>
-                                    </span>
-                                    <input type="text" class="form-control" id="edit_username" value="game_user_${accountId}" readonly>
+                fetch('/admin/account/' + accountId)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            document.getElementById('editAccountModalBody').innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                            return;
+                        }
+                        const account = data.account;
+                        document.getElementById('editAccountModalBody').innerHTML = `
+                            <form id="editAccountForm">
+                                <div class="mb-3">
+                                    <label for="edit_username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-person"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="edit_username" value="${account.username}" readonly>
+                                    </div>
+                                    <small class="text-muted">Username cannot be changed</small>
                                 </div>
-                                <small class="text-muted">Username cannot be changed</small>
-                            </div>
-                            <div class="mb-3">
-                                <label for="edit_email" class="form-label">Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white">
-                                        <i class="bi bi-envelope"></i>
-                                    </span>
-                                    <input type="email" class="form-control" id="edit_email" value="user${accountId}@example.com">
+                                <div class="mb-3">
+                                    <label for="edit_email" class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-envelope"></i>
+                                        </span>
+                                        <input type="email" class="form-control" id="edit_email" value="${account.user && account.user.email ? account.user.email : ''}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="edit_status" class="form-label">Status</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white">
-                                        <i class="bi bi-toggle-on"></i>
-                                    </span>
-                                    <select class="form-select" id="edit_status">
-                                        <option value="1" selected>Active</option>
-                                        <option value="0">Inactive</option>
-                                    </select>
+                                <div class="mb-3">
+                                    <label for="edit_status" class="form-label">Status</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-toggle-on"></i>
+                                        </span>
+                                        <select class="form-select" id="edit_status">
+                                            <option value="1" ${account.active ? 'selected' : ''}>Active</option>
+                                            <option value="0" ${!account.active ? 'selected' : ''}>Inactive</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="edit_coins" class="form-label">Coin Balance</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white">
-                                        <i class="bi bi-coin"></i>
-                                    </span>
-                                    <input type="number" class="form-control" id="edit_coins" value="1500">
+                                <div class="mb-3">
+                                    <label for="edit_coins" class="form-label">Coin Balance</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-coin"></i>
+                                        </span>
+                                        <input type="number" class="form-control" id="edit_coins" value="${account.coin}">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="edit_password" class="form-label">New Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white">
-                                        <i class="bi bi-key"></i>
-                                    </span>
-                                    <input type="password" class="form-control" id="edit_password" placeholder="Leave blank to keep current password">
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleEditPassword">
-                                        <i class="bi bi-eye"></i>
+                                <div class="mb-3">
+                                    <label for="edit_password" class="form-label">New Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white">
+                                            <i class="bi bi-key"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="edit_password" placeholder="Leave blank to keep current password">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleEditPassword">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">Only fill this if you want to change the password</small>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        <i class="bi bi-x me-1"></i>
+                                        Cancel
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check2 me-1"></i>
+                                        Save Changes
                                     </button>
                                 </div>
-                                <small class="text-muted">Only fill this if you want to change the password</small>
-                            </div>
-                            <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                    <i class="bi bi-x me-1"></i>
-                                    Cancel
-                                </button>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check2 me-1"></i>
-                                    Save Changes
-                                </button>
-                            </div>
-                        </form>
-                    `;
+                            </form>
+                        `;
 
-                    // Toggle password visibility in edit modal
-                    const toggleEditPasswordBtn = document.getElementById('toggleEditPassword');
-                    const editPasswordInput = document.getElementById('edit_password');
+                        // Toggle password visibility in edit modal
+                        const toggleEditPasswordBtn = document.getElementById('toggleEditPassword');
+                        const editPasswordInput = document.getElementById('edit_password');
 
-                    toggleEditPasswordBtn.addEventListener('click', function() {
-                        const type = editPasswordInput.getAttribute('type') === 'password' ?
-                            'text' : 'password';
-                        editPasswordInput.setAttribute('type', type);
-                        this.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' :
-                            '<i class="bi bi-eye-slash"></i>';
+                        toggleEditPasswordBtn.addEventListener('click', function() {
+                            const type = editPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                            editPasswordInput.setAttribute('type', type);
+                            this.innerHTML = type === 'password' ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+                        });
+
+                        // Add form submission handler
+                        document.getElementById('editAccountForm').addEventListener('submit', function(e) {
+                            e.preventDefault();
+
+                            // Show loading overlay
+                            loadingOverlay.classList.remove('d-none');
+
+                            // Gather form data
+                            const payload = {
+                                email: document.getElementById('edit_email').value,
+                                active: document.getElementById('edit_status').value,
+                                coin: document.getElementById('edit_coins').value,
+                                password: document.getElementById('edit_password').value,
+                                _token: '{{ csrf_token() }}'
+                            };
+
+                            fetch('/admin/account/' + accountId, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify(payload)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                loadingOverlay.classList.add('d-none');
+                                editAccountModal.hide();
+
+                                // Show toast
+                                const toastBody = document.querySelector('.toast-body');
+                                if (data.success) {
+                                    toastBody.innerHTML = `<i class="bi bi-check-circle-fill me-2 text-success"></i> Account updated successfully!`;
+                                    setTimeout(() => window.location.reload(), 1500);
+                                } else {
+                                    toastBody.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i> ${data.message || 'Failed to update account.'}`;
+                                }
+                                const toast = new bootstrap.Toast(document.getElementById('accountDataToast'));
+                                toast.show();
+                            })
+                            .catch(error => {
+                                loadingOverlay.classList.add('d-none');
+                                editAccountModal.hide();
+                                const toastBody = document.querySelector('.toast-body');
+                                toastBody.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i> Failed to update account.`;
+                                const toast = new bootstrap.Toast(document.getElementById('accountDataToast'));
+                                toast.show();
+                            });
+                        });
                     });
-
-                    // Add form submission handler
-                    document.getElementById('editAccountForm').addEventListener('submit', function(e) {
-                        e.preventDefault();
-
-                        // Show loading overlay
-                        loadingOverlay.classList.remove('d-none');
-
-                        // In a real implementation, you'd submit the form data to an API endpoint
-                        // For demo purposes, we'll just simulate the request with a timeout
-                        setTimeout(() => {
-                            loadingOverlay.classList.add('d-none');
-                            editAccountModal.hide();
-
-                            // Show success toast
-                            const toastBody = document.querySelector('.toast-body');
-                            toastBody.innerHTML =
-                                `<i class="bi bi-check-circle-fill me-2 text-success"></i> Account updated successfully!`;
-
-                            const toast = new bootstrap.Toast(document.getElementById(
-                                'accountDataToast'));
-                            toast.show();
-                        }, 1500);
-                    });
-                }, 1000);
             }
         });
     </script>

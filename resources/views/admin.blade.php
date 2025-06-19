@@ -398,12 +398,18 @@
                                                 <strong>#${transaction.order_id}</strong>
                                             </div>
                                             <div class="mb-3">
+                                                <small class="text-muted d-block">Reference Number</small>
+                                                <strong>#${transaction.referencereference_number ?? ""}</strong>
+                                            </div>
+                                            <div style="display:flex;justify-content:space-between">
+                                            <div class="mb-3">
                                                 <small class="text-muted d-block">Date</small>
                                                 <strong>${paymentDate}</strong>
                                             </div>
                                             <div class="mb-3">
                                                 <small class="text-muted d-block">Payment Status</small>
                                                 ${statusBadge}
+                                            </div>
                                             </div>
                                             <div>
                                                 <small class="text-muted d-block">Payment Method</small>
@@ -447,8 +453,7 @@
                                                     <thead class="text-muted" style="font-size: 0.875rem;">
                                                         <tr>
                                                             <th>Item</th>
-                                                            <th class="text-end">Amount</th>
-                                                            <th class="text-end">Price</th>
+                                                            <th class="text-end">Coins</th>
                                                             <th class="text-end">Total</th>
                                                         </tr>
                                                     </thead>
@@ -456,7 +461,6 @@
                                                         <tr>
                                                             <td>Game Coins</td>
                                                             <td class="text-end">${transaction.coin}</td>
-                                                            <td class="text-end">$${(transaction.price / transaction.coin).toFixed(2)}</td>
                                                             <td class="text-end">$${parseFloat(transaction.price).toFixed(2)}</td>
                                                         </tr>
                                                         <tr>

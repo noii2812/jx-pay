@@ -409,9 +409,9 @@
                                     <button type="button" class="btn btn-link btn-sm p-0"
                                         onclick="setMaxAmount()">Use Max</button>
                                 </div>
-                                <span class="badge bg-success" id="x2Badge">
+                                {{-- <span class="badge bg-success" id="x2Badge">
                                     <i class="bi bi-lightning-fill me-1"></i>2X Coins: <span id="x2Amount">0</span>
-                                </span>
+                                </span> --}}
                             </div>
                             {{-- <div>
                                 <label class="form-label d-flex align-items-center gap-2">

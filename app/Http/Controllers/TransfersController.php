@@ -55,7 +55,8 @@ class TransfersController extends Controller
                     throw new \Exception('Destination account not found');
                 }
 
-                $totalCoin = $validated['coin'] * 1;
+                // 00 * 2 =
+                $totalCoin = $validated['coin'] *1 ;
                 // Create the transfer record
                 $transfer = Transfer::create([
                     'user_id' => $user->id,

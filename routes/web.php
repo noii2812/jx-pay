@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
     // Routes accessible only to admin or gm roles
     Route::group(['middleware' => 'admin.gm.check'], function () {
         Route::get('/admin', [AdminDashboardController::class, 'index']);
+        // For API-style response, use api.php and prefix with /api
+        Route::get('/admin/account/{id}', [AccountController::class, 'show'])->name('admin.account.show');
         Route::get('/users', [UserController::class, 'index'])->name('users.search');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
@@ -85,3 +87,4 @@ Route::post('/captcha/verify', [CaptchaController::class, 'verify'])->name('capt
 Route::get('/test-500', function() {
     abort(500);
 });
+

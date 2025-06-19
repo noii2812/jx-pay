@@ -13,6 +13,18 @@ class AccountController extends Controller
         return view("game", compact("accounts"));
     }
 
+    public function show($id)
+{
+    $account = Account::with('user')->find($id);
+    if (!$account) {
+        return response()->json(['success' => false, 'message' => 'Account not found'], 404);
+    }
+    return response()->json([
+        'success' => true,
+        'account' => $account
+    ]);
+}
+
     public function create(Request $request){
         if($request->method() == "POST"){
             try {
