@@ -59,7 +59,7 @@ class TransfersController extends Controller
                 // Create the transfer record
                 $transfer = Transfer::create([
                     'user_id' => $user->id,
-                    'to_account' => $totalCoin,
+                    'to_account' => $validated['to_account'],
                     'coin' => $validated['coin'],
                     'status' => 'completed',
                     'description' => "Transfer to account ID: {$validated['to_account']}",
