@@ -14,7 +14,7 @@
                     </ol>
                 </nav>
             </div>
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
                 <i class="bi bi-plus-lg me-1"></i>
                 Add New User
             </button>
@@ -48,10 +48,10 @@
                                     <i class="bi bi-funnel me-1"></i>
                                     Filter
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary">
+                                {{-- <button type="button" class="btn btn-outline-secondary">
                                     <i class="bi bi-download me-1"></i>
                                     Export
-                                </button>
+                                </button> --}}
                             </div>
 
                         </div>
@@ -101,15 +101,15 @@
                                                 @endif
                                             </div>
                                             <div class="ms-3">
-                                                <h6 class="mb-0">{{ $user->full_name ?: 'User' }}</h6>
-                                                <small class="text-muted">{{'@'.$user->username }}</small>
+                                                <h6 class="text-muted">{{'@'.$user->username }}</h6>
+                                                {{-- <small class="mb-0">{{ $user->full_name ?: 'User' }}</small> --}}
                                             </div>
                                         </div>
 
                                     </td>
                                     <td>{{ $user->email }}</td>
                                     {{-- <td>{{ $user->role ?: 'N/A' }}</td> --}}
-                                    <td>{{ $user->phone ?: 'N/A' }}</td>
+                                    <td>{{ $user->phoneNumber ?: 'N/A' }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <i class="bi bi-coin text-warning me-1"></i>
@@ -229,7 +229,7 @@
                     })
                     .then(data => {
                         populateUserModal(data);
-                        showUserDataToast();
+                        // showUserDataToast();
                     })
                     .catch(error => {
                         console.error('Error fetching user details:', error);
@@ -336,7 +336,7 @@
                                         <i class="bi bi-telephone text-secondary me-2"></i>
                                         <span class="text-muted">Phone</span>
                                     </div>
-                                    <p class="mb-0 fw-medium">${user.phone || 'N/A'}</p>
+                                    <p class="mb-0 fw-medium">${user.phoneNumber || 'N/A'}</p>
                                 </div>
                                 <div>
                                     <div class="d-flex align-items-center mb-2">
@@ -427,7 +427,7 @@
                 const userId = this.getAttribute('data-user-id');
                 // You can redirect to an edit page or open another modal for editing
                 // For now, we'll just alert
-                alert(`Edit user with ID: ${userId}`);
+                // alert(`Edit user with ID: ${userId}`);
 
             });
         });
@@ -498,5 +498,96 @@
         const toast = new bootstrap.Toast(document.getElementById('userDataToast'));
         toast.show();
     }
+</script>
+
+<!-- Create User Modal -->
+<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="createUserForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createUserModalLabel">Create New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="createUserErrors" class="alert alert-danger d-none"></div>
+                    <div class="mb-3">
+                        <label for="createUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="createUsername" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="createPassword" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="createPassword" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="createEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="createEmail" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="createPhone" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="createPhone" name="phoneNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="createRole" class="form-label">Role</label>
+                        <select class="form-select" id="createRole" name="role" required>
+                            <option value="user">User</option>
+                            <option value="gm">GM</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+    // Create User AJAX
+    const createUserForm = document.getElementById('createUserForm');
+    const createUserErrors = document.getElementById('createUserErrors');
+    if (createUserForm) {
+        createUserForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            createUserErrors.classList.add('d-none');
+            createUserErrors.innerHTML = '';
+            const formData = new FormData(createUserForm);
+            fetch('/admin/users', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    const data = await response.json();
+                    if (data.errors) {
+                        createUserErrors.classList.remove('d-none');
+                        createUserErrors.innerHTML = Object.values(data.errors).map(errs => errs.join('<br>')).join('<br>');
+                    }
+                    throw new Error('Validation failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Success: close modal, reload or update table
+                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('createUserModal'));
+                modal.hide();
+                location.reload();
+            })
+            .catch(error => {
+                // Already handled above
+            });
+        });
+    }
+});
 </script>
 

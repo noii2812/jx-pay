@@ -217,9 +217,9 @@
                                                 data-account-id="{{ $account->id }}" title="Edit Account">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
-                                            <div class="dropdown">
+                                            {{-- <div class="account-dropdown">
                                                 <button class="btn btn-sm btn-outline-dark dropdown-toggle"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    type="button" data-bs-toggle="account-dropdown" aria-expanded="false">
                                                     <i class="bi bi-three-dots"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -250,7 +250,7 @@
                                                         </button>
                                                     </li>
                                                 </ul>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </td>
                                 </tr>
@@ -305,7 +305,7 @@
 
     {{-- Loading Animation Overlay --}}
     <div id="loading-overlay" class="position-fixed d-none"
-        style="top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.9); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+        style="top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.9); z-index: 10; display: flex; justify-content: center; align-items: center;">
         <div class="text-center p-4 rounded-4 shadow-lg" style="background-color: #fff; max-width: 300px;">
             <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="visually-hidden">Loading...</span>
@@ -354,7 +354,10 @@
         </div>
     </div>
 
-    <style>
+    
+</x-layout>
+
+<style>
         /* Animation for statistics cards */
         .stat-card {
             transition: all 0.3s ease;
@@ -898,7 +901,7 @@
             }
         });
     </script>
-</x-layout>
+
 {{-- Add New Account Modal --}}
 <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel"
     aria-hidden="true">

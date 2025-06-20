@@ -167,24 +167,27 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        
+
         $validatedData = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'status' => 'required|string|in:active,pending,inactive',
-            'coin' => 'required|integer|min:0',
+            'username' => 'required|string|max:255|unique:users,username,'.$id,
+            'email' => 'nullable|email|max:255|unique:users,email,'.$id,
+            'phoneNumber' => 'nullable|string|max:20',
+            'role' => 'required|in:admin,gm,user',
+            'password' => 'nullable|string|min:6',
         ]);
-        
-        // Only update password if provided
-        if ($request->filled('password')) {
-            $validatedData['password'] = bcrypt($request->password);
+
+        $user->username = $validatedData['username'];
+        $user->email = $validatedData['email'] ?? null;
+        $user->phoneNumber = $validatedData['phoneNumber'] ?? null;
+        $user->role = $validatedData['role'];
+
+        if (!empty($validatedData['password'])) {
+            $user->password = bcrypt($validatedData['password']);
         }
-        
-        $user->update($validatedData);
-        
-        return redirect()->back()->with('success', 'User updated successfully');
+
+        $user->save();
+
+        return response()->json(['message' => 'User updated successfully', 'user' => $user]);
     }
 
     public function destroy($id)
@@ -252,7 +255,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . auth()->id(),
-            'phone' => 'nullable|string|max:20',
+            'phoneNumber' => 'nullable|string|max:20',
             'gender' => 'nullable|in:male,female,other'
         ], [
             'name.required' => 'Please enter your name',
@@ -277,7 +280,7 @@ class UserController extends Controller
             // Update user details
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->phone = $request->phone;
+            $user->phoneNumber = $request->phoneNumber;
             $user->gender = $request->gender;
             $user->save();
 
@@ -291,5 +294,30 @@ class UserController extends Controller
                 'message' => 'Failed to update profile. Please try again.'
             ], 500);
         }
+    }
+
+    /**
+     * Store a newly created user in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => 'required|string|unique:users,username',
+            'password' => 'required|string|min:6',
+            'email' => 'nullable|email|unique:users,email',
+            'phoneNumber' => 'nullable|string',
+            'role' => 'required|in:admin,gm,user',
+        ]);
+
+        $user = new User();
+        $user->username = $validated['username'];
+        $user->password = bcrypt($validated['password']);
+        $user->email = $validated['email'] ?? null;
+        $user->phoneNumber = $validated['phoneNumber'] ?? null;
+        $user->role = $validated['role'];
+        $user->status = 'active';
+        $user->save();
+
+        return response()->json(['message' => 'User created successfully', 'user' => $user]);
     }
 } 

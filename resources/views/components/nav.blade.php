@@ -15,7 +15,7 @@
                     <span>{{ auth()->user()->username ?? 'Username' }}</span>
                     <i class="bi bi-chevron-down ms-2"></i>
                 </div>
-                <ul class="dropdown-menu dropdown-menu-end">
+                <ul class="dropdown-menu  dropdown-menu-end">
                     <li>
                         <a class="dropdown-item" href="/profile">
                             <i class="bi bi-person me-2"></i>Profile

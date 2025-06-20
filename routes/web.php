@@ -72,6 +72,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/orderCoin/{id}/reject', [AdminOrderCoin::class, 'reject'])->name('orderCoin.reject');
         Route::get('/api/orders/{id}', [AdminOrderCoin::class, 'getOrderDetails']);
         Route::get('/api/users/{id}', [UserController::class, 'getUserDetails']);
+        Route::post('/admin/users', [UserController::class, 'store'])->name('users.store');
+        Route::put('/admin/users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
     });
 
     Route::resource('transactions', TransactionController::class);
