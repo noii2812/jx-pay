@@ -251,6 +251,8 @@
             // Search functionality
             const searchInput = document.getElementById('searchInput');
             const tableRows = document.querySelectorAll('tbody tr');
+            const approveButton = document.getElementById('approveButton');
+            const declineButton = document.getElementById('declineButton');
 
             searchInput.addEventListener('input', function() {
                 const searchTerm = searchInput.value.toLowerCase();
@@ -339,10 +341,17 @@
                             headers: {
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
                                     .content,
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
                             }
                         })
-                        .then(response => response.json())
+                        .then(async (response) => {
+                            if (!response.ok) {
+                                const text = await response.text();
+                                throw new Error(`HTTP ${response.status}: ${text}`);
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             console.log(data)
                             if (data.success) {
@@ -361,13 +370,13 @@
                                     orderDetailModal.hide();
                                 }
                             } else {
-                                showNotification('error',
+                                showNotification('error', data.message ||
                                     'Failed to approve payment. Please try again.');
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            showNotification('error', 'An error occurred while approving the payment.');
+                            showNotification('error', error.message || 'An error occurred while approving the payment.');
                         });
                 }
             });
@@ -409,7 +418,7 @@
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            showNotification('error', 'An error occurred while approving the payment.');
+                            showNotification('error', 'An error occurred while rejecting the payment.');
                         });
                 }
             });

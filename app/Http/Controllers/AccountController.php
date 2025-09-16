@@ -30,7 +30,7 @@ class AccountController extends Controller
             try {
                 $request->validate([
                     'username' => 'required|string|max:32|unique:account,username',
-                    'password' => 'required|string|min:8|max:64',
+                    'password' => 'required|string|min:6|max:64',
                     'password_confirmation' => 'required|same:password',
                     'captcha' => 'required'
                 ]);
@@ -89,7 +89,7 @@ class AccountController extends Controller
                 $errorMessage = 'Failed to create account. ';
                 
                 // Check for common database errors
-                if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                if (str_contains($e->getMessage(), 'username has already been taken')) {
                     $errorMessage .= 'This username is already taken.';
                 } elseif (str_contains($e->getMessage(), 'Data too long')) {
                     $errorMessage .= 'Input data is too long.';
@@ -99,7 +99,8 @@ class AccountController extends Controller
                     $errorMessage .= 'Database connection error.';
                 } else {
                     // $errorMessage .= 'An unexpected error occurred. Please try again later.';
-                    $errorMessage .= 'An unexpected error occurred. Make sure the password and confirm password is correct';
+                    // $errorMessage .= 'An unexpected error occurred. Make sure the password and confirm password is correct';
+                    $errorMessage .= $e->getMessage();
                 }
                 
                 return redirect()->back()->with('error', $errorMessage);

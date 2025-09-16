@@ -52,7 +52,7 @@ class AdminOrderCoin extends Controller
         ]);
     }
 
-    public function approve($id)
+    public function approve(Request $request, $id)
     {
         $transaction = Transaction::where('order_id', $id)->firstOrFail();
 
@@ -71,9 +71,21 @@ class AdminOrderCoin extends Controller
                 $user->save();
             });
 
+            if ($request->expectsJson() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Transaction approved successfully',
+                ]);
+            }
             return redirect()->back()->with('success', 'Transaction approved successfully');
         }
 
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transaction cannot be approved',
+            ], 400);
+        }
         return redirect()->back()->with('error', 'Transaction cannot be approved');
     }
 

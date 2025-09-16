@@ -578,12 +578,12 @@
                             <h6 class="text-navy mb-3 border-bottom pb-2 fw-bold"></i>Order Information</h6>
                             <div class="mb-3">
                                 <label class="form-label d-flex align-items-center">
-                                    # Reference 
+                                    # Purchase 
                                     <i id="info-icon" class="bi bi-info-circle ms-1 text-primary" style="cursor: pointer;"></i>
                                 </label>
                                 <div class="input-group">
                                     {{-- <span class="input-group-text bg-light"><i class="bi bi-hash"></i></span> --}}
-                                    <input type="text" class="form-control w-100" id="referenceId" required="true" placeholder="Enter reference number">
+                                    <input type="text" class="form-control w-100" id="referenceId" required="true" placeholder="Enter # purchase number">
                                 </div>
                             </div>
                         </div>
@@ -634,14 +634,14 @@
             </div>
             <div class="modal-body">
                 <p>ធ្វើតាមបីចំនុចខាងក្រោមដើម្បីបង្កើតការទិញ Jpoint:</p>
-                <ul>
-                    <li>បន្ទាប់ពីអ្នកបានស្កេន QRCode បង់ថ្លៃការទិញរួចរាល់ សូមបងប្អូនចម្លងលេខ Reference ពីវិក័យបត្រដែលអ្នកបានទិញ</li>
-                    <li>វាយបញ្ចូលលេខ Reference ដែលអ្នកបានចម្លងទៅក្នុង Payment method Reference</li>
+                <ol>
+                    <li>បន្ទាប់ពីអ្នកបានស្កេន QRCode បង់ថ្លៃការទិញរួចរាល់ សូមបងប្អូនចម្លងលេខ Purchase ពីវិក័យបត្រដែលអ្នកបានទិញ</li>
+                    <li>វាយបញ្ចូលលេខ Purchase ដែលអ្នកបានចម្លងទៅក្នុង Payment method Purchase </li>
                     <li>ចុច SEND ORDER ដើមប្បីធ្វើការកម្មង់ទិញ</li>
-                </ul>
-                <p class="mb-0">ត្រូវចាំ ! អ្នកត្រូវរក្សាទុកលេខ Reference របស់លោកអ្នកសិន រហូតទាល់តែកាបញ្ជារទិញរបស់លោកអ្នកបានសម្រេច</p>
+                </ol>
+                <p class="mb-0">ត្រូវចាំ ! អ្នកត្រូវរក្សាទុកលេខ Purchase របស់លោកអ្នកសិន រហូតទាល់តែកាបញ្ជារទិញរបស់លោកអ្នកបានសម្រេច</p>
             </div>
-            <img src="{{ asset('images/banks/tip.png') }}" alt="KHQR" >
+            <img src="{{ asset('images/banks/tip1.png') }}" alt="KHQR" >
         </div>
     </div>
 </div>

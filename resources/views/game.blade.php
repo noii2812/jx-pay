@@ -9,14 +9,14 @@
     <div class="row mb-4">
         <div class="col-12">
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show d-none" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
             @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show d-none" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -290,7 +290,7 @@
                         </label>
                         <div class="input-group input-group-lg">
                             <input type="password" name="new_password" id="newPassword" class="form-control bg-light border-0" required 
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+                                pattern=".{6,}" title="At least 6 characters">
                             <span class="btn btn-light border-0" type="button" onclick="togglePassword(this)">
                                 <i class="bi bi-eye" style="color: #2e7eff"></i>
                             </span>
@@ -517,27 +517,30 @@
 
         // Password validation requirements
         const requirements = {
-            length: /.{8,}/,
-            uppercase: /[A-Z]/,
-            lowercase: /[a-z]/,
-            number: /[0-9]/,
-            special: /[@$!%*?&]/
+            length: /.{6,}/
         };
 
         // Update requirement indicators
         function updateRequirements(password) {
             for (const [requirement, regex] of Object.entries(requirements)) {
                 const element = document.getElementById(requirement);
+                if (!element) continue;
                 if (regex.test(password)) {
                     element.classList.remove('text-danger');
                     element.classList.add('text-success');
-                    element.querySelector('i').classList.remove('bi-x-circle');
-                    element.querySelector('i').classList.add('bi-check-circle');
+                    const icon = element.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('bi-x-circle');
+                        icon.classList.add('bi-check-circle');
+                    }
                 } else {
                     element.classList.remove('text-success');
                     element.classList.add('text-danger');
-                    element.querySelector('i').classList.remove('bi-check-circle');
-                    element.querySelector('i').classList.add('bi-x-circle');
+                    const icon = element.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('bi-check-circle');
+                        icon.classList.add('bi-x-circle');
+                    }
                 }
             }
         }
@@ -572,7 +575,7 @@
             const allRequirementsMet = Object.values(requirements).every(regex => regex.test(newPassword.value));
             if (!allRequirementsMet) {
                 e.preventDefault();
-                alert('Please ensure all password requirements are met.');
+                showNotification('error', 'Please ensure the password has at least 6 characters.');
             }
         });
 
@@ -634,6 +637,23 @@
             
             // Form will submit normally
         });
+        // Show toast notifications for server-side messages
+        @if (session('success'))
+            showNotification('success', @json(session('success')));
+        @endif
+        @if (session('error'))
+            showNotification('error', @json(session('error')));
+            // Keep the create account modal open on error
+            try {
+                const createServerModalEl = document.getElementById('createServerModal');
+                if (createServerModalEl) {
+                    const modal = new bootstrap.Modal(createServerModalEl);
+                    modal.show();
+                }
+            } catch (e) {
+                // no-op
+            }
+        @endif
     });
 </script>
 
@@ -645,6 +665,23 @@
 </script>
 
 <script>
+    // Simple toast-like notification helper
+    function showNotification(type, message) {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+        notification.style.zIndex = '2000';
+        notification.style.minWidth = '280px';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.classList.remove('show');
+            notification.addEventListener('transitionend', () => notification.remove());
+        }, 5000);
+    }
+
     // Check for validation errors and show modal if needed
     @if($errors->any())
         document.addEventListener('DOMContentLoaded', function() {
